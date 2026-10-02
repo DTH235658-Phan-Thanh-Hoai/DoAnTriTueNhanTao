@@ -245,7 +245,7 @@ class SkinCancerEfficientNet(nn.Module):
     def __init__(self, backbone='efficientnet_b0', num_classes=2, dropout=0.3):
         super().__init__()
         self.backbone = timm.create_model(backbone, pretrained=False, num_classes=0)
-        feat_dim = self.backbone.num_features
+        feat_dim = self.backbone.num_features # 1280 chiều
         self.head = nn.Sequential(
             nn.Dropout(dropout),
             nn.Linear(feat_dim, 256),
