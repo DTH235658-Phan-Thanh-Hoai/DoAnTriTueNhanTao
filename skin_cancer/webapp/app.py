@@ -2,17 +2,41 @@
 DermaScan AI - Web Application (Vietnamese)
 EfficientNet-B0 skin cancer classification
 """
-import os
 import io
 import base64
-import traceback
+from pathlib import Path
 
+# Database/auth bootstrap; keep python app.py working from the webapp directory.
+if not __package__:
+    import sys
+    from pathlib import Path
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+from skin_cancer.webapp.database_app import init_database
+from skin_cancer.webapp.config import PROJECT_ROOT
+from skin_cancer.webapp.services.access import (
+    require_roles,
+    visible_case_or_404,
+)
+from skin_cancer.webapp.services.ai_analysis import mark_analysis_failed
+from skin_cancer.webapp.services.image_upload import (
+    UploadTooLarge,
+    read_limited_upload,
+)
+from skin_cancer.webapp.extensions import db, limiter
+from skin_cancer.webapp.models import (
+    CaseImage,
+    Analysis,
+    AnalysisResult,
+)
+import time
+from datetime import datetime, timezone
+from uuid import uuid4
 import torch
 import torch.nn as nn
 import timm
 import numpy as np
-from PIL import Image
-from flask import Flask, render_template, request, jsonify
+from PIL import Image, UnidentifiedImageError
+from flask import Flask, current_app, render_template, request, jsonify
 from flask_cors import CORS
 from torchvision import transforms
 from pytorch_grad_cam import GradCAM
@@ -22,7 +46,7 @@ from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 # ============================================================
 # CONFIG
 # ============================================================
-BASE = r'D:\DoAnTriTueNhanTao\skin_cancer'
+BASE = PROJECT_ROOT / 'skin_cancer'
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 CLASSES = ['MEL', 'NV', 'BCC', 'AK', 'BKL', 'DF', 'VASC', 'SCC']
@@ -106,8 +130,7 @@ def generate_interpretation(p_malig, pred_class, probs_dict):
     """Sinh thông điệp diễn giải bằng tiếng Việt dựa trên xác suất."""
 
     info = CLASS_INFO[pred_class]
-    is_malignant = p_malig > 0.5
-    confidence = max(p_malig, 1 - p_malig) * 100
+    confidence = probs_dict[pred_class] * 100
 
     # Phân loại mức độ
     if p_malig >= 0.85:
@@ -283,6 +306,7 @@ preprocess = transforms.Compose([
 # ============================================================
 app = Flask(__name__, template_folder='templates', static_folder='static')
 CORS(app)
+init_database(app)
 
 
 def to_b64(pil_img, fmt='PNG'):
@@ -294,6 +318,213 @@ def to_b64(pil_img, fmt='PNG'):
 def arr_to_b64(arr):
     return to_b64(Image.fromarray(arr))
 
+def utcnow_naive():
+    return datetime.now(
+        timezone.utc
+    ).replace(tzinfo=None)
+
+
+def run_ai_inference(pil_img):
+    """
+    Chạy EfficientNet-B0 binary + multiclass + Grad-CAM.
+
+    Hàm dùng chung cho:
+    - /predict legacy
+    - /api/case-images/<id>/analyze
+    """
+
+    w, h = pil_img.size
+
+    preview = pil_img.resize(
+        (420, 420),
+        Image.LANCZOS,
+    )
+
+    preview_b64 = to_b64(
+        preview,
+        fmt="JPEG",
+    )
+
+    inp = preprocess(
+        pil_img
+    ).unsqueeze(0).to(DEVICE)
+
+    start = time.perf_counter()
+
+    with torch.no_grad():
+
+        logits_bin = model_bin(inp)
+
+        p_malig = torch.softmax(
+            logits_bin,
+            dim=1,
+        )[0, 1].item()
+
+        logits_mc = model_mc(inp)
+
+        probs_mc = torch.softmax(
+            logits_mc,
+            dim=1,
+        )[0].cpu().numpy()
+
+    pred_idx = int(
+        probs_mc.argmax()
+    )
+
+    pred_class = CLASSES[
+        pred_idx
+    ]
+
+    probs_dict = {
+        c: float(p)
+        for c, p in zip(
+            CLASSES,
+            probs_mc,
+        )
+    }
+
+    # ==========================================
+    # GRAD-CAM
+    # ==========================================
+
+    rgb_img = (
+        np.array(
+            pil_img.resize(
+                (224, 224)
+            )
+        )
+        / 255.0
+    )
+
+    with GradCAM(
+        model=model_mc,
+        target_layers=[
+            model_mc.backbone.conv_head
+        ],
+    ) as cam:
+
+        gray = cam(
+            input_tensor=inp,
+            targets=[
+                ClassifierOutputTarget(
+                    pred_idx
+                )
+            ],
+        )[0]
+
+    cam_vis = show_cam_on_image(
+        rgb_img.astype(
+            np.float32
+        ),
+        gray,
+        use_rgb=True,
+    )
+
+    # Một số version pytorch-grad-cam
+    # trả uint8 0-255.
+    if cam_vis.dtype != np.uint8:
+
+        cam_vis = np.clip(
+            cam_vis * 255,
+            0,
+            255,
+        ).astype(np.uint8)
+
+    inference_time_ms = (
+        time.perf_counter()
+        - start
+    ) * 1000.0
+
+    gradcam_b64 = arr_to_b64(
+        cam_vis
+    )
+
+    interpretation = (
+        generate_interpretation(
+            p_malig,
+            pred_class,
+            probs_dict,
+        )
+    )
+
+    result = {
+        "success": True,
+
+        "original": preview_b64,
+
+        "gradcam": gradcam_b64,
+
+        "binary": {
+            "prob_malignant":
+                float(p_malig),
+
+            "prediction":
+                int(p_malig > 0.5),
+
+            "label_vi": (
+                "NGHI NGỜ ÁC TÍNH"
+                if p_malig > 0.5
+                else "LÀNH TÍNH"
+            ),
+
+            "confidence_pct": round(
+                max(
+                    p_malig,
+                    1 - p_malig,
+                ) * 100,
+                1,
+            ),
+        },
+
+        "multiclass": {
+            "pred_class":
+                pred_class,
+
+            "pred_conf":
+                float(
+                    probs_mc[
+                        pred_idx
+                    ]
+                ),
+
+            "probs":
+                probs_dict,
+
+            "classes":
+                CLASSES,
+
+            "malignant_list":
+                MALIGNANT,
+
+            "name_vi":
+                CLASS_INFO[
+                    pred_class
+                ]["name_vi"],
+        },
+
+        "interpretation":
+            interpretation,
+
+        "meta": {
+            "img_size":
+                f"{w} x {h}",
+
+            "device":
+                DEVICE,
+
+            "inference_time_ms":
+                round(
+                    inference_time_ms,
+                    2,
+                ),
+        },
+    }
+
+    return (
+        result,
+        cam_vis,
+        inference_time_ms,
+    )
 
 @app.route('/')
 def index():
@@ -308,83 +539,374 @@ def health():
         'gpu': torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
     })
 
-
-@app.route('/predict', methods=['POST'])
+@app.route(
+    "/predict",
+    methods=["POST"],
+)
+@limiter.limit(
+    lambda: current_app.config["RATELIMIT_EXPENSIVE"]
+)
+@require_roles("ADMIN", "DOCTOR")
 def predict():
+
     try:
-        if 'image' not in request.files:
-            return jsonify({'error': 'Chưa có ảnh được tải lên'}), 400
 
-        file = request.files['image']
+        if "image" not in request.files:
+
+            return jsonify(
+                {
+                    "error":
+                        "Chưa có ảnh "
+                        "được tải lên"
+                }
+            ), 400
+
+        file = request.files[
+            "image"
+        ]
+
         if not file.filename:
-            return jsonify({'error': 'Tên file không hợp lệ'}), 400
 
-        pil_img = Image.open(file.stream).convert('RGB')
-        w, h = pil_img.size
+            return jsonify(
+                {
+                    "error":
+                        "Tên file "
+                        "không hợp lệ"
+                }
+            ), 400
 
-        preview = pil_img.resize((420, 420), Image.LANCZOS)
-        preview_b64 = to_b64(preview, fmt='JPEG')
+        try:
 
-        inp = preprocess(pil_img).unsqueeze(0).to(DEVICE)
+            image_data = read_limited_upload(
+                file.stream,
+                int(
+                    app.config[
+                        "BATCH_MAX_FILE_BYTES"
+                    ]
+                ),
+            )
 
-        with torch.no_grad():
-            logits_bin = model_bin(inp)
-            p_malig = torch.softmax(logits_bin, dim=1)[0, 1].item()
+            pil_img = Image.open(
+                io.BytesIO(image_data)
+            ).convert("RGB")
 
-            logits_mc = model_mc(inp)
-            probs_mc = torch.softmax(logits_mc, dim=1)[0].cpu().numpy()
+        except UploadTooLarge as exc:
 
-        pred_idx = int(probs_mc.argmax())
-        pred_class = CLASSES[pred_idx]
-        probs_dict = {c: float(p) for c, p in zip(CLASSES, probs_mc)}
+            return jsonify(
+                {
+                    "error": str(exc)
+                }
+            ), 413
 
-        # Grad-CAM
-        rgb_img = np.array(pil_img.resize((224, 224))) / 255.0
-        with GradCAM(model=model_mc,
-                     target_layers=[model_mc.backbone.conv_head]) as cam:
-            gray = cam(input_tensor=inp,
-                       targets=[ClassifierOutputTarget(pred_idx)])[0]
-        cam_vis = show_cam_on_image(rgb_img.astype(np.float32), gray, use_rgb=True)
-        gradcam_b64 = arr_to_b64((cam_vis * 255).astype(np.uint8))
+        except (
+            UnidentifiedImageError,
+            OSError,
+            ValueError,
+        ):
 
-        # Sinh diễn giải tiếng Việt
-        interpretation = generate_interpretation(p_malig, pred_class, probs_dict)
+            return jsonify(
+                {
+                    "error":
+                        "File ảnh "
+                        "không hợp lệ"
+                }
+            ), 400
 
-        return jsonify({
-            'success': True,
-            'original': preview_b64,
-            'gradcam': gradcam_b64,
-            'binary': {
-                'prob_malignant': float(p_malig),
-                'prediction': int(p_malig > 0.5),
-                'label_vi': 'NGHI NGỜ ÁC TÍNH' if p_malig > 0.5 else 'LÀNH TÍNH',
-                'confidence_pct': round(max(p_malig, 1 - p_malig) * 100, 1),
-            },
-            'multiclass': {
-                'pred_class': pred_class,
-                'pred_conf': float(probs_mc[pred_idx]),
-                'probs': probs_dict,
-                'classes': CLASSES,
-                'malignant_list': MALIGNANT,
-                'name_vi': CLASS_INFO[pred_class]['name_vi'],
-            },
-            'interpretation': interpretation,
-            'meta': {
-                'img_size': f'{w} x {h}',
-                'device': DEVICE,
+        data, _, _ = (
+            run_ai_inference(
+                pil_img
+            )
+        )
+
+        return jsonify(data)
+
+    except Exception:
+
+        app.logger.exception(
+            "Direct AI prediction failed"
+        )
+
+        return jsonify(
+            {
+                "error":
+                    "Không thể "
+                    "phân tích ảnh"
             }
-        })
+        ), 500
 
-    except Exception as e:
-        traceback.print_exc()
-        return jsonify({'error': str(e)}), 500
+@app.route(
+    "/api/case-images/"
+    "<int:case_image_id>/analyze",
+    methods=["POST"],
+)
+@limiter.limit(
+    lambda: current_app.config["RATELIMIT_EXPENSIVE"]
+)
+@require_roles("ADMIN", "DOCTOR")
+def analyze_case_image(
+    case_image_id,
+):
+    """
+    Nối:
+    Batch Upload
+        -> CaseImage
+        -> EfficientNet
+        -> Grad-CAM
+        -> Analysis
+        -> AnalysisResult
+    """
 
+    case_image = db.session.get(
+        CaseImage,
+        case_image_id,
+    )
+
+    if not case_image:
+        return jsonify(
+            {
+                "error":
+                    "Không tìm thấy ảnh."
+            }
+        ), 404
+
+    case = visible_case_or_404(
+        case_image.case_id
+    )
+
+    if (
+        not case_image.image_path
+        or case_image.status
+        == "FAILED"
+    ):
+        return jsonify(
+            {
+                "error":
+                    "Ảnh upload không hợp lệ."
+            }
+        ), 400
+
+    upload_root = Path(
+        app.config[
+            "UPLOAD_FOLDER"
+        ]
+    ).resolve()
+
+    image_path = Path(
+        case_image.image_path
+    ).resolve()
+
+    # chống path traversal
+    if (
+        upload_root
+        not in image_path.parents
+        or not image_path.is_file()
+    ):
+        return jsonify(
+            {
+                "error":
+                    "Không tìm thấy file ảnh."
+            }
+        ), 404
+
+    analysis = Analysis(
+        case_id=case.id,
+        case_image_id=case_image.id,
+        status="PROCESSING",
+        started_at=utcnow_naive(),
+    )
+
+    gradcam_path = None
+    analysis_id = None
+
+    try:
+
+        case_image.status = (
+            "PROCESSING"
+        )
+
+        db.session.add(
+            analysis
+        )
+
+        db.session.flush()
+
+        analysis_id = analysis.id
+        db.session.commit()
+
+        try:
+
+            pil_img = Image.open(
+                image_path
+            ).convert("RGB")
+
+        except (
+            UnidentifiedImageError,
+            OSError,
+            ValueError,
+        ):
+
+            raise ValueError(
+                "File ảnh không hợp lệ"
+            )
+
+        (
+            data,
+            cam_vis,
+            inference_time_ms,
+        ) = run_ai_inference(
+            pil_img
+        )
+
+        # ======================================
+        # SAVE GRAD-CAM
+        # ======================================
+
+        gradcam_dir = (
+            PROJECT_ROOT
+            / "instance"
+            / "gradcam"
+        ).resolve()
+
+        gradcam_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        gradcam_path = (
+            gradcam_dir
+            / (
+                f"analysis_"
+                f"{analysis.id}_"
+                f"{uuid4().hex}.png"
+            )
+        )
+
+        Image.fromarray(
+            cam_vis
+        ).save(
+            gradcam_path,
+            format="PNG",
+        )
+
+        analysis.gradcam_path = str(
+            gradcam_path
+        )
+
+        analysis.status = (
+            "COMPLETED"
+        )
+
+        analysis.completed_at = (
+            utcnow_naive()
+        )
+
+        analysis.error_message = None
+
+        result = AnalysisResult(
+            analysis_id=analysis.id,
+
+            model_name=(
+                "EfficientNet-B0"
+            ),
+
+            binary_result=(
+                data["binary"][
+                    "prediction"
+                ]
+            ),
+
+            binary_probability=(
+                data["binary"][
+                    "prob_malignant"
+                ]
+            ),
+
+            predicted_class=(
+                data["multiclass"][
+                    "pred_class"
+                ]
+            ),
+
+            predicted_probability=(
+                data["multiclass"][
+                    "pred_conf"
+                ]
+            ),
+
+            class_probabilities=(
+                data["multiclass"][
+                    "probs"
+                ]
+            ),
+
+            inference_time_ms=(
+                inference_time_ms
+            ),
+        )
+
+        db.session.add(result)
+
+        case_image.status = (
+            "COMPLETED"
+        )
+
+        if case.status in {
+            "CREATED",
+            "UPLOADED",
+        }:
+            case.status = (
+                "ANALYZED"
+            )
+
+        db.session.commit()
+
+        data[
+            "analysis_id"
+        ] = analysis.id
+
+        data[
+            "case_image_id"
+        ] = case_image.id
+
+        data[
+            "case_id"
+        ] = case.id
+
+        return jsonify(data)
+
+    except Exception as exc:
+
+        mark_analysis_failed(
+            analysis_id,
+            case_image_id,
+            exc,
+        )
+
+        if gradcam_path:
+            Path(
+                gradcam_path
+            ).unlink(
+                missing_ok=True
+            )
+
+        app.logger.exception(
+            "AI analysis failed for case image %s",
+            case_image.id,
+        )
+
+        return jsonify(
+            {
+                "error":
+                    "Không thể phân tích "
+                    "ảnh đã upload.",
+            }
+        ), 500
 
 if __name__ == '__main__':
     print()
     print("=" * 62)
     print("  DERMASCAN AI - MÁY CHỦ ĐANG CHẠY")
-    print(f"  Địa chỉ :  http://localhost:5000")
+    print("  Địa chỉ :  http://localhost:5000")
     print(f"  Thiết bị:  {DEVICE}")
     print("=" * 62)
     print()
