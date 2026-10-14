@@ -36,7 +36,8 @@ import torch.nn as nn
 import timm
 import numpy as np
 from PIL import Image, UnidentifiedImageError
-from flask import Flask, current_app, render_template, request, jsonify
+from flask import Flask, current_app, render_template, request, jsonify, redirect
+from flask_login import current_user
 from flask_cors import CORS
 from torchvision import transforms
 from pytorch_grad_cam import GradCAM
@@ -528,7 +529,28 @@ def run_ai_inference(pil_img):
 
 @app.route('/')
 def index():
+    if current_user.is_authenticated and current_user.is_active:
+        destinations = {
+            'ADMIN': '/admin',
+            'DOCTOR': '/doctor',
+            'USER': '/patient',
+        }
+        destination = destinations.get(current_user.role)
+        if destination:
+            return redirect(destination)
     return render_template('index.html')
+
+
+@app.route('/doctor')
+@require_roles('DOCTOR')
+def doctor_portal():
+    return render_template('index.html', portal_role='DOCTOR')
+
+
+@app.route('/patient')
+@require_roles('USER')
+def patient_portal():
+    return render_template('index.html', portal_role='USER')
 
 
 @app.route('/health')

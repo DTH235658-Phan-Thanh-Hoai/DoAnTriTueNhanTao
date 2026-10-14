@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime, timedelta
 from uuid import uuid4
 
 from flask import (
@@ -9,6 +9,7 @@ from flask import (
 )
 
 from flask_login import current_user
+from sqlalchemy.orm import selectinload
 
 from ..extensions import db
 
@@ -32,6 +33,119 @@ bp = Blueprint(
     __name__,
     url_prefix='/api',
 )
+
+
+ISIC_CLASSES = ('MEL', 'NV', 'BCC', 'AK', 'AKIEC', 'BKL', 'DF', 'VASC', 'SCC')
+
+
+def _statistics_date_range():
+    """Parse an optional inclusive date range for doctor statistics."""
+    today = date.today()
+    start_value = request.args.get('from')
+    end_value = request.args.get('to')
+    try:
+        start_date = date.fromisoformat(start_value) if start_value else None
+        end_date = date.fromisoformat(end_value) if end_value else None
+    except ValueError:
+        abort(400, description='Khoảng ngày không hợp lệ. Dùng định dạng YYYY-MM-DD.')
+    if start_date and end_date and start_date > end_date:
+        abort(400, description='Ngày bắt đầu phải trước hoặc bằng ngày kết thúc.')
+    if end_date and end_date > today:
+        abort(400, description='Ngày kết thúc không được ở tương lai.')
+    return start_date, end_date
+
+
+@bp.get('/doctor/statistics')
+@require_roles('DOCTOR')
+def doctor_statistics():
+    start_date, end_date = _statistics_date_range()
+    query = (
+        db.select(Analysis)
+        .join(Case, Analysis.case_id == Case.id)
+        .options(selectinload(Analysis.results))
+        .where(
+            Case.doctor_id == current_user.id,
+            Analysis.status == 'COMPLETED',
+        )
+    )
+    if start_date:
+        query = query.where(Analysis.created_at >= datetime.combine(start_date, datetime.min.time()))
+    if end_date:
+        query = query.where(
+            Analysis.created_at < datetime.combine(end_date + timedelta(days=1), datetime.min.time())
+        )
+
+    analyses = db.session.scalars(query.order_by(Analysis.created_at.asc())).all()
+    results = [
+        analysis.results[0]
+        for analysis in analyses
+        if analysis.results and analysis.results[0].predicted_class
+    ]
+    total = len(results)
+    malignant = sum(result.binary_result == 1 for result in results)
+    benign = total - malignant
+    confidence_values = [
+        result.predicted_probability
+        for result in results
+        if result.predicted_probability is not None
+    ]
+
+    distribution = {label: 0 for label in ISIC_CLASSES}
+    for result in results:
+        label = result.predicted_class.upper()
+        distribution[label] = distribution.get(label, 0) + 1
+
+    month_counts = {}
+    for analysis, result in (
+        (analysis, analysis.results[0])
+        for analysis in analyses
+        if analysis.results and analysis.results[0].predicted_class
+    ):
+        month_key = analysis.created_at.strftime('%Y-%m')
+        bucket = month_counts.setdefault(month_key, {'total': 0, 'malignant': 0, 'benign': 0})
+        bucket['total'] += 1
+        bucket['malignant' if result.binary_result == 1 else 'benign'] += 1
+
+    if start_date and end_date:
+        cursor = start_date.replace(day=1)
+        last_month = end_date.replace(day=1)
+    elif analyses:
+        cursor = analyses[0].created_at.date().replace(day=1)
+        last_month = analyses[-1].created_at.date().replace(day=1)
+    else:
+        cursor = today.replace(day=1)
+        last_month = cursor
+    trends = []
+    while cursor <= last_month:
+        key = cursor.strftime('%Y-%m')
+        bucket = month_counts.get(key, {'total': 0, 'malignant': 0, 'benign': 0})
+        trends.append({
+            'key': key,
+            'label': f'Tháng {cursor.month}/{cursor.year}',
+            **bucket,
+        })
+        cursor = (cursor.replace(day=28) + timedelta(days=4)).replace(day=1)
+
+    return jsonify(
+        filters={
+            'from': start_date.isoformat() if start_date else None,
+            'to': end_date.isoformat() if end_date else None,
+        },
+        metrics={
+            'total_analyses': total,
+            'benign_count': benign,
+            'malignant_count': malignant,
+            'benign_ratio': round(benign / total * 100, 1) if total else 0,
+            'malignant_ratio': round(malignant / total * 100, 1) if total else 0,
+            'average_confidence': round(sum(confidence_values) / len(confidence_values) * 100, 1)
+            if confidence_values else 0,
+        },
+        distribution=[
+            {'class': label, 'count': count}
+            for label, count in distribution.items()
+        ],
+        trends=trends,
+    )
 
 
 # ============================================================
@@ -622,30 +736,63 @@ def get_case(
 
 
     payload.update(
-
         image_ids=[
             image.id
             for image
             in case.images
         ],
-
         analysis_ids=[
             analysis.id
             for analysis
             in case.analyses
         ],
-
+        analyses=[
+            {
+                'id': analysis.id,
+                'status': analysis.status,
+                'lesion_area_px': analysis.lesion_area_px,
+                'lesion_perimeter_px': analysis.lesion_perimeter_px,
+                'lesion_ratio': analysis.lesion_ratio,
+                'results': [
+                    {
+                        'id': res.id,
+                        'model_name': res.model_name,
+                        'binary_result': res.binary_result,
+                        'binary_probability': res.binary_probability,
+                        'predicted_class': res.predicted_class,
+                        'predicted_probability': res.predicted_probability,
+                        'class_probabilities': res.class_probabilities,
+                    }
+                    for res in analysis.results
+                ]
+            }
+            for analysis in case.analyses
+        ],
         report_ids=[
             report.id
             for report
             in case.reports
         ],
-
+        reports=[
+            {
+                'id': report.id,
+                'report_version': report.report_version,
+                'download_url': f'/api/reports/{report.id}/download',
+                'created_at': report.created_at.isoformat() + 'Z' if report.created_at else None,
+            }
+            for report in case.reports
+        ],
         review_ids=[
             review.id
             for review
             in case.reviews
         ],
+        reviews=[
+            _review_json(review)
+            for review
+            in case.reviews
+        ],
+        doctor_name=case.doctor.full_name if case.doctor else 'Bác sĩ chuyên khoa Da liễu',
     )
 
 
@@ -738,7 +885,6 @@ def user_history(
 
 
     return jsonify(
-
         cases=[
             case_json(
                 case
@@ -748,6 +894,53 @@ def user_history(
             in cases
         ]
     )
+
+
+@bp.get('/doctor/history')
+@require_roles('DOCTOR')
+def doctor_history():
+    """Return completed analyses belonging to the authenticated doctor."""
+    analyses = db.session.scalars(
+        db.select(Analysis)
+        .join(Case, Analysis.case_id == Case.id)
+        .options(
+            selectinload(Analysis.results),
+            selectinload(Analysis.case).selectinload(Case.patient),
+        )
+        .where(
+            Case.doctor_id == current_user.id,
+            Analysis.status == 'COMPLETED',
+        )
+        .order_by(Analysis.created_at.desc(), Analysis.id.desc())
+    ).all()
+
+    records = []
+    for analysis in analyses:
+        result = next(
+            (item for item in analysis.results if item.predicted_class),
+            None,
+        )
+        if result is None:
+            continue
+        case = analysis.case
+        patient = case.patient
+        patient_name = (
+            patient.full_name
+            if patient is not None
+            else (case.patient_snapshot or {}).get('full_name') or 'Bệnh nhân tạm'
+        )
+        records.append({
+            'id': analysis.id,
+            'case_id': case.id,
+            'case_code': case.case_code,
+            'date': analysis.created_at.isoformat() + 'Z',
+            'patient': patient_name,
+            'location': case.lesion_location or 'Chưa xác định',
+            'diagnosis': result.predicted_class.upper(),
+            'binary_result': 'malignant' if result.binary_result == 1 else 'benign',
+            'confidence': round((result.predicted_probability or 0) * 100, 1),
+        })
+    return jsonify(records=records)
 
 
 # ============================================================

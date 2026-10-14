@@ -14,6 +14,10 @@
 
 const $ = (id) => document.getElementById(id);
 
+function uiText(key, fallback) {
+  return typeof window.DS_T === "function" ? window.DS_T(key) : fallback;
+}
+
 // ============================================================
 // DOM
 // ============================================================
@@ -192,6 +196,257 @@ const lesionRatio = $("lesionRatio");
 const contourResult = $("contourResult");
 
 const contourImg = $("contourImg");
+
+// ================= IMAGE COMPARISON =================
+
+const compareInputA = $("compareInputA");
+const compareInputB = $("compareInputB");
+const compareBtn = $("compareBtn");
+const compareResult = $("compareResult");
+const compareResultNote = $("compareResultNote");
+const compareImageA = $("compareImageA");
+const compareImageB = $("compareImageB");
+const comparePreviewA = $("comparePreviewA");
+const comparePreviewB = $("comparePreviewB");
+const compareRemoveA = $("compareRemoveA");
+const compareRemoveB = $("compareRemoveB");
+const compareDropzoneA = $("compareDropzoneA");
+const compareDropzoneB = $("compareDropzoneB");
+const compareAreaChange = $("compareAreaChange");
+const compareColorChange = $("compareColorChange");
+const compareProgression = $("compareProgression");
+const compareRiskEvolution = $("compareRiskEvolution");
+
+const comparisonFiles = { before: null, after: null };
+
+function syncComparisonButton() {
+  compareBtn.disabled = !comparisonFiles.before || !comparisonFiles.after;
+}
+
+function clearComparisonResult() {
+  compareResult.classList.add("hidden");
+  compareResultNote.classList.remove("error");
+  compareResultNote.textContent =
+    "Kết quả so sánh dựa trên phân tích hình ảnh học máy tính. Để đánh giá chính xác tiến triển bệnh lý, bác sĩ cần kết hợp với khám lâm sàng và tiền sử bệnh án.";
+}
+
+function renderComparisonFile(timeline, file) {
+  const image = timeline === "before" ? compareImageA : compareImageB;
+  const preview = timeline === "before" ? comparePreviewA : comparePreviewB;
+  const dropzone = timeline === "before" ? compareDropzoneA : compareDropzoneB;
+  comparisonFiles[timeline] = file;
+  image.src = URL.createObjectURL(file);
+  image.alt = timeline === "before" ? "Ảnh trước điều trị" : "Ảnh sau theo dõi";
+  preview.classList.add("has-image");
+  dropzone.classList.add("hidden");
+  clearComparisonResult();
+  syncComparisonButton();
+}
+
+function clearComparisonFile(timeline) {
+  const input = timeline === "before" ? compareInputA : compareInputB;
+  const image = timeline === "before" ? compareImageA : compareImageB;
+  const preview = timeline === "before" ? comparePreviewA : comparePreviewB;
+  const dropzone = timeline === "before" ? compareDropzoneA : compareDropzoneB;
+  if (image.src.startsWith("blob:")) URL.revokeObjectURL(image.src);
+  comparisonFiles[timeline] = null;
+  input.value = "";
+  image.removeAttribute("src");
+  preview.classList.remove("has-image");
+  dropzone.classList.remove("hidden");
+  clearComparisonResult();
+  syncComparisonButton();
+}
+
+function bindComparisonDropzone(dropzone, input, timeline) {
+  dropzone.addEventListener("click", () => input.click());
+  input.addEventListener("change", (event) => {
+    const file = event.target.files?.[0];
+    if (file) renderComparisonFile(timeline, file);
+  });
+  ["dragenter", "dragover"].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      dropzone.classList.add("dragover");
+    });
+  });
+  ["dragleave", "drop"].forEach((eventName) => {
+    dropzone.addEventListener(eventName, (event) => {
+      event.preventDefault();
+      dropzone.classList.remove("dragover");
+    });
+  });
+  dropzone.addEventListener("drop", (event) => {
+    const file = event.dataTransfer.files?.[0];
+    if (file) renderComparisonFile(timeline, file);
+  });
+}
+
+async function compareImages() {
+  if (!comparisonFiles.before || !comparisonFiles.after) return;
+  compareBtn.disabled = true;
+  compareBtn.textContent = "Đang phân tích...";
+  compareResult.classList.add("hidden");
+  try {
+    const formData = new FormData();
+    formData.append("before", comparisonFiles.before);
+    formData.append("after", comparisonFiles.after);
+    const csrfToken = await getCsrfToken();
+    const response = await fetch("/api/compare", {
+      method: "POST",
+      body: formData,
+      credentials: "same-origin",
+      headers: { "X-CSRFToken": csrfToken },
+    });
+    const data = await responseJson(response);
+    if (!response.ok) throw new Error(getErrorMessage(data, "Không thể so sánh hai ảnh."));
+
+    compareAreaChange.textContent = `${data.area_change_percent > 0 ? "+" : ""}${data.area_change_percent}%`;
+    compareColorChange.textContent = `${data.color_variance_percent}%`;
+    compareProgression.textContent = data.progression;
+    compareRiskEvolution.textContent =
+      `${data.risk_change_percent > 0 ? "+" : ""}${data.risk_change_percent}%`;
+    compareResultNote.classList.remove("error");
+    compareResultNote.textContent =
+      "Chỉ số nguy cơ là chỉ số thay đổi hình ảnh, không thay thế chẩn đoán lâm sàng. Bác sĩ cần kết hợp khám và tiền sử bệnh án.";
+    compareResult.classList.remove("hidden");
+  } catch (error) {
+    compareResultNote.classList.add("error");
+    compareResultNote.textContent = error.message || "Pipeline so sánh ảnh thất bại.";
+    compareResult.classList.remove("hidden");
+  } finally {
+    syncComparisonButton();
+    compareBtn.textContent = "So sánh hai ảnh";
+  }
+}
+
+if (compareInputA && compareInputB && compareBtn) {
+  bindComparisonDropzone(compareDropzoneA, compareInputA, "before");
+  bindComparisonDropzone(compareDropzoneB, compareInputB, "after");
+  compareRemoveA.addEventListener("click", () => clearComparisonFile("before"));
+  compareRemoveB.addEventListener("click", () => clearComparisonFile("after"));
+  compareBtn.addEventListener("click", compareImages);
+}
+
+// ============================================================
+// CLINICAL IMAGE LIGHTBOX
+// ============================================================
+
+const clinicalLightbox = $("clinicalLightbox");
+const clinicalLightboxImage = $("clinicalLightboxImage");
+const clinicalLightboxStage = $("clinicalLightboxStage");
+const clinicalLightboxTitle = $("clinicalLightboxTitle");
+const clinicalZoomSlider = $("clinicalZoomSlider");
+const clinicalZoomIn = $("clinicalZoomIn");
+const clinicalZoomOut = $("clinicalZoomOut");
+const clinicalZoomReset = $("clinicalZoomReset");
+const clinicalLightboxClose = $("clinicalLightboxClose");
+
+let clinicalZoom = 1;
+let clinicalPanX = 0;
+let clinicalPanY = 0;
+let clinicalBaseWidth = 0;
+let clinicalDrag = null;
+
+function updateClinicalLightboxTransform() {
+  if (!clinicalLightboxImage) return;
+  clinicalLightboxImage.style.setProperty("--zoom", clinicalZoom);
+  clinicalLightboxImage.style.setProperty("--pan-x", `${clinicalPanX}px`);
+  clinicalLightboxImage.style.setProperty("--pan-y", `${clinicalPanY}px`);
+  if (clinicalZoomSlider) clinicalZoomSlider.value = String(clinicalZoom);
+}
+
+function setClinicalZoom(nextZoom) {
+  clinicalZoom = Math.min(5, Math.max(0.5, Number(nextZoom) || 1));
+  updateClinicalLightboxTransform();
+}
+
+function resetClinicalLightbox() {
+  clinicalZoom = 1;
+  clinicalPanX = 0;
+  clinicalPanY = 0;
+  if (clinicalLightboxImage && clinicalLightboxStage && clinicalLightboxImage.naturalWidth) {
+    const fit = Math.min(
+      (clinicalLightboxStage.clientWidth - 48) / clinicalLightboxImage.naturalWidth,
+      (clinicalLightboxStage.clientHeight - 48) / clinicalLightboxImage.naturalHeight,
+      1,
+    );
+    clinicalBaseWidth = clinicalLightboxImage.naturalWidth * Math.max(0.05, fit);
+    clinicalLightboxImage.style.width = `${clinicalBaseWidth}px`;
+  }
+  updateClinicalLightboxTransform();
+}
+
+function closeClinicalLightbox() {
+  if (!clinicalLightbox) return;
+  clinicalLightbox.classList.add("hidden");
+  document.body.style.overflow = "";
+  clinicalDrag = null;
+}
+
+function openClinicalLightbox(image) {
+  if (!clinicalLightbox || !clinicalLightboxImage || !image || !image.src) return;
+  clinicalLightboxImage.src = image.currentSrc || image.src;
+  clinicalLightboxImage.alt = image.alt || "Ảnh lâm sàng";
+  if (clinicalLightboxTitle) {
+    clinicalLightboxTitle.textContent = image.dataset.lightboxTitle || image.alt || "Xem ảnh chi tiết";
+  }
+  clinicalLightbox.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  const prepare = () => resetClinicalLightbox();
+  if (clinicalLightboxImage.complete) prepare();
+  else clinicalLightboxImage.addEventListener("load", prepare, { once: true });
+}
+
+document.querySelectorAll(".clinical-image-zoomable").forEach((image) => {
+  image.addEventListener("click", () => openClinicalLightbox(image));
+});
+
+if (clinicalZoomIn) clinicalZoomIn.addEventListener("click", () => setClinicalZoom(clinicalZoom + 0.25));
+if (clinicalZoomOut) clinicalZoomOut.addEventListener("click", () => setClinicalZoom(clinicalZoom - 0.25));
+if (clinicalZoomReset) clinicalZoomReset.addEventListener("click", resetClinicalLightbox);
+if (clinicalZoomSlider) clinicalZoomSlider.addEventListener("input", (event) => setClinicalZoom(event.target.value));
+if (clinicalLightboxClose) clinicalLightboxClose.addEventListener("click", closeClinicalLightbox);
+if (clinicalLightbox) {
+  clinicalLightbox.addEventListener("click", (event) => {
+    if (event.target === clinicalLightbox) closeClinicalLightbox();
+  });
+}
+if (clinicalLightboxStage) {
+  clinicalLightboxStage.addEventListener("pointerdown", (event) => {
+    if (event.target !== clinicalLightboxImage) return;
+    clinicalDrag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, panX: clinicalPanX, panY: clinicalPanY };
+    clinicalLightboxStage.classList.add("is-dragging");
+    clinicalLightboxStage.setPointerCapture(event.pointerId);
+  });
+  clinicalLightboxStage.addEventListener("pointermove", (event) => {
+    if (!clinicalDrag || clinicalDrag.pointerId !== event.pointerId) return;
+    clinicalPanX = clinicalDrag.panX + event.clientX - clinicalDrag.startX;
+    clinicalPanY = clinicalDrag.panY + event.clientY - clinicalDrag.startY;
+    updateClinicalLightboxTransform();
+  });
+  const endClinicalDrag = (event) => {
+    if (!clinicalDrag || clinicalDrag.pointerId !== event.pointerId) return;
+    clinicalDrag = null;
+    clinicalLightboxStage.classList.remove("is-dragging");
+    if (clinicalLightboxStage.hasPointerCapture(event.pointerId)) {
+      clinicalLightboxStage.releasePointerCapture(event.pointerId);
+    }
+  };
+  clinicalLightboxStage.addEventListener("pointerup", endClinicalDrag);
+  clinicalLightboxStage.addEventListener("pointercancel", endClinicalDrag);
+  clinicalLightboxStage.addEventListener("wheel", (event) => {
+    event.preventDefault();
+    setClinicalZoom(clinicalZoom + (event.deltaY < 0 ? 0.15 : -0.15));
+  }, { passive: false });
+}
+document.addEventListener("keydown", (event) => {
+  if (!clinicalLightbox || clinicalLightbox.classList.contains("hidden")) return;
+  if (event.key === "Escape") closeClinicalLightbox();
+  if (event.key === "+" || event.key === "=") setClinicalZoom(clinicalZoom + 0.25);
+  if (event.key === "-") setClinicalZoom(clinicalZoom - 0.25);
+  if (event.key === "0") resetClinicalLightbox();
+});
 
 // ================= REPORT =================
 
@@ -819,6 +1074,12 @@ async function refreshAuthState() {
 
     currentUser = data.user || data;
 
+    // Admin có portal riêng; không để rơi vào giao diện phân tích Doctor.
+    if (String(currentUser.role || "").toUpperCase() === "ADMIN") {
+      window.location.replace("/admin");
+      return;
+    }
+
     authStatus.textContent = `${
       currentUser.full_name || currentUser.email
     } · ${currentUser.role}`;
@@ -827,7 +1088,7 @@ async function refreshAuthState() {
 
     logoutBtn.classList.remove("hidden");
 
-    if (currentUser.role === "DOCTOR" || currentUser.role === "ADMIN") {
+    if (currentUser.role === "DOCTOR") {
       await loadPatients();
     } else {
       resetPatientUiForLoggedOut();
@@ -892,7 +1153,7 @@ loginBtn.addEventListener("click", async () => {
 
     loginPassword.value = "";
 
-    await refreshAuthState();
+    window.location.replace(data.redirect_url || "/");
   } catch (error) {
     alert(error.message);
   } finally {
@@ -919,6 +1180,14 @@ logoutBtn.addEventListener("click", async () => {
     });
   } finally {
     currentUser = null;
+
+    // Đồng bộ với session local của homepage để không tự đăng nhập lại.
+    try {
+      localStorage.removeItem("dermascan_current_user");
+      localStorage.removeItem("currentUser");
+    } catch (error) {
+      console.warn("Không thể xóa phiên đăng nhập cục bộ.", error);
+    }
 
     resetUpload();
 
@@ -1073,6 +1342,38 @@ const HOMEPAGE_INTERVAL_MS = 5000;
 // Thời gian hiệu ứng swipe + fade
 
 const HOMEPAGE_TRANSITION_MS = 760;
+
+const FALLBACK_HOMEPAGE_SLIDES = [
+  {
+    title: "Đội ngũ y bác sĩ DermaScan",
+    subtitle:
+      "Phòng khám da liễu kết hợp trí tuệ nhân tạo để sàng lọc tổn thương da sớm và chính xác hơn.",
+    image_url:
+      "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1920&q=80",
+    button_text: "Bắt đầu phân tích",
+    button_url: "#analyze",
+  },
+  {
+    title: "Chăm sóc da chuyên sâu",
+    subtitle:
+      "Đội ngũ y tế đồng hành cùng bác sĩ trong từng ca sàng lọc, theo dõi và tư vấn điều trị.",
+    image_url:
+      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1920&q=80",
+    button_text: "Công nghệ lõi",
+    button_url: "#features",
+  },
+  {
+    title: "Dermoscopy & AI",
+    subtitle:
+      "Hình ảnh soi da độ phân giải cao kết hợp mô hình EfficientNet để hỗ trợ quyết định lâm sàng.",
+    image_url:
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1920&q=80",
+    button_text: "Tìm hiểu ngay",
+    button_url: "#features",
+  },
+];
+
+let homepageUsingFallback = false;
 
 // ============================================================
 // SLIDESHOW TIMER
@@ -1390,6 +1691,17 @@ function renderHomepageSlides(slides) {
       "error",
       () => {
         article.classList.add("image-error");
+        const broken = homepageTrack.querySelectorAll(
+          ".homepage-slide.image-error",
+        ).length;
+        if (
+          !homepageUsingFallback &&
+          broken === homepageSlides.length &&
+          homepageSlides.length
+        ) {
+          homepageUsingFallback = true;
+          renderHomepageSlides(FALLBACK_HOMEPAGE_SLIDES);
+        }
       },
       {
         once: true,
@@ -1497,6 +1809,11 @@ function renderHomepageSlides(slides) {
 // ============================================================
 
 async function loadHomepageSlides() {
+  homepageUsingFallback = false;
+
+  renderHomepageSlides(FALLBACK_HOMEPAGE_SLIDES);
+  homepageUsingFallback = true;
+
   try {
     const response = await fetch("/api/slides/active", {
       credentials: "same-origin",
@@ -1507,12 +1824,18 @@ async function loadHomepageSlides() {
     }
 
     const data = await response.json();
+    const remoteSlides = Array.isArray(data.slides) ? data.slides : [];
 
-    renderHomepageSlides(data.slides);
+    if (remoteSlides.length && remoteSlides[0].image_url) {
+      const probe = new Image();
+      probe.onload = () => {
+        homepageUsingFallback = false;
+        renderHomepageSlides(remoteSlides);
+      };
+      probe.src = remoteSlides[0].image_url;
+    }
   } catch (error) {
     console.warn("Không thể tải banner", error);
-
-    renderHomepageSlides([]);
   }
 }
 
@@ -2733,6 +3056,283 @@ function showError(message) {
 
   emptyState.classList.add("hidden");
 }
+
+// ============================================================
+// DOCTOR HISTORY
+// ============================================================
+
+let doctorHistoryRecords = [];
+
+function setDoctorHistoryState(message, tone = "muted") {
+  const body = $("historyTableBody");
+  if (!body) return;
+  const row = document.createElement("tr");
+  const cell = document.createElement("td");
+  cell.colSpan = 6;
+  cell.textContent = message;
+  cell.className = `history-state history-state-${tone}`;
+  row.appendChild(cell);
+  body.replaceChildren(row);
+}
+
+function historyDateLabel(value) {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime())
+    ? value
+    : date.toLocaleDateString("vi-VN");
+}
+
+function renderDoctorHistory() {
+  const body = $("historyTableBody");
+  if (!body) return;
+
+  const from = $("historyDateFrom")?.value || "";
+  const to = $("historyDateTo")?.value || "";
+  const patient = ($("historyPatient")?.value || "").toLowerCase();
+  const diagnosis = $("historyDiagnosis")?.value || "";
+  const search = ($("historySearch")?.value || "").trim().toLowerCase();
+  const fromTime = from ? new Date(`${from}T00:00:00`).getTime() : null;
+  const toTime = to ? new Date(`${to}T23:59:59.999`).getTime() : null;
+
+  const visibleRecords = doctorHistoryRecords.filter((record) => {
+    const recordTime = new Date(record.date).getTime();
+    const searchText = [
+      record.patient,
+      record.location,
+      record.diagnosis,
+      record.case_code,
+      record.id,
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+    return (
+      (!fromTime || recordTime >= fromTime) &&
+      (!toTime || recordTime <= toTime) &&
+      (!patient || record.patient.toLowerCase() === patient) &&
+      (!diagnosis || record.binary_result === diagnosis) &&
+      (!search || searchText.includes(search))
+    );
+  });
+
+  body.replaceChildren();
+  if (!visibleRecords.length) {
+    setDoctorHistoryState(
+      doctorHistoryRecords.length
+        ? "Không có bản ghi phù hợp với bộ lọc."
+        : "Chưa có dữ liệu lịch sử phân tích.",
+    );
+    return;
+  }
+
+  visibleRecords.forEach((record) => {
+    const row = document.createElement("tr");
+    const values = [
+      historyDateLabel(record.date),
+      record.patient,
+      record.location,
+      record.diagnosis,
+      `${record.confidence}%`,
+    ];
+    values.forEach((value, index) => {
+      const cell = document.createElement("td");
+      cell.textContent = value;
+      if (index === 0) cell.className = "history-date";
+      if (index === 1) cell.className = "history-patient";
+      if (index === 2) cell.className = "history-location";
+      if (index === 3) {
+        cell.className = `history-diagnosis ${record.binary_result}`;
+      }
+      if (index === 4) cell.className = "history-confidence";
+      row.appendChild(cell);
+    });
+    const actionCell = document.createElement("td");
+    actionCell.className = "history-actions";
+    const detailsButton = document.createElement("button");
+    detailsButton.type = "button";
+    detailsButton.className = "history-action-btn";
+    detailsButton.dataset.caseId = String(record.case_id);
+    detailsButton.textContent = "Xem chi tiết";
+    detailsButton.setAttribute("aria-label", `Xem chi tiết ca ${record.case_code || record.case_id}`);
+    actionCell.appendChild(detailsButton);
+    row.appendChild(actionCell);
+    body.appendChild(row);
+  });
+}
+
+function populateHistoryPatients() {
+  const select = $("historyPatient");
+  if (!select) return;
+  const currentValue = select.value;
+  const patients = [...new Set(doctorHistoryRecords.map((record) => record.patient))].sort();
+  select.replaceChildren(new Option("Tất cả bệnh nhân", ""));
+  patients.forEach((patient) => select.add(new Option(patient, patient)));
+  select.value = patients.includes(currentValue) ? currentValue : "";
+}
+
+async function loadDoctorHistory() {
+  if (!currentUser || currentUser.role !== "DOCTOR") return;
+  const body = $("historyTableBody");
+  if (body) {
+    setDoctorHistoryState("Đang tải lịch sử phân tích...", "loading");
+  }
+  try {
+    const response = await fetch("/api/doctor/history", { credentials: "same-origin" });
+    const data = await responseJson(response);
+    if (!response.ok) throw new Error(getErrorMessage(data, "Không thể tải lịch sử phân tích."));
+    doctorHistoryRecords = Array.isArray(data.records) ? data.records : [];
+    populateHistoryPatients();
+    renderDoctorHistory();
+  } catch (error) {
+    setDoctorHistoryState(error.message || "Không thể tải lịch sử phân tích.", "error");
+  }
+}
+
+function exportDoctorHistory() {
+  const rows = [...$("historyTableBody").querySelectorAll("tr")].filter(
+    (row) => row.cells.length === 6,
+  );
+  if (!rows.length) {
+    alert("Không có dữ liệu phù hợp để xuất.");
+    return;
+  }
+  const header = ["Ngày phân tích", "Bệnh nhân", "Vị trí tổn thương", "Chẩn đoán AI", "Độ tin cậy", "Mã phân tích"];
+  const escapeCsv = (value) => `"${String(value).replaceAll('"', '""')}"`;
+  const csv = [header, ...rows.map((row) => [...row.cells].map((cell) => cell.textContent))]
+    .map((row) => row.map(escapeCsv).join(","))
+    .join("\r\n");
+  const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `dermascan-lich-su-phan-tich-${new Date().toISOString().slice(0, 10)}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+["historyDateFrom", "historyDateTo", "historyPatient", "historyDiagnosis", "historySearch"].forEach((id) => {
+  const control = $(id);
+  if (control) control.addEventListener(id === "historySearch" ? "input" : "change", renderDoctorHistory);
+});
+if ($("historyTableBody")) {
+  $("historyTableBody").addEventListener("click", (event) => {
+    const button = event.target.closest("[data-case-id]");
+    if (!button) return;
+    if (typeof window.openCaseDetailModal !== "function") {
+      alert("Chức năng xem chi tiết chưa sẵn sàng. Vui lòng thử lại.");
+      return;
+    }
+    window.openCaseDetailModal(button.dataset.caseId);
+  });
+}
+if ($("historyExportBtn")) $("historyExportBtn").addEventListener("click", exportDoctorHistory);
+window.loadDoctorHistory = loadDoctorHistory;
+
+// ============================================================
+// DOCTOR STATISTICS
+// ============================================================
+
+let doctorTrendChart = null;
+let doctorDistributionChart = null;
+
+const ISIC_LABELS = {
+  MEL: "Melanoma",
+  NV: "Nevus",
+  BCC: "BCC",
+  AK: "AK",
+  AKIEC: "AKIEC",
+  BKL: "BKL",
+  DF: "DF",
+  VASC: "VASC",
+  SCC: "SCC",
+};
+
+function setDefaultStatisticsDates() {
+  const to = $("statsTo");
+  const from = $("statsFrom");
+  if (!to || !from || to.value || from.value) return;
+  const end = new Date();
+  const start = new Date(end);
+  start.setMonth(start.getMonth() - 5);
+  to.value = end.toISOString().slice(0, 10);
+  from.value = start.toISOString().slice(0, 10);
+}
+
+function renderDoctorStatistics(data) {
+  const metrics = data.metrics || {};
+  $("statsTotal").textContent = metrics.total_analyses ?? 0;
+  $("statsBenign").textContent = metrics.benign_count ?? 0;
+  $("statsMalignant").textContent = metrics.malignant_count ?? 0;
+  $("statsConfidence").textContent = `${metrics.average_confidence ?? 0}%`;
+  $("statsBenignRatio").textContent = `${metrics.benign_ratio ?? 0}% tổng số`;
+  $("statsMalignantRatio").textContent = `${metrics.malignant_ratio ?? 0}% tổng số`;
+
+  if (doctorTrendChart) doctorTrendChart.destroy();
+  if (doctorDistributionChart) doctorDistributionChart.destroy();
+
+  const trendCanvas = $("statsTrendChart");
+  const distributionCanvas = $("statsDistributionChart");
+  if (!trendCanvas || !distributionCanvas || typeof Chart === "undefined") {
+    throw new Error("Không thể tải thư viện biểu đồ.");
+  }
+
+  const trends = data.trends || [];
+  doctorTrendChart = new Chart(trendCanvas, {
+    type: "line",
+    data: {
+      labels: trends.map((item) => item.label),
+      datasets: [
+        { label: uiText("ui.statsTotal", "Tổng lượt"), data: trends.map((item) => item.total), borderColor: "#2ba149", backgroundColor: "rgba(43,161,73,.12)", fill: true, tension: 0.3 },
+        { label: uiText("ui.statsMalignant", "Ác tính / nghi ngờ"), data: trends.map((item) => item.malignant), borderColor: "#d64b4b", backgroundColor: "transparent", tension: 0.3 },
+      ],
+    },
+    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+  });
+
+  const distribution = (data.distribution || []).filter((item) => item.count > 0);
+  doctorDistributionChart = new Chart(distributionCanvas, {
+    type: "doughnut",
+    data: {
+      labels: distribution.map((item) => ISIC_LABELS[item.class] || item.class),
+      datasets: [{ data: distribution.map((item) => item.count), backgroundColor: ["#d64b4b", "#2ba149", "#f59e0b", "#7c3aed", "#0891b2", "#64748b", "#f97316", "#14b8a6", "#be123c"] }],
+    },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } },
+  });
+}
+
+async function loadDoctorStatistics() {
+  const status = $("statsStatus");
+  const button = $("statsApplyBtn");
+  if (!status || !currentUser || currentUser.role !== "DOCTOR") return;
+  setDefaultStatisticsDates();
+  const params = new URLSearchParams();
+  if ($("statsFrom").value) params.set("from", $("statsFrom").value);
+  if ($("statsTo").value) params.set("to", $("statsTo").value);
+  status.textContent = "Đang tải dữ liệu...";
+  if (button) button.disabled = true;
+  try {
+    const response = await fetch(`/api/doctor/statistics?${params}`, { credentials: "same-origin" });
+    const data = await responseJson(response);
+    if (!response.ok) throw new Error(getErrorMessage(data, "Không thể tải thống kê."));
+    renderDoctorStatistics(data);
+    status.textContent = `Dữ liệu từ ${data.filters.from || "tất cả thời gian"} đến ${data.filters.to || "hiện tại"}.`;
+  } catch (error) {
+    status.textContent = error.message;
+  } finally {
+    if (button) button.disabled = false;
+  }
+}
+
+window.loadDoctorStatistics = loadDoctorStatistics;
+
+if ($("statsApplyBtn")) {
+  $("statsApplyBtn").addEventListener("click", loadDoctorStatistics);
+}
+window.addEventListener("languagechange", () => {
+  if (!$("stats")?.classList.contains("hidden")) loadDoctorStatistics();
+});
 
 // ============================================================
 // START

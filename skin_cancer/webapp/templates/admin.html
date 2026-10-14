@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2ba149">
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem("hpTheme");
+        document.documentElement.dataset.theme = theme === "dark" ? "dark" : "light";
+        var language = localStorage.getItem("hpLang");
+        document.documentElement.lang = language === "en" ? "en" : "vi";
+      } catch (error) {
+        document.documentElement.dataset.theme = "light";
+        document.documentElement.lang = "vi";
+      }
+    })();
+  </script>
+  <title>Admin Portal · DermaScan AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin-doctor-theme.css') }}">
+</head>
+<body>
+<aside class="sidebar" id="sidebar">
+    <a href="/" class="brand admin-sidebar-brand" aria-label="DermaScan AI - Trang chủ">
+      <span class="brand-mark">
+        <img id="admin-site-logo" class="brand-logo hidden" src="" alt="" />
+        <svg class="hp-brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+          stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 8V6a2 2 0 0 1 2-2h2"></path>
+          <path d="M16 4h2a2 2 0 0 1 2 2v2"></path>
+          <path d="M20 16v2a2 2 0 0 1-2 2h-2"></path>
+          <path d="M8 20H6a2 2 0 0 1-2-2v-2"></path>
+          <path d="M7 12h2.5l1.5-3 2 6 1.5-3H17"></path>
+        </svg>
+      </span>
+      <span class="brand-text"><span class="brand-name" id="admin-site-brand-name">DermaScan AI</span><span class="brand-sub" id="admin-site-brand-subtitle">Chỉ dùng cho mục đích nghiên cứu.</span></span>
+    </a>
+    <button class="collapse-btn" id="collapse-sidebar" aria-label="Thu gọn menu">‹</button>
+    <nav class="nav">
+      <p class="nav-label">QUẢN TRỊ HỆ THỐNG</p>
+      <button class="nav-item active" data-module="dashboard"><span class="nav-icon">⌂</span><span>Dashboard Tổng Quan</span></button>
+      <button class="nav-item" data-module="accounts"><span class="nav-icon">♙</span><span>Quản Lý Tài Khoản</span></button>
+      <button class="nav-item" data-module="security"><span class="nav-icon">◈</span><span>Phiên Đăng Nhập &amp; Bảo Mật</span></button>
+      <button class="nav-item" data-module="ai"><span class="nav-icon">✦</span><span>Quản Lý AI &amp; Ca Khám</span></button>
+      <button class="nav-item" data-module="doctors"><span class="nav-icon">♧</span><span>Quản Lý Bác Sĩ &amp; Duyệt</span></button>
+      <button class="nav-item" data-module="reports"><span class="nav-icon">▥</span><span>Thống Kê &amp; Báo Cáo</span></button>
+    </nav>
+    <div class="sidebar-foot"><span class="shield">✓</span><div><b>Hệ thống an toàn</b><small>Mã hóa đầu cuối · v2.4.0</small></div></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-leading">
+        <button class="mobile-menu" id="mobile-menu" aria-label="Mở menu điều hướng">☰</button>
+        <div class="topbar-heading"><p class="eyebrow">DERMASCAN AI / <span id="breadcrumb">DASHBOARD</span></p><h1 id="page-title">Dashboard Tổng Quan</h1></div>
+      </div>
+      <div class="hp-auth top-actions" role="group" aria-label="Công cụ và tài khoản">
+        <div class="hp-tool">
+          <button type="button" class="hp-icon-btn" id="admin-lang-button" aria-haspopup="true" aria-expanded="false" aria-label="Đổi ngôn ngữ" title="Đổi ngôn ngữ">
+            <svg class="admin-globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18"></path><path d="M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3Z"></path></svg>
+            <span class="hp-icon-label" id="admin-lang-label">VI</span>
+            <svg class="hp-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m6 9 6 6 6-6"></path>
+            </svg>
+          </button>
+          <div class="hp-lang-menu admin-lang-menu hidden" id="admin-lang-menu" role="menu">
+            <button type="button" class="hp-lang-item admin-lang-item is-active active" data-lang="vi" role="menuitem"><span class="hp-flag">🇻🇳</span><span>Tiếng Việt</span><svg class="hp-lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4 10-10"></path></svg></button>
+            <button type="button" class="hp-lang-item admin-lang-item" data-lang="en" role="menuitem"><span class="hp-flag">🇬🇧</span><span>English</span><svg class="hp-lang-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4 10-10"></path></svg></button>
+          </div>
+        </div>
+        <button type="button" class="hp-icon-btn" id="theme-toggle" aria-label="Chuyển giao diện tối" title="Chế độ Sáng / Tối">
+          <svg class="hp-sun-icon theme-sun hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+          <svg class="hp-moon-icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A8.5 8.5 0 1 1 11.2 3a6.6 6.6 0 0 0 9.8 9.8Z"></path></svg>
+        </button>
+        <span class="hp-auth-divider top-divider" aria-hidden="true"></span>
+        <div class="hp-auth-user">
+          <span class="hp-user-pill">
+            <span class="hp-user-avatar">{{ admin.full_name[:1]|upper }}</span>
+            <span class="hp-user-meta">
+              <strong>{{ admin.full_name }}</strong>
+              <small>Quản trị viên</small>
+            </span>
+          </span>
+        </div>
+        <button type="button" class="hp-auth-logout" id="logout">Đăng xuất</button>
+      </div>
+    </header>
+
+    <div class="content">
+      <section class="module active" id="module-dashboard">
+        <div class="welcome"><div><span class="live-dot"></span> HỆ THỐNG ĐANG VẬN HÀNH<p>Chào buổi sáng, {{ admin.full_name.split(' ')[-1] }}. Đây là tổng quan hoạt động hôm nay.</p></div><span class="date" id="today"></span></div>
+        <div class="stat-grid">
+          <article class="stat-card green"><div class="stat-head"><span>TỔNG TÀI KHOẢN</span><i>♙</i></div><strong id="stat-users">—</strong><small>Dữ liệu hiện tại</small></article>
+          <article class="stat-card orange"><div class="stat-head"><span>CA KHÁM</span><i>♧</i></div><strong id="stat-cases">—</strong><small>Dữ liệu hiện tại</small></article>
+          <article class="stat-card green"><div class="stat-head"><span>LƯỢT PHÂN TÍCH AI</span><i>✦</i></div><strong id="stat-analyses">—</strong><small>Dữ liệu hiện tại</small></article>
+          <article class="stat-card orange"><div class="stat-head"><span>BÁC SĨ ĐANG HOẠT ĐỘNG</span><i>♙</i></div><strong id="stat-doctors">—</strong><small>Dữ liệu hiện tại</small></article>
+        </div>
+        <div class="two-col">                <article class="panel chart-panel"><div class="panel-title"><div><h2>Tăng trưởng hệ thống</h2><p>Số ca khám và lượt phân tích từ cơ sở dữ liệu</p></div><span class="model-badge">6 tháng</span></div><div class="chart"><div class="y-axis"><span id="chart-max">0</span><span id="chart-mid">0</span><span>0</span></div><div class="chart-area"><div class="grid-lines"></div><svg viewBox="0 0 700 220" preserveAspectRatio="none"><defs><linearGradient id="fillGreen" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#2ba149" stop-opacity=".25"/><stop offset="1" stop-color="#2ba149" stop-opacity="0"/></linearGradient></defs><path id="chart-area-path" class="area"></path><path id="chart-cases-path" class="line"></path><path id="chart-analyses-path" class="line orange-line"></path></svg><div class="x-axis" id="chart-labels"></div></div></div><div class="legend"><span><i class="dot green-dot"></i> Ca khám</span><span><i class="dot orange-dot"></i> Phân tích AI</span></div></article>
+          <article class="panel distribution-panel"><div class="panel-title"><div><h2>Phân bổ kết quả AI</h2><p>Đầy đủ 8 nhóm EfficientNet-B0 phân loại</p></div><span class="model-badge">✦ EfficientNet-B0</span></div><div class="donut-wrap"><div class="donut" id="analysis-donut"><span><b id="analysis-total">0</b><small>TỔNG LƯỢT</small></span></div><div class="donut-legend" id="analysis-legend" aria-live="polite"><span class="loading">Đang tải phân bổ…</span></div></div><div class="notice"><span>✦</span><div><b>Hiệu suất mô hình</b><small>EfficientNet-B0 · Độ chính xác <strong>94.7%</strong></small></div></div></article>
+        </div>
+        <div class="two-col lower"><article class="panel"><div class="panel-title"><div><h2>Ca khám gần đây</h2><p>Cập nhật theo thời gian thực</p></div><button class="text-btn" data-jump="ai">Xem tất cả →</button></div><div class="table-wrap"><table><thead><tr><th>MÃ CA</th><th>BÁC SĨ PHỤ TRÁCH</th><th>NGÀY TẠO</th><th>TRẠNG THÁI</th></tr></thead><tbody id="recent-cases"><tr><td colspan="4" class="loading">Đang tải dữ liệu…</td></tr></tbody></table></div></article><article class="panel quick"><div class="panel-title"><div><h2>Truy cập nhanh</h2><p>Các tác vụ thường dùng</p></div></div><button data-jump="accounts">♙ <span><b>Quản lý tài khoản</b><small>Thêm, sửa và phân quyền</small></span><b>→</b></button><button data-jump="doctors">♧ <span><b>Duyệt hồ sơ bác sĩ</b><small>3 hồ sơ đang chờ duyệt</small></span><b>→</b></button><button data-jump="reports">▥ <span><b>Xuất báo cáo hệ thống</b><small>PDF hoặc Excel</small></span><b>→</b></button></article></div>
+      </section>
+
+      <section class="module" id="module-accounts"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / USERS</p><h2>Quản lý tài khoản</h2><p>Kiểm soát người dùng và quyền truy cập hệ thống.</p></div><button class="primary" id="add-user">＋ Thêm tài khoản</button></div><div class="panel"><div class="toolbar"><label class="search">⌕<input id="user-search" placeholder="Tìm theo tên hoặc email…"></label><select id="role-filter"><option value="">Tất cả vai trò</option><option value="ADMIN">Admin</option><option value="DOCTOR">Doctor</option><option value="USER">User</option></select><button class="outline">⇩ Xuất danh sách</button></div><div class="table-wrap"><table><thead><tr><th>NGƯỜI DÙNG</th><th>VAI TRÒ</th><th>NGÀY THAM GIA</th><th>TRẠNG THÁI</th><th></th></tr></thead><tbody id="users-table"></tbody></table></div></div></section>
+      <section class="module placeholder" id="module-security"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / SECURITY</p><h2>Phiên đăng nhập &amp; Bảo mật</h2><p>Giám sát truy cập và bảo vệ dữ liệu y tế.</p></div><span class="status-chip success">● Hệ thống an toàn</span></div><div class="security-grid"><div class="panel security-hero"><span class="hero-icon">◈</span><h3>Không phát hiện bất thường</h3><p>Không có cảnh báo bảo mật mới trong 24 giờ qua.</p><div class="security-score"><b>98</b><small>/100 điểm an toàn</small></div></div><div class="panel"><h2>Phiên đang hoạt động</h2><div class="session"><span class="avatar">AD</span><div><b>{{ admin.full_name }}</b><small>Chrome · Windows · Đang dùng</small></div><span class="status-chip success">Hiện tại</span></div><div class="session muted"><span class="avatar grey">DR</span><div><b>doctor@dermascan.local</b><small>Safari · macOS · 2 giờ trước</small></div><button class="text-btn">Đăng xuất</button></div></div></div></section>
+      <section class="module placeholder" id="module-ai"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / AI OPERATIONS</p><h2>Quản lý AI &amp; Ca khám</h2><p>Theo dõi Case, UploadBatch, Analysis và AnalysisResult.</p></div><span class="model-badge">✦ EfficientNet-B0 <small>Production</small></span></div><div class="panel empty-panel"><span>✦</span><h3>Luồng phân tích</h3><p>Dữ liệu chi tiết Case và Analysis được lấy trực tiếp từ cơ sở dữ liệu.</p><button class="outline">Mở danh sách ca khám</button></div></section>
+      <section class="module placeholder" id="module-doctors"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / CLINICAL TEAM</p><h2>Quản lý bác sĩ &amp; Duyệt</h2><p>Quản lý hồ sơ, ca được phân công và DoctorReview.</p></div><span class="status-chip warning">3 chờ duyệt</span></div><div class="doctor-cards"><div class="panel doctor-card"><span class="avatar doctor">BS</span><div><h3>Hồ sơ bác sĩ</h3><p>12 bác sĩ đang hoạt động</p></div><b>→</b></div><div class="panel doctor-card"><span class="avatar orange-avatar">✓</span><div><h3>DoctorReview</h3><p>28 đánh giá trong tuần này</p></div><b>→</b></div></div><div class="panel empty-panel"><span>♧</span><h3>Hàng đợi duyệt hồ sơ</h3><p>Kiểm tra chứng chỉ hành nghề trước khi cấp quyền bác sĩ.</p><button class="primary">Xem 3 hồ sơ chờ duyệt</button></div></section>
+      <section class="module placeholder" id="module-reports"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / INSIGHTS</p><h2>Thống kê &amp; Báo cáo</h2><p>Biến dữ liệu vận hành thành thông tin hữu ích.</p></div><div><button class="outline">⇩ PDF</button> <button class="primary">⇩ Excel</button></div></div><div class="report-grid"><div class="panel report-number"><small>TỔNG CA KHÁM</small><b>1,842</b><span>↗ 18.6% so với quý trước</span></div><div class="panel report-number"><small>THỜI GIAN PHÂN TÍCH TB</small><b>1.24s</b><span>↘ 12.4% nhanh hơn</span></div><div class="panel empty-panel"><span>▥</span><h3>Báo cáo theo thời gian</h3><p>Chọn khoảng thời gian để xuất báo cáo hoạt động và hiệu suất AI.</p><div class="date-range"><input type="date"><span>→</span><input type="date"></div></div></div></section>
+    </div>
+  </main>
+  <div class="modal-backdrop" id="user-modal"><form class="modal" id="user-form"><button type="button" class="modal-close" id="close-modal">×</button><p class="eyebrow">TÀI KHOẢN MỚI</p><h2>Thêm tài khoản</h2><label>Họ và tên<input name="name" required minlength="2"></label><label>Email<input name="email" type="email" required></label><label>Vai trò<select name="role"><option value="USER">User</option><option value="DOCTOR">Doctor</option><option value="ADMIN">Admin</option></select></label><label>Mật khẩu tạm thời<input name="password" type="password" minlength="12" required placeholder="Tối thiểu 12 ký tự"></label><button class="primary full" type="submit">Tạo tài khoản</button><p class="form-message" id="form-message"></p></form></div>
+  <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+</body>
+</html>

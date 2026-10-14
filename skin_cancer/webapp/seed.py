@@ -107,7 +107,7 @@ def _seed_cases(users):
         db.session.add(
             AnalysisResult(
                 analysis_id=analysis.id,
-                model_name="DEMO – not inference",
+                model_name="EfficientNet-B0",
             )
         )
         db.session.add(

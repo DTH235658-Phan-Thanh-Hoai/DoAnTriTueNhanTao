@@ -514,9 +514,9 @@
 .patient-selector {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 
-  margin-bottom: 18px;
+  margin-bottom: 16px;
 }
 
 .patient-selector-head {
@@ -525,20 +525,28 @@
   justify-content: space-between;
   align-items: center;
 
-  gap: 12px;
+  gap: 10px;
 }
 
 .patient-selector-head > label,
-.lesion-location-field label {
+.lesion-location-field label,
+.model-selector-field label {
   font-weight: 700;
 
   color: var(--ink-700);
+  font-size: 13px;
+}
+
+.lesion-location-field label,
+.model-selector-field label {
+  margin-bottom: 6px;
 }
 
 .patient-selector select,
 .lesion-location-field input,
 .patient-form-field input,
-.patient-form-field select {
+.patient-form-field select,
+.model-selector-field select {
   width: 100%;
 
   padding: 10px 12px;
@@ -555,6 +563,8 @@
 
   font: inherit;
 
+  font-size: 14px;
+
   transition:
     border-color 0.2s,
     box-shadow 0.2s;
@@ -563,7 +573,8 @@
 .patient-selector select:focus,
 .lesion-location-field input:focus,
 .patient-form-field input:focus,
-.patient-form-field select:focus {
+.patient-form-field select:focus,
+.model-selector-field select:focus {
   border-color: var(--p-500);
 
   box-shadow: 0 0 0 3px rgba(43, 161, 73, 0.12);
@@ -654,6 +665,24 @@
   gap: 6px;
 
   margin-top: 6px;
+}
+
+.model-selector-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  margin-top: 6px;
+}
+
+.model-selector-field small {
+  color: var(--ink-400);
+
+  line-height: 1.5;
+
+  font-size: 12px;
 }
 
 /* ============================================================
@@ -826,6 +855,10 @@
     align-items: stretch;
 
     flex-direction: column;
+  }
+
+  .patient-selector-head > button {
+    width: 100%;
   }
 
   .patient-form-grid {
