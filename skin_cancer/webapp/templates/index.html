@@ -2477,6 +2477,75 @@
   <!-- ============ DOCTOR UI - DESIGN CHO GIAO DIỆN BÁC SĨ ============ -->
 
   <style id="hp-doctor-ui-style">
+    /* Refined analyzer presentation */
+    #analyze {
+      --brand-green: #2ba149;
+      --brand-orange: #fd8624;
+      max-width: 1500px;
+      margin-inline: auto;
+      padding: 44px clamp(18px, 3vw, 42px) 88px;
+    }
+
+    #analyze .section-head { margin-bottom: 26px; }
+    #analyze .analyzer-grid { display: grid; grid-template-columns: minmax(340px, .82fr) minmax(0, 1.18fr); align-items: start; gap: 24px; }
+    #analyze .panel { min-width: 0; padding: clamp(20px, 2.2vw, 30px); border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 30px rgb(15 23 42 / 6%); }
+    #analyze .panel:hover { box-shadow: 0 16px 34px rgb(15 23 42 / 9%); }
+    #analyze .panel-head { margin-bottom: 22px; padding-bottom: 17px; }
+    #analyze .panel-num { background: var(--brand-green); box-shadow: 0 7px 16px rgb(43 161 73 / 20%); }
+    #analyze .hp-in-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    #analyze .patient-selector { gap: 14px; padding: 18px; border-radius: 16px; background: #f8fafc; }
+    #analyze .dropzone { min-height: 230px; border-radius: 16px; }
+    #analyze .panel-upload .btn-primary { background: var(--brand-green); box-shadow: 0 10px 22px rgb(43 161 73 / 20%); }
+    #analyze .panel-upload .btn-primary:hover:not(:disabled) { background: #23883d; }
+    #analyze :is(input, select, textarea, button):focus-visible { outline: 3px solid rgb(43 161 73 / 28%); outline-offset: 2px; }
+    #analyze .state-results { display: grid; gap: 18px; }
+    #analyze .verdict, #analyze .hp-result-grid .block, #analyze .interp,
+    #analyze .doctor-diagnosis, #analyze .workflow-tools { min-width: 0; border-radius: 18px; }
+    #analyze .hp-result-grid { grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr); gap: 18px; }
+    #analyze .hp-result-grid .block { margin: 0; padding: 14px; border: 1px solid #e8edf3; background: #fff; }
+    #analyze .hp-result-details { display: grid; align-content: start; gap: 14px; min-width: 0; }
+    #analyze .hp-result-details .block { margin: 0; }
+    #analyze .hp-orig-figure, #analyze .hp-cam-figure { width: min(100%, 420px); margin: 0 auto; border-radius: 14px; }
+    #analyze .hp-orig-figure img, #analyze .hp-cam-figure img { display: block; width: 100%; height: auto; max-height: 340px; aspect-ratio: 4 / 3; object-fit: contain; background: #0f172a; }
+    #analyze .hp-cam-figure img { background: #fff7ee; }
+    #analyze .preview { width: min(100%, 480px); max-height: 390px; margin-inline: auto; border-radius: 16px; }
+    #analyze .preview img { display: block; width: 100%; height: 100%; max-height: 390px; object-fit: contain; }
+    #analyze .prob-list { display: grid; gap: 8px; }
+    #analyze .prob-row { grid-template-columns: minmax(58px, 76px) minmax(0, 1fr) 54px; align-items: center; gap: 12px; min-width: 0; padding: 10px 12px; }
+    #analyze .prob-bar-wrap { height: 10px; overflow: hidden; border-radius: 999px; }
+    #analyze .prob-bar { min-width: 0; border-radius: inherit; }
+    #analyze .prob-value { text-align: right; font-variant-numeric: tabular-nums; }
+    #analyze .doctor-diagnosis, #analyze .workflow-tools { padding: clamp(18px, 2vw, 24px); }
+    #analyze .doctor-diagnosis { border-color: #e2e8f0; background: #fff; }
+    #analyze .doctor-review-form { display: grid; gap: 16px; }
+    #analyze .doctor-review-field { min-width: 0; }
+    #analyze .doctor-review-field textarea { box-sizing: border-box; width: 100%; min-height: 96px; resize: vertical; border: 1px solid #cbd5e1; border-radius: 12px; padding: 13px 14px; transition: border-color .18s ease, box-shadow .18s ease; }
+    #analyze .doctor-review-field textarea:focus { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgb(43 161 73 / 14%); outline: none; }
+    #analyze .doctor-review-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding-top: 4px; }
+    #analyze .doctor-save-btn { border-color: var(--brand-green); background: var(--brand-green); color: #fff; }
+    #analyze .doctor-save-btn:hover:not(:disabled) { background: #23883d; color: #fff; }
+    #analyze .workflow-tools { border: 1px solid #e2e8f0; background: #f8fafc; }
+    #analyze .workflow-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; }
+    #analyze .workflow-action-btn { min-width: 0; min-height: 44px; border-radius: 12px; }
+
+    @media (max-width: 1050px) {
+      #analyze .analyzer-grid { grid-template-columns: minmax(0, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      #analyze .hp-result-grid { grid-template-columns: minmax(0, 1fr); }
+      #analyze .hp-orig-figure, #analyze .hp-cam-figure { width: min(100%, 460px); }
+      #analyze .hp-orig-figure img, #analyze .hp-cam-figure img { max-height: 360px; }
+    }
+
+    @media (max-width: 520px) {
+      #analyze { padding-inline: 14px; }
+      #analyze .panel { padding: 18px; }
+      #analyze .prob-row { grid-template-columns: 52px minmax(0, 1fr) 48px; gap: 9px; padding: 9px; }
+      #analyze .doctor-review-footer { align-items: stretch; }
+      #analyze .doctor-review-footer .workflow-action-btn { width: 100%; }
+    }
+
     /* ===== SPACING + PANEL CHUNG ===== */
 
     .analyzer {
@@ -4867,8 +4936,14 @@
             <button type="button" class="hp-to-register" id="hpToRegister" data-i18n="nav.register">
               Đăng ký
             </button>
+            <button type="button" class="hp-to-register" id="hpForgotPasswordBtn">Quên mật khẩu?</button>
           </p>
         </form>
+
+        <form class="hp-form-view hidden" id="hpTwoFactorForm" novalidate><h3 class="hp-auth-title">Xác thực hai lớp</h3><p class="hp-auth-sub" id="hpTwoFactorDeliveryNotice">Mã OTP đã được tạo cho tài khoản của bạn. Hãy kiểm tra cửa sổ Terminal để lấy mã 6 chữ số.</p><div class="hp-form-alert hidden" id="hpTwoFactorAlert"><span id="hpTwoFactorAlertText"></span></div><div class="hp-field"><label for="hpTwoFactorCode">Mã xác thực</label><input id="hpTwoFactorCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required></div><button type="submit" class="hp-btn-submit hp-btn-green">Xác nhận</button><p class="hp-auth-alt">Chưa nhận được mã? <button type="button" class="hp-to-register" id="hpResendTwoFactorBtn">Gửi lại mã</button></p></form>
+        <form class="hp-form-view hidden" id="hpForgotPasswordForm" novalidate><h3 class="hp-auth-title">Khôi phục mật khẩu</h3><div class="hp-form-alert hidden" id="hpForgotAlert"><span id="hpForgotAlertText"></span></div><div class="hp-field"><label for="hpForgotEmail">Email</label><input id="hpForgotEmail" type="email" required></div><button type="submit" class="hp-btn-submit hp-btn-green">Tạo mã đặt lại</button><p class="hp-auth-alt"><button type="button" class="hp-to-register" id="hpResetPasswordBtn">Tôi đã có mã OTP</button></p></form>
+        <form class="hp-form-view hidden" id="hpResetPasswordForm" novalidate><h3 class="hp-auth-title">Đặt mật khẩu mới</h3><div class="hp-form-alert hidden" id="hpResetAlert"><span id="hpResetAlertText"></span></div><div class="hp-field"><label for="hpResetToken">Mã OTP từ Terminal</label><input id="hpResetToken" required></div><div class="hp-field"><label for="hpResetPassword">Mật khẩu mới</label><input id="hpResetPassword" type="password" minlength="12" required></div><button type="submit" class="hp-btn-submit hp-btn-green">Lưu mật khẩu</button></form>
+        <form class="hp-form-view hidden" id="hpVerifyEmailForm" novalidate><h3 class="hp-auth-title">Xác thực email</h3><div class="hp-form-alert hidden" id="hpVerifyEmailAlert"><span id="hpVerifyEmailAlertText"></span></div><div class="hp-field"><label for="hpVerifyEmailToken">Mã xác thực</label><input id="hpVerifyEmailToken" required></div><button type="submit" class="hp-btn-submit hp-btn-green">Xác thực email</button></form>
 
         <!-- ============== VIEW: ĐĂNG KÝ ============== -->
 
@@ -5312,6 +5387,10 @@
       function hpShowFormAlert(boxId, textId, message, isSuccess) {
         var box = el(boxId);
         var label = el(textId);
+        if (String(message || "").toLowerCase().includes("chưa đăng ký số điện thoại")) {
+          message = "Mã OTP được tạo và in trong cửa sổ Terminal. Hãy nhập mã để tiếp tục.";
+          isSuccess = true;
+        }
         if (label) label.textContent = message || "";
         if (box) {
           box.classList.toggle("is-success", !!isSuccess);
@@ -5625,6 +5704,8 @@
         var registerForm = el("hpRegisterForm");
 
         if (loginForm) loginForm.classList.toggle("hidden", view !== "login");
+        ["hpTwoFactorForm", "hpForgotPasswordForm", "hpResetPasswordForm", "hpVerifyEmailForm"].forEach(function(id) { var form = el(id); if (form) form.classList.toggle("hidden", id !== view); });
+
         if (registerForm) {
           registerForm.classList.toggle("hidden", view !== "register");
         }
@@ -5870,6 +5951,7 @@
         if (btn) btn.disabled = true;
 
         try {
+          console.log("[DermaScan] Sending login request", { email: email });
           var loggedIn = null;
 
           if (typeof getCsrfToken === "function") {
@@ -5887,7 +5969,22 @@
               var data = await response.json().catch(function () {
                 return {};
               });
-              if (response.ok && (data.user || data.success)) {
+              console.log("[DermaScan] Login response", {
+                status: response.status,
+                ok: response.ok,
+                requires_2fa: data.requires_2fa === true,
+              });
+              if (response.ok && data.requires_2fa) {
+                setAuthView("hpTwoFactorForm");
+                if (hpAuthModal) hpAuthModal.classList.remove("hidden");
+                var deliveryNotice = el("hpTwoFactorDeliveryNotice");
+                if (deliveryNotice) deliveryNotice.textContent = data.message || "Mã OTP đã được tạo. Hãy kiểm tra cửa sổ Terminal.";
+                hpShowFormAlert("hpTwoFactorAlert", "hpTwoFactorAlertText", "", true);
+                var otpInput = el("hpTwoFactorCode");
+                if (otpInput) otpInput.focus();
+                console.log("[DermaScan] Switched to 2FA verification form");
+                return;
+              } else if (response.ok && (data.user || data.success)) {
                 loggedIn = data.user || data;
               } else if (response.status !== 401 && !response.ok) {
                 throw new Error(
@@ -5914,6 +6011,7 @@
             } catch (err) { }
           }
         } catch (error) {
+          console.error("[DermaScan] Login failed", error);
           hpShowFormAlert(
             "hpLoginAlert",
             "hpLoginAlertText",
@@ -5925,6 +6023,33 @@
         }
       }
 
+      async function hpAuthPost(path, payload) {
+        var token = await getCsrfToken();
+        var response = await fetch(path, { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json", "X-CSRFToken": token }, body: JSON.stringify(payload) });
+        var data = await response.json().catch(function(){ return {}; });
+        if (!response.ok) throw new Error(data.message || "Không thể hoàn tất yêu cầu.");
+        return data;
+      }
+      var hpResendTwoFactorBtn = el("hpResendTwoFactorBtn");
+      if (hpResendTwoFactorBtn) hpResendTwoFactorBtn.addEventListener("click", async function(){
+        hpResendTwoFactorBtn.disabled = true;
+        try {
+          var result = await hpAuthPost("/api/auth/resend-2fa", {});
+          var deliveryNotice = el("hpTwoFactorDeliveryNotice");
+          if (deliveryNotice) deliveryNotice.textContent = result.message || "Mã OTP mới đã được tạo. Hãy kiểm tra cửa sổ Terminal.";
+          hpShowFormAlert("hpTwoFactorAlert", "hpTwoFactorAlertText", result.message || "Mã mới đã được gửi.", true);
+        } catch(error) {
+          hpShowFormAlert("hpTwoFactorAlert", "hpTwoFactorAlertText", error.message, false);
+        } finally {
+          hpResendTwoFactorBtn.disabled = false;
+        }
+      });
+      el("hpForgotPasswordBtn").addEventListener("click", function(){ setAuthView("hpForgotPasswordForm"); });
+      if (el("hpResetPasswordBtn")) el("hpResetPasswordBtn").addEventListener("click", function(){ setAuthView("hpResetPasswordForm"); });
+      var params = new URLSearchParams(window.location.search);
+      if (params.has("reset_token")) { el("hpResetToken").value = params.get("reset_token"); setAuthView("hpResetPasswordForm"); }
+      else if (params.has("token")) { el("hpVerifyEmailToken").value = params.get("token"); setAuthView("hpVerifyEmailForm"); }
+      [["hpTwoFactorForm", function(){return hpAuthPost("/api/auth/verify-2fa", {code: el("hpTwoFactorCode").value});}], ["hpForgotPasswordForm", function(){return hpAuthPost("/api/auth/forgot-password", {email: el("hpForgotEmail").value});}], ["hpResetPasswordForm", function(){return hpAuthPost("/api/auth/reset-password", {token: el("hpResetToken").value, new_password: el("hpResetPassword").value});}], ["hpVerifyEmailForm", function(){return hpAuthPost("/api/auth/verify-email", {token: el("hpVerifyEmailToken").value});}]].forEach(function(entry){ var form=el(entry[0]); if(!form) return; form.addEventListener("submit", async function(event){ event.preventDefault(); try { var result=await entry[1](); if(entry[0]==="hpTwoFactorForm"){ hpApplyLoggedInUser(result.user, true); if(typeof refreshAuthState==="function") await refreshAuthState(); } else { hpShowFormAlert(entry[0].replace("Form","Alert"), entry[0].replace("Form","AlertText"), result.message || "Thành công.", true); if(entry[0]==="hpResetPasswordForm") setTimeout(function(){setAuthView("login");},1200); } } catch(error) { console.error("[DermaScan] Authentication form failed", { form: entry[0], error: error }); var alertIds = {hpForgotPasswordForm:["hpForgotAlert","hpForgotAlertText"], hpResetPasswordForm:["hpResetAlert","hpResetAlertText"], hpVerifyEmailForm:["hpVerifyEmailAlert","hpVerifyEmailAlertText"], hpTwoFactorForm:["hpTwoFactorAlert","hpTwoFactorAlertText"]}; var ids = alertIds[entry[0]]; hpShowFormAlert(ids[0], ids[1], error.message, false); } }); });
       var hpLoginFormNode = el("hpLoginForm");
       if (hpLoginFormNode) {
         hpLoginFormNode.addEventListener("submit", function (event) {

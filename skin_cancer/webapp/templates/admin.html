@@ -46,6 +46,7 @@
       <button class="nav-item active" data-module="dashboard"><span class="nav-icon">⌂</span><span>Dashboard Tổng Quan</span></button>
       <button class="nav-item" data-module="accounts"><span class="nav-icon">♙</span><span>Quản Lý Tài Khoản</span></button>
       <button class="nav-item" data-module="security"><span class="nav-icon">◈</span><span>Phiên Đăng Nhập &amp; Bảo Mật</span></button>
+      <button class="nav-item" data-module="profile"><span class="nav-icon">◎</span><span>Hồ sơ &amp; Bảo mật cá nhân</span></button>
       <button class="nav-item" data-module="ai"><span class="nav-icon">✦</span><span>Quản Lý AI &amp; Ca Khám</span></button>
       <button class="nav-item" data-module="doctors"><span class="nav-icon">♧</span><span>Quản Lý Bác Sĩ &amp; Duyệt</span></button>
       <button class="nav-item" data-module="reports"><span class="nav-icon">▥</span><span>Thống Kê &amp; Báo Cáo</span></button>
@@ -106,10 +107,73 @@
         <div class="two-col lower"><article class="panel"><div class="panel-title"><div><h2>Ca khám gần đây</h2><p>Cập nhật theo thời gian thực</p></div><button class="text-btn" data-jump="ai">Xem tất cả →</button></div><div class="table-wrap"><table><thead><tr><th>MÃ CA</th><th>BÁC SĨ PHỤ TRÁCH</th><th>NGÀY TẠO</th><th>TRẠNG THÁI</th></tr></thead><tbody id="recent-cases"><tr><td colspan="4" class="loading">Đang tải dữ liệu…</td></tr></tbody></table></div></article><article class="panel quick"><div class="panel-title"><div><h2>Truy cập nhanh</h2><p>Các tác vụ thường dùng</p></div></div><button data-jump="accounts">♙ <span><b>Quản lý tài khoản</b><small>Thêm, sửa và phân quyền</small></span><b>→</b></button><button data-jump="doctors">♧ <span><b>Duyệt hồ sơ bác sĩ</b><small>3 hồ sơ đang chờ duyệt</small></span><b>→</b></button><button data-jump="reports">▥ <span><b>Xuất báo cáo hệ thống</b><small>PDF hoặc Excel</small></span><b>→</b></button></article></div>
       </section>
 
-      <section class="module" id="module-accounts"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / USERS</p><h2>Quản lý tài khoản</h2><p>Kiểm soát người dùng và quyền truy cập hệ thống.</p></div><button class="primary" id="add-user">＋ Thêm tài khoản</button></div><div class="panel"><div class="toolbar"><label class="search">⌕<input id="user-search" placeholder="Tìm theo tên hoặc email…"></label><select id="role-filter"><option value="">Tất cả vai trò</option><option value="ADMIN">Admin</option><option value="DOCTOR">Doctor</option><option value="USER">User</option></select><button class="outline">⇩ Xuất danh sách</button></div><div class="table-wrap"><table><thead><tr><th>NGƯỜI DÙNG</th><th>VAI TRÒ</th><th>NGÀY THAM GIA</th><th>TRẠNG THÁI</th><th></th></tr></thead><tbody id="users-table"></tbody></table></div></div></section>
-      <section class="module placeholder" id="module-security"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / SECURITY</p><h2>Phiên đăng nhập &amp; Bảo mật</h2><p>Giám sát truy cập và bảo vệ dữ liệu y tế.</p></div><span class="status-chip success">● Hệ thống an toàn</span></div><div class="security-grid"><div class="panel security-hero"><span class="hero-icon">◈</span><h3>Không phát hiện bất thường</h3><p>Không có cảnh báo bảo mật mới trong 24 giờ qua.</p><div class="security-score"><b>98</b><small>/100 điểm an toàn</small></div></div><div class="panel"><h2>Phiên đang hoạt động</h2><div class="session"><span class="avatar">AD</span><div><b>{{ admin.full_name }}</b><small>Chrome · Windows · Đang dùng</small></div><span class="status-chip success">Hiện tại</span></div><div class="session muted"><span class="avatar grey">DR</span><div><b>doctor@dermascan.local</b><small>Safari · macOS · 2 giờ trước</small></div><button class="text-btn">Đăng xuất</button></div></div></div></section>
+      <section class="module" id="module-accounts"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / USERS</p><h2>Quản lý tài khoản</h2><p>Kiểm soát người dùng và quyền truy cập hệ thống.</p></div><button class="primary" id="add-user">＋ Thêm tài khoản</button></div><div class="panel"><div class="toolbar"><label class="search">⌕<input id="user-search" placeholder="Tìm theo tên hoặc email…"></label><select id="role-filter"><option value="">Tất cả vai trò</option><option value="ADMIN">Admin</option><option value="DOCTOR">Doctor</option><option value="USER">User</option></select><select id="status-filter"><option value="">Mọi trạng thái</option><option value="ACTIVE">Đang hoạt động</option><option value="LOCKED">Đã khóa</option></select></div><div class="table-wrap"><table><thead><tr><th>NGƯỜI DÙNG</th><th>EMAIL</th><th>VAI TRÒ</th><th>TRẠNG THÁI</th><th>THAO TÁC</th></tr></thead><tbody id="users-table"></tbody></table></div></div></section>
+      <section class="module" id="module-security"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / SECURITY</p><h2>Phiên đăng nhập &amp; Bảo mật</h2><p>Cấu hình session, chính sách mật khẩu và xem audit log trực tiếp.</p></div><span class="status-chip success">Thiết lập trực tiếp</span></div></section>
+      <section class="module" id="module-profile">
+        <div class="module-heading">
+          <div>
+            <p class="eyebrow">TÀI KHOẢN / PROFILE</p>
+            <h2>Hồ sơ cá nhân</h2>
+            <p>Cập nhật thông tin và thiết lập bảo mật cho tài khoản Admin.</p>
+          </div>
+        </div>
+        <div class="profile-grid">
+          <section class="panel profile-form-card" id="profile-info-card" aria-labelledby="profile-info-title">
+            <div class="panel-title">
+              <div>
+                <h3 id="profile-info-title">Thông tin cá nhân</h3>
+                <p>Thông tin này được hiển thị trong hệ thống.</p>
+              </div>
+              <span class="profile-card-icon" aria-hidden="true">✦</span>
+            </div>
+            <div class="form-grid">
+              <label for="profile-name">Họ và tên
+                <input id="profile-name" name="full_name" type="text" autocomplete="name" value="{{ admin.full_name }}">
+              </label>
+              <label for="profile-phone">Số điện thoại <span class="profile-optional">Không bắt buộc</span>
+                <input id="profile-phone" name="phone" type="tel" autocomplete="tel" value="{{ admin.phone or '' }}">
+              </label>
+            </div>
+            <button class="primary" id="save-profile" type="button">Lưu thay đổi</button>
+          </section>
+
+          <section class="panel profile-form-card" id="password-card" aria-labelledby="profile-password-title">
+            <div class="panel-title">
+              <div>
+                <h3 id="profile-password-title">Đổi mật khẩu</h3>
+                <p>Sử dụng mật khẩu mạnh cho tài khoản quản trị.</p>
+              </div>
+              <span class="profile-card-icon profile-card-icon-orange" aria-hidden="true">⌑</span>
+            </div>
+            <div class="form-grid">
+              <label for="current-password">Mật khẩu hiện tại
+                <input id="current-password" name="current_password" type="password" autocomplete="current-password">
+              </label>
+              <label for="new-password">Mật khẩu mới
+                <input id="new-password" name="new_password" type="password" autocomplete="new-password">
+              </label>
+            </div>
+            <button class="primary" id="change-password" type="button">Cập nhật mật khẩu</button>
+          </section>
+
+          <section class="panel profile-form-card two-factor-card" aria-labelledby="profile-2fa-title">
+            <div class="two-factor-copy">
+              <span class="profile-card-icon" aria-hidden="true">✓</span>
+              <div>
+                <h3 id="profile-2fa-title">Xác thực hai lớp (2FA)</h3>
+                <p>Bảo vệ tài khoản bằng mã xác thực bổ sung khi đăng nhập.</p>
+                <span class="two-factor-status">{% if admin.two_factor_enabled %}Đang bật{% else %}Đang tắt{% endif %}</span>
+              </div>
+            </div>
+            <label class="switch" for="profile-2fa" aria-label="Bật hoặc tắt xác thực hai lớp">
+              <input id="profile-2fa" type="checkbox" {% if admin.two_factor_enabled %}checked{% endif %}>
+              <span></span>
+            </label>
+          </section>
+        </div>
+      </section>
       <section class="module placeholder" id="module-ai"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / AI OPERATIONS</p><h2>Quản lý AI &amp; Ca khám</h2><p>Theo dõi Case, UploadBatch, Analysis và AnalysisResult.</p></div><span class="model-badge">✦ EfficientNet-B0 <small>Production</small></span></div><div class="panel empty-panel"><span>✦</span><h3>Luồng phân tích</h3><p>Dữ liệu chi tiết Case và Analysis được lấy trực tiếp từ cơ sở dữ liệu.</p><button class="outline">Mở danh sách ca khám</button></div></section>
-      <section class="module placeholder" id="module-doctors"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / CLINICAL TEAM</p><h2>Quản lý bác sĩ &amp; Duyệt</h2><p>Quản lý hồ sơ, ca được phân công và DoctorReview.</p></div><span class="status-chip warning">3 chờ duyệt</span></div><div class="doctor-cards"><div class="panel doctor-card"><span class="avatar doctor">BS</span><div><h3>Hồ sơ bác sĩ</h3><p>12 bác sĩ đang hoạt động</p></div><b>→</b></div><div class="panel doctor-card"><span class="avatar orange-avatar">✓</span><div><h3>DoctorReview</h3><p>28 đánh giá trong tuần này</p></div><b>→</b></div></div><div class="panel empty-panel"><span>♧</span><h3>Hàng đợi duyệt hồ sơ</h3><p>Kiểm tra chứng chỉ hành nghề trước khi cấp quyền bác sĩ.</p><button class="primary">Xem 3 hồ sơ chờ duyệt</button></div></section>
+      <section class="module" id="module-doctors"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / CLINICAL TEAM</p><h2>Quản lý bác sĩ &amp; Duyệt</h2><p>Kiểm tra hồ sơ trước khi cấp quyền Doctor.</p></div></div><div class="panel doctor-approval-live" id="doctor-approval-panel"><h2>Hồ sơ chờ duyệt</h2><div class="approval-list" id="doctor-approval-list"></div></div></section>
       <section class="module placeholder" id="module-reports"><div class="module-heading"><div><p class="eyebrow">QUẢN TRỊ / INSIGHTS</p><h2>Thống kê &amp; Báo cáo</h2><p>Biến dữ liệu vận hành thành thông tin hữu ích.</p></div><div><button class="outline">⇩ PDF</button> <button class="primary">⇩ Excel</button></div></div><div class="report-grid"><div class="panel report-number"><small>TỔNG CA KHÁM</small><b>1,842</b><span>↗ 18.6% so với quý trước</span></div><div class="panel report-number"><small>THỜI GIAN PHÂN TÍCH TB</small><b>1.24s</b><span>↘ 12.4% nhanh hơn</span></div><div class="panel empty-panel"><span>▥</span><h3>Báo cáo theo thời gian</h3><p>Chọn khoảng thời gian để xuất báo cáo hoạt động và hiệu suất AI.</p><div class="date-range"><input type="date"><span>→</span><input type="date"></div></div></div></section>
     </div>
   </main>

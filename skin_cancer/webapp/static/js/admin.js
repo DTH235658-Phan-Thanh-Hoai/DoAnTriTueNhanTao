@@ -2,8 +2,8 @@
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => [...document.querySelectorAll(selector)];
   const labels = {
-    vi: { dashboard: "Dashboard Tổng Quan", accounts: "Quản Lý Tài Khoản", security: "Phiên Đăng Nhập & Bảo Mật", ai: "Quản Lý AI & Ca Khám", doctors: "Quản Lý Bác Sĩ & Duyệt", reports: "Thống Kê & Báo Cáo" },
-    en: { dashboard: "Overview Dashboard", accounts: "Account Management", security: "Login Sessions & Security", ai: "AI & Case Management", doctors: "Doctors & Approvals", reports: "Statistics & Reports" },
+    vi: { dashboard: "Dashboard Tổng Quan", accounts: "Quản Lý Tài Khoản", security: "Phiên Đăng Nhập & Bảo Mật", profile: "Hồ sơ & Bảo mật cá nhân", ai: "Quản Lý AI & Ca Khám", doctors: "Quản Lý Bác Sĩ & Duyệt", reports: "Thống Kê & Báo Cáo" },
+    en: { dashboard: "Overview Dashboard", accounts: "Account Management", security: "Login Sessions & Security", profile: "Profile & Personal Security", ai: "AI & Case Management", doctors: "Doctors & Approvals", reports: "Statistics & Reports" },
   };
   const adminTranslations = {
     vi: {
@@ -91,7 +91,7 @@
     setText(".hp-user-meta small", t.admin);
     setText("#logout", t.logout);
     setText("#breadcrumb", t.dashboard);
-    ["dashboard", "accounts", "security", "ai", "doctors", "reports"].forEach((name) => {
+    ["dashboard", "accounts", "security", "profile", "ai", "doctors", "reports"].forEach((name) => {
       const item = $(`.nav-item[data-module="${name}"] span:last-child`);
       if (item) item.textContent = labels[currentLanguage][name];
     });
@@ -265,11 +265,43 @@
   }
 
   async function loadUsers() {
-    const params = new URLSearchParams({ search: $("#user-search").value, role: $("#role-filter").value });
+    const params = new URLSearchParams({ search: $("#user-search").value, role: $("#role-filter").value, status: $("#status-filter").value });
     try {
       const data = await api(`/api/admin/users?${params}`);
-      $("#users-table").innerHTML = data.users.length ? data.users.map((user) => `<tr><td><b>${escapeHtml(user.name)}</b><small style="display:block;color:var(--muted)">${escapeHtml(user.email)}</small></td><td><span class="role-badge">${roleName[user.role] || user.role}</span></td><td>${escapeHtml(user.created_at)}</td><td>${badge(user.active)}</td><td><button class="row-actions" data-toggle-user="${user.id}" title="${translateAdminText("Khóa/mở khóa")}">•••</button></td></tr>`).join("") : `<tr><td colspan="5" class="loading">${translateAdminText("Không tìm thấy tài khoản phù hợp.")}</td></tr>`;
+      $("#users-table").innerHTML = data.users.length ? data.users.map((user) => `<tr><td><span class="table-user"><span class="avatar">${escapeHtml(user.name.slice(0, 1).toUpperCase())}</span><b>${escapeHtml(user.name)}</b></span></td><td>${escapeHtml(user.email)}</td><td><select class="role-select" data-update-role="${user.id}"><option value="USER" ${user.role === "USER" ? "selected" : ""}>User</option><option value="DOCTOR" ${user.role === "DOCTOR" ? "selected" : ""}>Doctor</option><option value="ADMIN" ${user.role === "ADMIN" ? "selected" : ""}>Admin</option></select></td><td>${badge(user.active)}</td><td><button class="row-actions" data-toggle-user="${user.id}">${user.active ? "Khóa" : "Mở"}</button> <button class="row-actions" data-delete-user="${user.id}">Xóa</button></td></tr>`).join("") : `<tr><td colspan="5" class="loading">Không tìm thấy tài khoản phù hợp.</td></tr>`;
     } catch (error) { $("#users-table").innerHTML = `<tr><td colspan="5" class="loading">${escapeHtml(translateAdminText(error.message))}</td></tr>`; }
+  }
+
+  async function loadDoctorApplications() {
+    try {
+      const data = await api("/api/admin/doctor-applications");
+      const list = $("#doctor-approval-list");
+      if (!list) return;
+      list.innerHTML = data.applications.map((item) => `<div class="approval-row" data-application-id="${item.id}"><span class="avatar doctor">${escapeHtml(item.name.slice(0, 2).toUpperCase())}</span><div class="approval-info"><b>${escapeHtml(item.name)}</b><small>${escapeHtml(item.email)}</small><label class="certificate-upload">Tải chứng chỉ<input type="file" accept=".pdf,.jpg,.jpeg,.png" data-certificate="${item.id}"></label></div>${item.certificate_path ? `<a class="credential-link" href="/api/admin/doctor-certificates/${encodeURIComponent(item.certificate_path)}">Xem chứng chỉ</a>` : `<span class="credential-link">Chưa tải chứng chỉ</span>`}<div class="approval-actions"><button class="approval-approve" data-review="APPROVE">Phê duyệt</button><button class="approval-reject" data-review="REJECT">Từ chối</button></div></div>`).join("") || "<p>Không có hồ sơ chờ duyệt.</p>";
+      list.onchange = async (event) => { const input = event.target.closest("[data-certificate]"); if (!input || !input.files[0]) return; const body = new FormData(); body.append("certificate", input.files[0]); try { const response = await fetch(`/api/admin/doctor-applications/${input.dataset.certificate}/certificate`, { method: "POST", credentials: "same-origin", headers: { "X-CSRFToken": csrfToken }, body }); const result = await response.json(); if (!response.ok) throw new Error(result.message || "Không thể tải chứng chỉ."); await loadDoctorApplications(); } catch (error) { alert(error.message); } };
+      list.onclick = async (event) => { const button = event.target.closest("[data-review]"); if (!button) return; const row = button.closest("[data-application-id]"); if (button.dataset.review === "APPROVE" && !row.querySelector("a.credential-link")) { alert("Cần tải chứng chỉ trước khi phê duyệt."); return; } try { await api(`/api/admin/doctor-applications/${row.dataset.applicationId}`, { method: "PATCH", body: JSON.stringify({ decision: button.dataset.review }) }); row.remove(); } catch (error) { alert(error.message); } };
+    } catch (error) { console.error(error); }
+  }
+  async function loadAdminSecurity() {
+    try {
+      const [settings, logs] = await Promise.all([api("/api/admin/security-settings"), api("/api/admin/audit-logs")]);
+      const security = $("#module-security");
+      if (!security || security.querySelector(".admin-security-live")) return;
+      const panel = document.createElement("div");
+      panel.className = "panel admin-security-live";
+      panel.innerHTML = `<h2>Cấu hình bảo mật hệ thống</h2><div class="security-live-form"><label>Session timeout<select id="security-timeout"><option value="5">5 phút</option><option value="15">15 phút</option><option value="30">30 phút</option><option value="60">60 phút</option><option value="120">120 phút</option><option value="1440">24 giờ</option></select></label><label>Password policy<select id="security-password"><option value="8">Tối thiểu 8 ký tự</option><option value="12">Tối thiểu 12 ký tự</option><option value="16">Tối thiểu 16 ký tự</option><option value="24">Tối thiểu 24 ký tự</option></select></label><label><input id="security-2fa" type="checkbox"> Bắt buộc 2FA cho Admin</label><button class="primary" id="save-security">Lưu cấu hình</button></div><h2>Audit log</h2><div class="audit-filters"><label>Từ ngày<input type="date" id="audit-start"></label><label>Đến ngày<input type="date" id="audit-end"></label><button class="outline" id="audit-filter">Lọc</button><button class="outline" id="audit-export">Xuất CSV</button></div><div class="audit-live">${logs.logs.map((item) => `<div class="audit-live-row"><b>${escapeHtml(item.event)}</b><span>${escapeHtml(item.email)} · ${escapeHtml(item.ip_address || "-")}</span><em>${item.success ? "Thành công" : "Thất bại"} · ${new Date(item.created_at).toLocaleString()}</em></div>`).join("") || "<p>Chưa có dữ liệu.</p>"}</div><div class="audit-pagination"><button class="outline" id="audit-prev">Trước</button><span id="audit-page">Trang 1</span><button class="outline" id="audit-next">Sau</button></div>`;      security.append(panel);
+      $("#security-timeout").value = String(settings.session_timeout_minutes);
+      $("#security-password").value = String(settings.password_min_length);
+      $("#security-2fa").checked = settings.require_admin_2fa;
+      let auditPage = 1;
+      const refreshAudit = async () => { const params = new URLSearchParams({ page: String(auditPage), per_page: "25", start: $("#audit-start").value, end: $("#audit-end").value }); const result = await api(`/api/admin/audit-logs?${params}`); panel.querySelector(".audit-live").innerHTML = result.logs.map((item) => `<div class="audit-live-row"><b>${escapeHtml(item.event)}</b><span>${escapeHtml(item.email)} · ${escapeHtml(item.ip_address || "-")}</span><em>${item.success ? "Thành công" : "Thất bại"} · ${new Date(item.created_at).toLocaleString()}</em></div>`).join("") || "<p>Chưa có dữ liệu.</p>"; $("#audit-page").textContent = `Trang ${result.page}/${result.pages}`; $("#audit-prev").disabled = result.page <= 1; $("#audit-next").disabled = result.page >= result.pages; };
+      $("#audit-filter").addEventListener("click", () => { auditPage = 1; refreshAudit(); });
+      $("#audit-prev").addEventListener("click", () => { auditPage = Math.max(1, auditPage - 1); refreshAudit(); });
+      $("#audit-next").addEventListener("click", () => { auditPage += 1; refreshAudit(); });
+      $("#audit-export").addEventListener("click", () => { const params = new URLSearchParams({ start: $("#audit-start").value, end: $("#audit-end").value }); window.location.assign(`/api/admin/audit-logs.csv?${params}`); });
+      refreshAudit();
+      $("#save-security").addEventListener("click", async () => { try { await api("/api/admin/security-settings", { method: "PUT", body: JSON.stringify({ session_timeout_minutes: $("#security-timeout").value, password_min_length: $("#security-password").value, require_admin_2fa: $("#security-2fa").checked }) }); alert("Đã lưu cấu hình bảo mật."); } catch (error) { alert(error.message); } });
+    } catch (error) { console.error(error); }
   }
 
   function showModule(name) {
@@ -279,14 +311,25 @@
     $("#breadcrumb").textContent = name.toUpperCase();
     $("#sidebar").classList.remove("open");
     if (name === "accounts") loadUsers();
+    if (name === "doctors") loadDoctorApplications();
+    if (name === "security") loadAdminSecurity();
   }
 
   $$(".nav-item").forEach((item) => item.addEventListener("click", () => showModule(item.dataset.module)));
   $$("[data-jump]").forEach((item) => item.addEventListener("click", () => showModule(item.dataset.jump)));
+  $$("[data-account-tab]").forEach((tab) => tab.addEventListener("click", () => {
+    const target = tab.dataset.accountTab;
+    $$("[data-account-tab]").forEach((item) => item.classList.toggle("active", item === tab));
+    $$("[data-account-view]").forEach((view) => view.classList.toggle("active", view.dataset.accountView === target));
+  }));
   $("#mobile-menu").addEventListener("click", () => $("#sidebar").classList.toggle("open"));
   $("#collapse-sidebar").addEventListener("click", () => { $("#sidebar").classList.toggle("collapsed"); });
-  $("#user-search").addEventListener("input", loadUsers); $("#role-filter").addEventListener("change", loadUsers);
+  $("#user-search").addEventListener("input", loadUsers); $("#role-filter").addEventListener("change", loadUsers); $("#status-filter").addEventListener("change", loadUsers);
   $("#users-table").addEventListener("click", async (event) => { const button = event.target.closest("[data-toggle-user]"); if (!button || !confirm("Thay đổi trạng thái tài khoản này?")) return; try { await api(`/api/admin/users/${button.dataset.toggleUser}/status`, { method: "PATCH" }); loadUsers(); } catch (error) { alert(error.message); } });
+  $("#users-table").addEventListener("click", async (event) => { const button = event.target.closest("[data-delete-user]"); if (!button || !confirm("Xóa mềm tài khoản này?")) return; try { await api(`/api/admin/users/${button.dataset.deleteUser}`, { method: "DELETE" }); loadUsers(); } catch (error) { alert(error.message); } });
+  $("#users-table").addEventListener("change", async (event) => { const select = event.target.closest("[data-update-role]"); if (!select) return; try { await api(`/api/admin/users/${select.dataset.updateRole}/role`, { method: "PATCH", body: JSON.stringify({ role: select.value }) }); } catch (error) { alert(error.message); loadUsers(); } });
+  if ($("#save-profile")) $("#save-profile").addEventListener("click", async () => { try { await api("/api/auth/profile", { method: "PUT", body: JSON.stringify({ full_name: $("#profile-name").value, phone: $("#profile-phone").value, two_factor_enabled: $("#profile-2fa").checked }) }); alert("Đã cập nhật hồ sơ."); } catch (error) { alert(error.message); } });
+  if ($("#change-password")) $("#change-password").addEventListener("click", async () => { try { await api("/api/auth/change-password", { method: "POST", body: JSON.stringify({ current_password: $("#current-password").value, new_password: $("#new-password").value }) }); alert("Đã đổi mật khẩu."); } catch (error) { alert(error.message); } });
   $("#add-user").addEventListener("click", () => $("#user-modal").classList.add("open")); $("#close-modal").addEventListener("click", () => $("#user-modal").classList.remove("open")); $("#user-modal").addEventListener("click", (event) => { if (event.target.id === "user-modal") event.currentTarget.classList.remove("open"); });
   $("#user-form").addEventListener("submit", async (event) => { event.preventDefault(); const form = new FormData(event.currentTarget); const message = $("#form-message"); try { await api("/api/admin/users", { method: "POST", body: JSON.stringify(Object.fromEntries(form)) }); event.currentTarget.reset(); $("#user-modal").classList.remove("open"); loadUsers(); } catch (error) { message.textContent = error.message; } });
   $("#logout").addEventListener("click", async () => {
@@ -295,6 +338,9 @@
       ["role", "user", "token", "access_token"].forEach((key) => sessionStorage.removeItem(key));
     };
     try {
+      // Always refresh immediately before logout: an older page can hold an
+      // expired token even though its authenticated session is still valid.
+      csrfToken = "";
       const data = await api("/api/auth/admin/logout", { method: "POST" });
       clearClientSession();
       window.location.replace(data.redirect_url || "/");

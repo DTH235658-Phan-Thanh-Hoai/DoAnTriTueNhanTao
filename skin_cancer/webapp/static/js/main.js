@@ -1151,10 +1151,16 @@ loginBtn.addEventListener("click", async () => {
       throw new Error(getErrorMessage(data, "Đăng nhập thất bại."));
     }
 
+    if (data.requires_2fa) {
+      alert(data.message || "Mã xác thực đã được gửi tới email.");
+      return;
+    }
+
     loginPassword.value = "";
 
     window.location.replace(data.redirect_url || "/");
   } catch (error) {
+    console.error("[DermaScan] Fallback login handler failed", error);
     alert(error.message);
   } finally {
     loginBtn.disabled = false;
@@ -1166,19 +1172,34 @@ loginBtn.addEventListener("click", async () => {
 // ============================================================
 
 logoutBtn.addEventListener("click", async () => {
+  let loggedOut = false;
+  let redirectUrl = "/";
   try {
+    // Request a token immediately before logout.  A token created before login
+    // is invalid because successful login rotates the Flask session.
     const csrfToken = await getCsrfToken();
-
-    await fetch("/api/auth/logout", {
+    const response = await fetch("/api/auth/logout", {
       method: "POST",
-
       credentials: "same-origin",
-
+      cache: "no-store",
       headers: {
+        "Content-Type": "application/json",
         "X-CSRFToken": csrfToken,
       },
     });
-  } finally {
+
+    const data = await responseJson(response);
+    if (!response.ok || !data.success) {
+      throw new Error(getErrorMessage(data, "KhÃ´ng thá»ƒ Ä‘Äƒng xuáº¥t."));
+    }
+
+    redirectUrl = data.redirect_url || "/";
+    loggedOut = true;
+  } catch (error) {
+    alert(error.message);
+  }
+
+  if (loggedOut) {
     currentUser = null;
 
     // Đồng bộ với session local của homepage để không tự đăng nhập lại.
@@ -1192,6 +1213,7 @@ logoutBtn.addEventListener("click", async () => {
     resetUpload();
 
     await refreshAuthState();
+    window.location.replace(redirectUrl);
   }
 });
 

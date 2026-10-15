@@ -56,7 +56,10 @@ def _seed_users(password):
         if user is None:
             user = User(email=email, full_name=name, role=role)
             user.set_password(password)
+            user.email_verified = True
             db.session.add(user)
+        else:
+            user.email_verified = True
         users[email] = user
     db.session.flush()
     return users

@@ -178,6 +178,14 @@ def database_config():
                 False,
             ),
 
+        # JavaScript clients obtain a same-session token from /api/auth/csrf
+        # and send it on unsafe requests.  Keep both conventional Flask-WTF
+        # spellings available while the UI is being served from cached assets.
+        "WTF_CSRF_HEADERS": (
+            "X-CSRFToken",
+            "X-CSRF-Token",
+        ),
+
         # ====================================================
         # RATE LIMITING
         # ====================================================

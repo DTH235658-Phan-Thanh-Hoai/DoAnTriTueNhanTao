@@ -5,7 +5,8 @@ Dùng cho:
 python -m flask --app skin_cancer.webapp.database_app db upgrade
 """
 
-from flask import Flask
+from datetime import timedelta
+from flask import Flask, session
 
 from .config import (
     INSTANCE_DIR,
@@ -78,6 +79,15 @@ def init_database(app, config=None):
         register_database_api,
     )
     register_database_api(app)
+
+    @app.before_request
+    def enforce_configured_session_timeout():
+        setting = db.session.get(models.SecuritySetting, 1)
+        minutes = setting.session_timeout_minutes if setting else 30
+        app.permanent_session_lifetime = timedelta(minutes=minutes)
+        if session.get("_user_id"):
+            session.permanent = True
+            session.modified = True
 
     # --------------------------------------------------------
     # SEED
