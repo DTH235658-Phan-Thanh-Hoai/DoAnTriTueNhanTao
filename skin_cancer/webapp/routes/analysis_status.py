@@ -1,4 +1,9 @@
-"""Task 7: API hỏi trạng thái phân tích (frontend gọi lặp lại mỗi giây)."""
+"""Task 7: API hỏi trạng thái phân tích (frontend gọi lặp lại mỗi giây).
+
+Hỗ trợ cả 2 chế độ:
+- Chế độ Celery + Redis: Lấy trạng thái qua AsyncResult.
+- Chế độ Local Threading: Lấy trạng thái từ Database + SQLite Cache (hoàn toàn không cần Docker/Redis).
+"""
 
 try:
     from celery.result import AsyncResult
@@ -10,25 +15,9 @@ from ..celery_app import celery
 from ..extensions import db
 from ..models import Analysis
 from ..services.access import require_roles, visible_case_or_404
+from ..services.result_cache import get_cached
 
 bp = Blueprint("analysis_status", __name__, url_prefix="/api")
-
-
-def resolve_status(db_status, task_state):
-    """Gộp trạng thái trong DB và trạng thái Celery thành một kết luận.
-
-    DB cập nhật COMPLETED trước khi Celery kịp lưu kết quả vào Redis,
-    nên nếu task chưa SUCCESS thì vẫn coi là đang xử lý.
-    """
-    if db_status == "FAILED":
-        return "FAILED"
-    if db_status != "COMPLETED":
-        return db_status  # PENDING hoặc PROCESSING
-    if task_state == "SUCCESS":
-        return "COMPLETED"
-    if task_state in ("STARTED", "RETRY"):
-        return "PROCESSING"
-    return "EXPIRED"  # kết quả trong Redis đã hết hạn
 
 
 @bp.get("/analyses/<int:analysis_id>/status")
@@ -39,16 +28,31 @@ def analysis_status(analysis_id):
         abort(404)
     visible_case_or_404(analysis.case_id)  # kiểm tra quyền xem ca bệnh
 
-    if AsyncResult is None or celery is None:
-        return jsonify(status="FAILED", error="Hệ thống Celery/Redis chưa sẵn sàng."), 503
+    # 1. Trạng thái đã hoàn thành: lấy kết quả từ Celery hoặc SQLite Cache
+    if analysis.status == "COMPLETED":
+        task_res = None
+        if AsyncResult is not None and celery is not None:
+            try:
+                task = AsyncResult(f"analysis-{analysis_id}", app=celery)
+                if task.state == "SUCCESS" and task.result:
+                    task_res = task.result
+            except Exception:
+                pass
 
-    task = AsyncResult(f"analysis-{analysis_id}", app=celery)
-    status = resolve_status(analysis.status, task.state)
+        if task_res is None:
+            task_res = get_cached(f"analysis-result:{analysis_id}")
 
-    if status == "COMPLETED":
-        return jsonify(status="COMPLETED", result=task.result)
-    if status == "FAILED":
-        return jsonify(status="FAILED", error="Không thể phân tích ảnh đã upload.")
-    if status == "EXPIRED":
-        return jsonify(status="FAILED", error="Kết quả đã hết hạn, hãy phân tích lại.")
-    return jsonify(status=status)
+        if task_res is not None:
+            return jsonify(status="COMPLETED", result=task_res)
+
+        return jsonify(status="PROCESSING")
+
+    # 2. Trạng thái lỗi
+    if analysis.status == "FAILED":
+        return jsonify(
+            status="FAILED",
+            error=analysis.error_message or "Không thể phân tích ảnh đã upload.",
+        )
+
+    # 3. Trạng thái đang chờ hoặc đang xử lý ("PENDING" / "PROCESSING")
+    return jsonify(status=analysis.status)

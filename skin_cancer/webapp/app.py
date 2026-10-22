@@ -47,7 +47,7 @@ from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 import os
 from skin_cancer.webapp.services.image_quality import check_image_quality
 from skin_cancer.webapp.services.uncertainty import check_uncertainty
-from skin_cancer.webapp.services.result_cache import image_hash, get_cached, save_cached
+from skin_cancer.webapp.services.result_cache import image_hash, get_cached, save_cached, is_redis_available
 from skin_cancer.webapp.services.focus_region import apply_focus_region
 from skin_cancer.webapp.services.onnx_inference import OnnxPredictor
 from skin_cancer.webapp.tasks import analyze_task
@@ -345,7 +345,7 @@ def utcnow_naive():
 def run_ai_inference(pil_img):
     key = image_hash(pil_img)
     cached = get_cached(key)
-    if cached:
+    if cached and isinstance(cached, dict) and "result" in cached:
         result = cached["result"]
         result["meta"]["from_cache"] = True
         png = base64.b64decode(result["gradcam"])
@@ -733,24 +733,35 @@ def analyze_case_image(case_image_id):
     db.session.add(analysis)
     db.session.commit()
 
-    try:
-        analyze_task.apply_async(
-            args=[analysis.id, case_image.id],
-            task_id=f"analysis-{analysis.id}",
-        )
-    except Exception as exc:
-        mark_analysis_failed(analysis.id, case_image.id, exc)
-        app.logger.exception("Không đưa được việc vào hàng đợi")
-        return jsonify({"error": "Hệ thống hàng đợi chưa sẵn sàng, thử lại sau."}), 503
+    queued = False
+    if is_redis_available() and analyze_task is not None:
+        try:
+            analyze_task.apply_async(
+                args=[analysis.id, case_image.id],
+                task_id=f"analysis-{analysis.id}",
+            )
+            queued = True
+        except Exception as exc:
+            app.logger.info("Celery/Redis chưa bật, kích hoạt worker chạy ngầm cục bộ: %s", exc)
+
+    if not queued:
+        # Tự động chạy ngầm bằng Threading ngay trên tiến trình Flask (không cần Docker/Redis/Celery)
+        import threading
+        from .tasks import _run_analysis
+        threading.Thread(
+            target=_run_analysis,
+            args=(analysis.id, case_image.id),
+            daemon=True
+        ).start()
 
     return jsonify({"analysis_id": analysis.id, "status": "PENDING"}), 202
 
 if __name__ == '__main__':
     print()
     print("=" * 62)
-    print("  DERMASCAN AI - MÁY CHỦ ĐANG CHẠY")
-    print("  Địa chỉ :  http://localhost:5000")
-    print(f"  Thiết bị:  {DEVICE}")
+    print("  DERMASCAN AI - SERVER DANG CHAY")
+    print("  Dia chi :  http://localhost:5000")
+    print(f"  Thiet bi:  {DEVICE}")
     print("=" * 62)
     print()
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
