@@ -17,3 +17,9 @@ flask-cors>=4.0.0
 # Utilities
 tqdm>=4.65.0
 
+# ONNX & Celery/Redis
+onnx>=1.15.0
+onnxruntime>=1.16.0
+celery>=5.3.0
+redis>=5.0.0
+

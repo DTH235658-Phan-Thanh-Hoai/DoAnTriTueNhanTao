@@ -299,20 +299,21 @@ async function compareImages() {
       headers: { "X-CSRFToken": csrfToken },
     });
     const data = await responseJson(response);
-    if (!response.ok) throw new Error(getErrorMessage(data, "Không thể so sánh hai ảnh."));
+    if (!response.ok)
+      throw new Error(getErrorMessage(data, "Không thể so sánh hai ảnh."));
 
     compareAreaChange.textContent = `${data.area_change_percent > 0 ? "+" : ""}${data.area_change_percent}%`;
     compareColorChange.textContent = `${data.color_variance_percent}%`;
     compareProgression.textContent = data.progression;
-    compareRiskEvolution.textContent =
-      `${data.risk_change_percent > 0 ? "+" : ""}${data.risk_change_percent}%`;
+    compareRiskEvolution.textContent = `${data.risk_change_percent > 0 ? "+" : ""}${data.risk_change_percent}%`;
     compareResultNote.classList.remove("error");
     compareResultNote.textContent =
       "Chỉ số nguy cơ là chỉ số thay đổi hình ảnh, không thay thế chẩn đoán lâm sàng. Bác sĩ cần kết hợp khám và tiền sử bệnh án.";
     compareResult.classList.remove("hidden");
   } catch (error) {
     compareResultNote.classList.add("error");
-    compareResultNote.textContent = error.message || "Pipeline so sánh ảnh thất bại.";
+    compareResultNote.textContent =
+      error.message || "Pipeline so sánh ảnh thất bại.";
     compareResult.classList.remove("hidden");
   } finally {
     syncComparisonButton();
@@ -365,13 +366,20 @@ function resetClinicalLightbox() {
   clinicalZoom = 1;
   clinicalPanX = 0;
   clinicalPanY = 0;
-  if (clinicalLightboxImage && clinicalLightboxStage && clinicalLightboxImage.naturalWidth) {
+  if (
+    clinicalLightboxImage &&
+    clinicalLightboxStage &&
+    clinicalLightboxImage.naturalWidth
+  ) {
     const fit = Math.min(
-      (clinicalLightboxStage.clientWidth - 48) / clinicalLightboxImage.naturalWidth,
-      (clinicalLightboxStage.clientHeight - 48) / clinicalLightboxImage.naturalHeight,
+      (clinicalLightboxStage.clientWidth - 48) /
+        clinicalLightboxImage.naturalWidth,
+      (clinicalLightboxStage.clientHeight - 48) /
+        clinicalLightboxImage.naturalHeight,
       1,
     );
-    clinicalBaseWidth = clinicalLightboxImage.naturalWidth * Math.max(0.05, fit);
+    clinicalBaseWidth =
+      clinicalLightboxImage.naturalWidth * Math.max(0.05, fit);
     clinicalLightboxImage.style.width = `${clinicalBaseWidth}px`;
   }
   updateClinicalLightboxTransform();
@@ -385,11 +393,13 @@ function closeClinicalLightbox() {
 }
 
 function openClinicalLightbox(image) {
-  if (!clinicalLightbox || !clinicalLightboxImage || !image || !image.src) return;
+  if (!clinicalLightbox || !clinicalLightboxImage || !image || !image.src)
+    return;
   clinicalLightboxImage.src = image.currentSrc || image.src;
   clinicalLightboxImage.alt = image.alt || "Ảnh lâm sàng";
   if (clinicalLightboxTitle) {
-    clinicalLightboxTitle.textContent = image.dataset.lightboxTitle || image.alt || "Xem ảnh chi tiết";
+    clinicalLightboxTitle.textContent =
+      image.dataset.lightboxTitle || image.alt || "Xem ảnh chi tiết";
   }
   clinicalLightbox.classList.remove("hidden");
   document.body.style.overflow = "hidden";
@@ -402,11 +412,22 @@ document.querySelectorAll(".clinical-image-zoomable").forEach((image) => {
   image.addEventListener("click", () => openClinicalLightbox(image));
 });
 
-if (clinicalZoomIn) clinicalZoomIn.addEventListener("click", () => setClinicalZoom(clinicalZoom + 0.25));
-if (clinicalZoomOut) clinicalZoomOut.addEventListener("click", () => setClinicalZoom(clinicalZoom - 0.25));
-if (clinicalZoomReset) clinicalZoomReset.addEventListener("click", resetClinicalLightbox);
-if (clinicalZoomSlider) clinicalZoomSlider.addEventListener("input", (event) => setClinicalZoom(event.target.value));
-if (clinicalLightboxClose) clinicalLightboxClose.addEventListener("click", closeClinicalLightbox);
+if (clinicalZoomIn)
+  clinicalZoomIn.addEventListener("click", () =>
+    setClinicalZoom(clinicalZoom + 0.25),
+  );
+if (clinicalZoomOut)
+  clinicalZoomOut.addEventListener("click", () =>
+    setClinicalZoom(clinicalZoom - 0.25),
+  );
+if (clinicalZoomReset)
+  clinicalZoomReset.addEventListener("click", resetClinicalLightbox);
+if (clinicalZoomSlider)
+  clinicalZoomSlider.addEventListener("input", (event) =>
+    setClinicalZoom(event.target.value),
+  );
+if (clinicalLightboxClose)
+  clinicalLightboxClose.addEventListener("click", closeClinicalLightbox);
 if (clinicalLightbox) {
   clinicalLightbox.addEventListener("click", (event) => {
     if (event.target === clinicalLightbox) closeClinicalLightbox();
@@ -415,7 +436,13 @@ if (clinicalLightbox) {
 if (clinicalLightboxStage) {
   clinicalLightboxStage.addEventListener("pointerdown", (event) => {
     if (event.target !== clinicalLightboxImage) return;
-    clinicalDrag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, panX: clinicalPanX, panY: clinicalPanY };
+    clinicalDrag = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+      panX: clinicalPanX,
+      panY: clinicalPanY,
+    };
     clinicalLightboxStage.classList.add("is-dragging");
     clinicalLightboxStage.setPointerCapture(event.pointerId);
   });
@@ -435,15 +462,21 @@ if (clinicalLightboxStage) {
   };
   clinicalLightboxStage.addEventListener("pointerup", endClinicalDrag);
   clinicalLightboxStage.addEventListener("pointercancel", endClinicalDrag);
-  clinicalLightboxStage.addEventListener("wheel", (event) => {
-    event.preventDefault();
-    setClinicalZoom(clinicalZoom + (event.deltaY < 0 ? 0.15 : -0.15));
-  }, { passive: false });
+  clinicalLightboxStage.addEventListener(
+    "wheel",
+    (event) => {
+      event.preventDefault();
+      setClinicalZoom(clinicalZoom + (event.deltaY < 0 ? 0.15 : -0.15));
+    },
+    { passive: false },
+  );
 }
 document.addEventListener("keydown", (event) => {
-  if (!clinicalLightbox || clinicalLightbox.classList.contains("hidden")) return;
+  if (!clinicalLightbox || clinicalLightbox.classList.contains("hidden"))
+    return;
   if (event.key === "Escape") closeClinicalLightbox();
-  if (event.key === "+" || event.key === "=") setClinicalZoom(clinicalZoom + 0.25);
+  if (event.key === "+" || event.key === "=")
+    setClinicalZoom(clinicalZoom + 0.25);
   if (event.key === "-") setClinicalZoom(clinicalZoom - 0.25);
   if (event.key === "0") resetClinicalLightbox();
 });
@@ -457,6 +490,7 @@ const reportStatus = $("reportStatus");
 // ============================================================
 
 let selectedFiles = [];
+const pendingRegions = new Map(); // tên file -> polygon
 
 let currentUser = null;
 
@@ -1171,13 +1205,10 @@ loginBtn.addEventListener("click", async () => {
 // LOGOUT
 // ============================================================
 
-logoutBtn.addEventListener("click", async () => {
-  let loggedOut = false;
+async function executeLogout() {
   let redirectUrl = "/";
   try {
-    // Request a token immediately before logout.  A token created before login
-    // is invalid because successful login rotates the Flask session.
-    const csrfToken = await getCsrfToken();
+    const csrfToken = await getCsrfToken().catch(() => "");
     const response = await fetch("/api/auth/logout", {
       method: "POST",
       credentials: "same-origin",
@@ -1187,35 +1218,36 @@ logoutBtn.addEventListener("click", async () => {
         "X-CSRFToken": csrfToken,
       },
     });
-
-    const data = await responseJson(response);
-    if (!response.ok || !data.success) {
-      throw new Error(getErrorMessage(data, "KhÃ´ng thá»ƒ Ä‘Äƒng xuáº¥t."));
-    }
-
-    redirectUrl = data.redirect_url || "/";
-    loggedOut = true;
+    const data = await responseJson(response).catch(() => ({}));
+    if (data && data.redirect_url) redirectUrl = data.redirect_url;
   } catch (error) {
-    alert(error.message);
-  }
-
-  if (loggedOut) {
+    console.warn("Lỗi khi gửi yêu cầu logout:", error);
+  } finally {
     currentUser = null;
-
-    // Đồng bộ với session local của homepage để không tự đăng nhập lại.
     try {
-      localStorage.removeItem("dermascan_current_user");
-      localStorage.removeItem("currentUser");
-    } catch (error) {
-      console.warn("Không thể xóa phiên đăng nhập cục bộ.", error);
+      [
+        "dermascan_current_user",
+        "currentUser",
+        "dermascan_doctor_profile",
+        "role",
+        "user",
+      ].forEach((key) => {
+        localStorage.removeItem(key);
+      });
+      sessionStorage.clear();
+    } catch (e) {
+      console.warn("Không thể xóa phiên đăng nhập cục bộ.", e);
     }
-
     resetUpload();
-
-    await refreshAuthState();
-    window.location.replace(redirectUrl);
+    window.location.replace(redirectUrl || "/");
   }
-});
+}
+
+window.executeLogout = executeLogout;
+
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", executeLogout);
+}
 
 // ============================================================
 // SITE SETTINGS
@@ -2048,7 +2080,17 @@ function renderSelectedFiles() {
       }
     });
 
-    row.append(name, remove);
+    const region = document.createElement("button");
+    region.type = "button";
+    region.textContent = pendingRegions.has(file.name) ? "Vùng ✓" : "Khoanh vùng";
+    region.addEventListener("click", async () => {
+      const points = await openFocusRegionModal(file, pendingRegions.get(file.name) || []);
+      if (points === null) return;
+      if (points.length) pendingRegions.set(file.name, points);
+      else pendingRegions.delete(file.name);
+      renderSelectedFiles();
+    });
+    row.append(name, region, remove);
 
     selectedFilesContainer.append(row);
   });
@@ -2232,6 +2274,20 @@ function renderBatchItems(items) {
 // MAIN ANALYZE BUTTON
 // ============================================================
 
+async function saveFocusRegions(items) {
+  const csrfToken = await getCsrfToken();
+  for (const item of items || []) {
+    const points = pendingRegions.get(item.original_filename);
+    if (item.status !== "UPLOADED" || !item.case_image_id || !points) continue;
+    await fetch(`/api/case-images/${item.case_image_id}/focus-region`, {
+      method: "PUT",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json", "X-CSRFToken": csrfToken },
+      body: JSON.stringify({ points }),
+    });
+  }
+}
+
 analyzeBtn.addEventListener("click", async () => {
   try {
     requireDoctor();
@@ -2253,6 +2309,7 @@ analyzeBtn.addEventListener("click", async () => {
     analyzeBtn.textContent = "Đang tải ảnh...";
 
     const batch = await uploadBatch();
+    await saveFocusRegions(batch.items);
 
     const first = (batch.items || []).find(
       (item) => item.status === "UPLOADED" && item.case_image_id,
@@ -2284,6 +2341,31 @@ analyzeBtn.addEventListener("click", async () => {
 // ANALYZE CASE IMAGE
 // ============================================================
 
+async function analyzeAndWait(caseImageId) {
+  const csrfToken = await getCsrfToken();
+  const start = await fetch(`/api/case-images/${caseImageId}/analyze`, {
+    method: "POST",
+    credentials: "same-origin",
+    headers: { "X-CSRFToken": csrfToken },
+  });
+  const started = await responseJson(start);
+  if (!start.ok) throw new Error(getErrorMessage(started, "Phân tích AI thất bại."));
+
+  const deadline = Date.now() + 180000; // chờ tối đa 3 phút
+  while (Date.now() < deadline) {
+    await new Promise((r) => setTimeout(r, 1000));
+    const res = await fetch(`/api/analyses/${started.analysis_id}/status`, {
+      credentials: "same-origin",
+    });
+    const info = await responseJson(res);
+    if (!res.ok) throw new Error(getErrorMessage(info, "Không lấy được trạng thái."));
+    if (info.status === "COMPLETED") return info.result;
+    if (info.status === "FAILED") throw new Error(info.error || "Phân tích AI thất bại.");
+    // PENDING / PROCESSING: chờ thêm
+  }
+  throw new Error("Phân tích quá lâu, vui lòng thử lại.");
+}
+
 async function analyzeCaseImage(caseImageId) {
   requireDoctor();
 
@@ -2306,23 +2388,7 @@ async function analyzeCaseImage(caseImageId) {
   loadingState.classList.remove("hidden");
 
   try {
-    const csrfToken = await getCsrfToken();
-
-    const response = await fetch(`/api/case-images/${caseImageId}/analyze`, {
-      method: "POST",
-
-      credentials: "same-origin",
-
-      headers: {
-        "X-CSRFToken": csrfToken,
-      },
-    });
-
-    const data = await responseJson(response);
-
-    if (!response.ok) {
-      throw new Error(getErrorMessage(data, "Phân tích AI thất bại."));
-    }
+    const data = await analyzeAndWait(caseImageId);
 
     currentAnalysisId = data.analysis_id;
 
@@ -2337,6 +2403,8 @@ async function analyzeCaseImage(caseImageId) {
     resultsState.classList.remove("hidden");
 
     renderResults(data);
+
+    void showTimeline(currentCaseId);
 
     measureBtn.disabled = false;
 
@@ -2846,6 +2914,23 @@ function renderResults(data) {
 
   resultTag.className = "panel-tag" + (isMalignant ? " malignant" : "");
 
+  // Cảnh báo chất lượng ảnh + model không chắc chắn
+  const warnings = [];
+  if (data.quality && !data.quality.ok) warnings.push(...data.quality.warnings);
+  if (data.uncertainty && data.uncertainty.is_uncertain)
+    warnings.push(data.uncertainty.message);
+
+  let warnBox = document.getElementById("warnBox");
+  if (!warnBox) {
+    warnBox = document.createElement("div");
+    warnBox.id = "warnBox";
+    warnBox.style.cssText =
+      "background:#fff3cd;color:#664d03;padding:10px 14px;border-radius:8px;margin-bottom:12px;";
+    verdictCard.parentNode.insertBefore(warnBox, verdictCard);
+  }
+  warnBox.innerHTML = warnings.map((w) => "⚠️ " + w).join("<br>");
+  warnBox.style.display = warnings.length ? "block" : "none";
+
   // ========================================================
   // INTERPRETATION
   // ========================================================
@@ -2993,6 +3078,7 @@ function resetActionState() {
 
 function resetUpload() {
   selectedFiles = [];
+  pendingRegions.clear();
 
   /*
    * Khi chọn Batch khác:
@@ -3175,7 +3261,10 @@ function renderDoctorHistory() {
     detailsButton.className = "history-action-btn";
     detailsButton.dataset.caseId = String(record.case_id);
     detailsButton.textContent = "Xem chi tiết";
-    detailsButton.setAttribute("aria-label", `Xem chi tiết ca ${record.case_code || record.case_id}`);
+    detailsButton.setAttribute(
+      "aria-label",
+      `Xem chi tiết ca ${record.case_code || record.case_id}`,
+    );
     actionCell.appendChild(detailsButton);
     row.appendChild(actionCell);
     body.appendChild(row);
@@ -3186,7 +3275,9 @@ function populateHistoryPatients() {
   const select = $("historyPatient");
   if (!select) return;
   const currentValue = select.value;
-  const patients = [...new Set(doctorHistoryRecords.map((record) => record.patient))].sort();
+  const patients = [
+    ...new Set(doctorHistoryRecords.map((record) => record.patient)),
+  ].sort();
   select.replaceChildren(new Option("Tất cả bệnh nhân", ""));
   patients.forEach((patient) => select.add(new Option(patient, patient)));
   select.value = patients.includes(currentValue) ? currentValue : "";
@@ -3199,14 +3290,22 @@ async function loadDoctorHistory() {
     setDoctorHistoryState("Đang tải lịch sử phân tích...", "loading");
   }
   try {
-    const response = await fetch("/api/doctor/history", { credentials: "same-origin" });
+    const response = await fetch("/api/doctor/history", {
+      credentials: "same-origin",
+    });
     const data = await responseJson(response);
-    if (!response.ok) throw new Error(getErrorMessage(data, "Không thể tải lịch sử phân tích."));
+    if (!response.ok)
+      throw new Error(
+        getErrorMessage(data, "Không thể tải lịch sử phân tích."),
+      );
     doctorHistoryRecords = Array.isArray(data.records) ? data.records : [];
     populateHistoryPatients();
     renderDoctorHistory();
   } catch (error) {
-    setDoctorHistoryState(error.message || "Không thể tải lịch sử phân tích.", "error");
+    setDoctorHistoryState(
+      error.message || "Không thể tải lịch sử phân tích.",
+      "error",
+    );
   }
 }
 
@@ -3218,9 +3317,19 @@ function exportDoctorHistory() {
     alert("Không có dữ liệu phù hợp để xuất.");
     return;
   }
-  const header = ["Ngày phân tích", "Bệnh nhân", "Vị trí tổn thương", "Chẩn đoán AI", "Độ tin cậy", "Mã phân tích"];
+  const header = [
+    "Ngày phân tích",
+    "Bệnh nhân",
+    "Vị trí tổn thương",
+    "Chẩn đoán AI",
+    "Độ tin cậy",
+    "Mã phân tích",
+  ];
   const escapeCsv = (value) => `"${String(value).replaceAll('"', '""')}"`;
-  const csv = [header, ...rows.map((row) => [...row.cells].map((cell) => cell.textContent))]
+  const csv = [
+    header,
+    ...rows.map((row) => [...row.cells].map((cell) => cell.textContent)),
+  ]
     .map((row) => row.map(escapeCsv).join(","))
     .join("\r\n");
   const blob = new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" });
@@ -3234,9 +3343,19 @@ function exportDoctorHistory() {
   URL.revokeObjectURL(url);
 }
 
-["historyDateFrom", "historyDateTo", "historyPatient", "historyDiagnosis", "historySearch"].forEach((id) => {
+[
+  "historyDateFrom",
+  "historyDateTo",
+  "historyPatient",
+  "historyDiagnosis",
+  "historySearch",
+].forEach((id) => {
   const control = $(id);
-  if (control) control.addEventListener(id === "historySearch" ? "input" : "change", renderDoctorHistory);
+  if (control)
+    control.addEventListener(
+      id === "historySearch" ? "input" : "change",
+      renderDoctorHistory,
+    );
 });
 if ($("historyTableBody")) {
   $("historyTableBody").addEventListener("click", (event) => {
@@ -3249,7 +3368,8 @@ if ($("historyTableBody")) {
     window.openCaseDetailModal(button.dataset.caseId);
   });
 }
-if ($("historyExportBtn")) $("historyExportBtn").addEventListener("click", exportDoctorHistory);
+if ($("historyExportBtn"))
+  $("historyExportBtn").addEventListener("click", exportDoctorHistory);
 window.loadDoctorHistory = loadDoctorHistory;
 
 // ============================================================
@@ -3289,7 +3409,8 @@ function renderDoctorStatistics(data) {
   $("statsMalignant").textContent = metrics.malignant_count ?? 0;
   $("statsConfidence").textContent = `${metrics.average_confidence ?? 0}%`;
   $("statsBenignRatio").textContent = `${metrics.benign_ratio ?? 0}% tổng số`;
-  $("statsMalignantRatio").textContent = `${metrics.malignant_ratio ?? 0}% tổng số`;
+  $("statsMalignantRatio").textContent =
+    `${metrics.malignant_ratio ?? 0}% tổng số`;
 
   if (doctorTrendChart) doctorTrendChart.destroy();
   if (doctorDistributionChart) doctorDistributionChart.destroy();
@@ -3306,21 +3427,59 @@ function renderDoctorStatistics(data) {
     data: {
       labels: trends.map((item) => item.label),
       datasets: [
-        { label: uiText("ui.statsTotal", "Tổng lượt"), data: trends.map((item) => item.total), borderColor: "#2ba149", backgroundColor: "rgba(43,161,73,.12)", fill: true, tension: 0.3 },
-        { label: uiText("ui.statsMalignant", "Ác tính / nghi ngờ"), data: trends.map((item) => item.malignant), borderColor: "#d64b4b", backgroundColor: "transparent", tension: 0.3 },
+        {
+          label: uiText("ui.statsTotal", "Tổng lượt"),
+          data: trends.map((item) => item.total),
+          borderColor: "#2ba149",
+          backgroundColor: "rgba(43,161,73,.12)",
+          fill: true,
+          tension: 0.3,
+        },
+        {
+          label: uiText("ui.statsMalignant", "Ác tính / nghi ngờ"),
+          data: trends.map((item) => item.malignant),
+          borderColor: "#d64b4b",
+          backgroundColor: "transparent",
+          tension: 0.3,
+        },
       ],
     },
-    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { precision: 0 } } } },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+    },
   });
 
-  const distribution = (data.distribution || []).filter((item) => item.count > 0);
+  const distribution = (data.distribution || []).filter(
+    (item) => item.count > 0,
+  );
   doctorDistributionChart = new Chart(distributionCanvas, {
     type: "doughnut",
     data: {
       labels: distribution.map((item) => ISIC_LABELS[item.class] || item.class),
-      datasets: [{ data: distribution.map((item) => item.count), backgroundColor: ["#d64b4b", "#2ba149", "#f59e0b", "#7c3aed", "#0891b2", "#64748b", "#f97316", "#14b8a6", "#be123c"] }],
+      datasets: [
+        {
+          data: distribution.map((item) => item.count),
+          backgroundColor: [
+            "#d64b4b",
+            "#2ba149",
+            "#f59e0b",
+            "#7c3aed",
+            "#0891b2",
+            "#64748b",
+            "#f97316",
+            "#14b8a6",
+            "#be123c",
+          ],
+        },
+      ],
     },
-    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: "bottom" } } },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom" } },
+    },
   });
 }
 
@@ -3335,9 +3494,12 @@ async function loadDoctorStatistics() {
   status.textContent = "Đang tải dữ liệu...";
   if (button) button.disabled = true;
   try {
-    const response = await fetch(`/api/doctor/statistics?${params}`, { credentials: "same-origin" });
+    const response = await fetch(`/api/doctor/statistics?${params}`, {
+      credentials: "same-origin",
+    });
     const data = await responseJson(response);
-    if (!response.ok) throw new Error(getErrorMessage(data, "Không thể tải thống kê."));
+    if (!response.ok)
+      throw new Error(getErrorMessage(data, "Không thể tải thống kê."));
     renderDoctorStatistics(data);
     status.textContent = `Dữ liệu từ ${data.filters.from || "tất cả thời gian"} đến ${data.filters.to || "hiện tại"}.`;
   } catch (error) {

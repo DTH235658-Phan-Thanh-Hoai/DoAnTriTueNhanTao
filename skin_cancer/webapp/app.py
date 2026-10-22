@@ -36,13 +36,21 @@ import torch.nn as nn
 import timm
 import numpy as np
 from PIL import Image, UnidentifiedImageError
-from flask import Flask, current_app, render_template, request, jsonify, redirect
-from flask_login import current_user
+from flask import Flask, current_app, render_template, request, jsonify, redirect, session
+from flask_login import current_user, logout_user
 from flask_cors import CORS
 from torchvision import transforms
 from pytorch_grad_cam import GradCAM
 from pytorch_grad_cam.utils.image import show_cam_on_image
 from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
+
+import os
+from skin_cancer.webapp.services.image_quality import check_image_quality
+from skin_cancer.webapp.services.uncertainty import check_uncertainty
+from skin_cancer.webapp.services.result_cache import image_hash, get_cached, save_cached
+from skin_cancer.webapp.services.focus_region import apply_focus_region
+from skin_cancer.webapp.services.onnx_inference import OnnxPredictor
+from skin_cancer.webapp.tasks import analyze_task
 
 # ============================================================
 # CONFIG
@@ -302,6 +310,16 @@ preprocess = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
+# torch (mặc định) | onnx | onnx_int8
+MODEL_BACKEND = os.environ.get("MODEL_BACKEND", "torch")
+onnx_predictor = None
+if MODEL_BACKEND.startswith("onnx"):
+    onnx_predictor = OnnxPredictor(
+        BASE / "checkpoints",
+        suffix="_int8" if MODEL_BACKEND == "onnx_int8" else "",
+    )
+print(f"[BOOT] Backend: {MODEL_BACKEND}")
+
 # ============================================================
 # FLASK
 # ============================================================
@@ -324,8 +342,27 @@ def utcnow_naive():
         timezone.utc
     ).replace(tzinfo=None)
 
-
 def run_ai_inference(pil_img):
+    key = image_hash(pil_img)
+    cached = get_cached(key)
+    if cached:
+        result = cached["result"]
+        result["meta"]["from_cache"] = True
+        png = base64.b64decode(result["gradcam"])
+        cam_vis = np.array(Image.open(io.BytesIO(png)).convert("RGB"))
+        return result, cam_vis, cached["inference_ms"]
+
+    quality = check_image_quality(pil_img)
+    result, cam_vis, ms = _run_model(pil_img)
+    result["quality"] = quality
+    result["uncertainty"] = check_uncertainty(result["multiclass"]["probs"])
+    result["meta"]["from_cache"] = False
+
+    save_cached(key, {"result": result, "inference_ms": ms})
+    return result, cam_vis, ms
+
+
+def _run_model(pil_img):
     """
     Chạy EfficientNet-B0 binary + multiclass + Grad-CAM.
 
@@ -352,21 +389,24 @@ def run_ai_inference(pil_img):
 
     start = time.perf_counter()
 
-    with torch.no_grad():
+    if onnx_predictor:
+        p_malig, probs_mc = onnx_predictor.predict(inp.cpu().numpy())
+    else:
+        with torch.no_grad():
 
-        logits_bin = model_bin(inp)
+            logits_bin = model_bin(inp)
 
-        p_malig = torch.softmax(
-            logits_bin,
-            dim=1,
-        )[0, 1].item()
+            p_malig = torch.softmax(
+                logits_bin,
+                dim=1,
+            )[0, 1].item()
 
-        logits_mc = model_mc(inp)
+            logits_mc = model_mc(inp)
 
-        probs_mc = torch.softmax(
-            logits_mc,
-            dim=1,
-        )[0].cpu().numpy()
+            probs_mc = torch.softmax(
+                logits_mc,
+                dim=1,
+            )[0].cpu().numpy()
 
     pred_idx = int(
         probs_mc.argmax()
@@ -553,6 +593,20 @@ def patient_portal():
     return render_template('index.html', portal_role='USER')
 
 
+@app.route('/logout')
+def app_logout():
+    try:
+        if current_user.is_authenticated:
+            logout_user()
+    except Exception:
+        pass
+    session.clear()
+    resp = redirect('/')
+    resp.delete_cookie(app.config.get('SESSION_COOKIE_NAME', 'session'), path='/')
+    resp.delete_cookie(app.config.get('REMEMBER_COOKIE_NAME', 'remember_token'), path='/')
+    return resp
+
+
 @app.route('/health')
 def health():
     return jsonify({
@@ -656,273 +710,40 @@ def predict():
             }
         ), 500
 
-@app.route(
-    "/api/case-images/"
-    "<int:case_image_id>/analyze",
-    methods=["POST"],
-)
-@limiter.limit(
-    lambda: current_app.config["RATELIMIT_EXPENSIVE"]
-)
+@app.route("/api/case-images/<int:case_image_id>/analyze", methods=["POST"])
+@limiter.limit(lambda: current_app.config["RATELIMIT_EXPENSIVE"])
 @require_roles("ADMIN", "DOCTOR")
-def analyze_case_image(
-    case_image_id,
-):
-    """
-    Nối:
-    Batch Upload
-        -> CaseImage
-        -> EfficientNet
-        -> Grad-CAM
-        -> Analysis
-        -> AnalysisResult
-    """
-
-    case_image = db.session.get(
-        CaseImage,
-        case_image_id,
-    )
-
+def analyze_case_image(case_image_id):
+    """Tạo Analysis (PENDING), đẩy việc vào hàng đợi Celery rồi trả về ngay."""
+    case_image = db.session.get(CaseImage, case_image_id)
     if not case_image:
-        return jsonify(
-            {
-                "error":
-                    "Không tìm thấy ảnh."
-            }
-        ), 404
+        return jsonify({"error": "Không tìm thấy ảnh."}), 404
 
-    case = visible_case_or_404(
-        case_image.case_id
-    )
+    case = visible_case_or_404(case_image.case_id)
 
-    if (
-        not case_image.image_path
-        or case_image.status
-        == "FAILED"
-    ):
-        return jsonify(
-            {
-                "error":
-                    "Ảnh upload không hợp lệ."
-            }
-        ), 400
+    if not case_image.image_path or case_image.status == "FAILED":
+        return jsonify({"error": "Ảnh upload không hợp lệ."}), 400
 
-    upload_root = Path(
-        app.config[
-            "UPLOAD_FOLDER"
-        ]
-    ).resolve()
+    upload_root = Path(app.config["UPLOAD_FOLDER"]).resolve()
+    image_path = Path(case_image.image_path).resolve()
+    if upload_root not in image_path.parents or not image_path.is_file():
+        return jsonify({"error": "Không tìm thấy file ảnh."}), 404
 
-    image_path = Path(
-        case_image.image_path
-    ).resolve()
-
-    # chống path traversal
-    if (
-        upload_root
-        not in image_path.parents
-        or not image_path.is_file()
-    ):
-        return jsonify(
-            {
-                "error":
-                    "Không tìm thấy file ảnh."
-            }
-        ), 404
-
-    analysis = Analysis(
-        case_id=case.id,
-        case_image_id=case_image.id,
-        status="PROCESSING",
-        started_at=utcnow_naive(),
-    )
-
-    gradcam_path = None
-    analysis_id = None
+    analysis = Analysis(case_id=case.id, case_image_id=case_image.id, status="PENDING")
+    db.session.add(analysis)
+    db.session.commit()
 
     try:
-
-        case_image.status = (
-            "PROCESSING"
+        analyze_task.apply_async(
+            args=[analysis.id, case_image.id],
+            task_id=f"analysis-{analysis.id}",
         )
-
-        db.session.add(
-            analysis
-        )
-
-        db.session.flush()
-
-        analysis_id = analysis.id
-        db.session.commit()
-
-        try:
-
-            pil_img = Image.open(
-                image_path
-            ).convert("RGB")
-
-        except (
-            UnidentifiedImageError,
-            OSError,
-            ValueError,
-        ):
-
-            raise ValueError(
-                "File ảnh không hợp lệ"
-            )
-
-        (
-            data,
-            cam_vis,
-            inference_time_ms,
-        ) = run_ai_inference(
-            pil_img
-        )
-
-        # ======================================
-        # SAVE GRAD-CAM
-        # ======================================
-
-        gradcam_dir = (
-            PROJECT_ROOT
-            / "instance"
-            / "gradcam"
-        ).resolve()
-
-        gradcam_dir.mkdir(
-            parents=True,
-            exist_ok=True,
-        )
-
-        gradcam_path = (
-            gradcam_dir
-            / (
-                f"analysis_"
-                f"{analysis.id}_"
-                f"{uuid4().hex}.png"
-            )
-        )
-
-        Image.fromarray(
-            cam_vis
-        ).save(
-            gradcam_path,
-            format="PNG",
-        )
-
-        analysis.gradcam_path = str(
-            gradcam_path
-        )
-
-        analysis.status = (
-            "COMPLETED"
-        )
-
-        analysis.completed_at = (
-            utcnow_naive()
-        )
-
-        analysis.error_message = None
-
-        result = AnalysisResult(
-            analysis_id=analysis.id,
-
-            model_name=(
-                "EfficientNet-B0"
-            ),
-
-            binary_result=(
-                data["binary"][
-                    "prediction"
-                ]
-            ),
-
-            binary_probability=(
-                data["binary"][
-                    "prob_malignant"
-                ]
-            ),
-
-            predicted_class=(
-                data["multiclass"][
-                    "pred_class"
-                ]
-            ),
-
-            predicted_probability=(
-                data["multiclass"][
-                    "pred_conf"
-                ]
-            ),
-
-            class_probabilities=(
-                data["multiclass"][
-                    "probs"
-                ]
-            ),
-
-            inference_time_ms=(
-                inference_time_ms
-            ),
-        )
-
-        db.session.add(result)
-
-        case_image.status = (
-            "COMPLETED"
-        )
-
-        if case.status in {
-            "CREATED",
-            "UPLOADED",
-        }:
-            case.status = (
-                "ANALYZED"
-            )
-
-        db.session.commit()
-
-        data[
-            "analysis_id"
-        ] = analysis.id
-
-        data[
-            "case_image_id"
-        ] = case_image.id
-
-        data[
-            "case_id"
-        ] = case.id
-
-        return jsonify(data)
-
     except Exception as exc:
+        mark_analysis_failed(analysis.id, case_image.id, exc)
+        app.logger.exception("Không đưa được việc vào hàng đợi")
+        return jsonify({"error": "Hệ thống hàng đợi chưa sẵn sàng, thử lại sau."}), 503
 
-        mark_analysis_failed(
-            analysis_id,
-            case_image_id,
-            exc,
-        )
-
-        if gradcam_path:
-            Path(
-                gradcam_path
-            ).unlink(
-                missing_ok=True
-            )
-
-        app.logger.exception(
-            "AI analysis failed for case image %s",
-            case_image.id,
-        )
-
-        return jsonify(
-            {
-                "error":
-                    "Không thể phân tích "
-                    "ảnh đã upload.",
-            }
-        ), 500
+    return jsonify({"analysis_id": analysis.id, "status": "PENDING"}), 202
 
 if __name__ == '__main__':
     print()

@@ -6,6 +6,7 @@ from werkzeug.exceptions import HTTPException, RequestEntityTooLarge
 from .extensions import db, login_manager, csrf, limiter
 
 
+
 def register_database_api(app):
     login_manager.init_app(app)
     csrf.init_app(app)
@@ -21,6 +22,10 @@ def register_database_api(app):
     from .routes.site_settings import bp as site_settings_bp
     from .routes.admin import bp as admin_bp
     from .routes.comparison import bp as comparison_bp
+    from .routes.focus_region import bp as focus_region_bp
+    from .routes.timeline import bp as timeline_bp
+    from .routes.analysis_status import bp as analysis_status_bp
+
     app.register_blueprint(auth_bp)
     app.register_blueprint(cases_bp)
     app.register_blueprint(reports_bp)
@@ -32,6 +37,9 @@ def register_database_api(app):
     app.register_blueprint(site_settings_bp)
     app.register_blueprint(admin_bp)
     app.register_blueprint(comparison_bp)
+    app.register_blueprint(focus_region_bp)
+    app.register_blueprint(timeline_bp)
+    app.register_blueprint(analysis_status_bp)
 
     @app.errorhandler(CSRFError)
     def csrf_error(_error):

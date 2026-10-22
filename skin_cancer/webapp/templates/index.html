@@ -2487,7 +2487,7 @@
     }
 
     #analyze .section-head { margin-bottom: 26px; }
-    #analyze .analyzer-grid { display: grid; grid-template-columns: minmax(340px, .82fr) minmax(0, 1.18fr); align-items: start; gap: 24px; }
+    #analyze .analyzer-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 24px; max-width: 1000px; margin-inline: auto; }
     #analyze .panel { min-width: 0; padding: clamp(20px, 2.2vw, 30px); border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 30px rgb(15 23 42 / 6%); }
     #analyze .panel:hover { box-shadow: 0 16px 34px rgb(15 23 42 / 9%); }
     #analyze .panel-head { margin-bottom: 22px; padding-bottom: 17px; }
@@ -2604,7 +2604,7 @@
 
     .hp-in-grid {
       display: grid;
-      grid-template-columns: minmax(280px, 370px) 1fr;
+      grid-template-columns: 1fr;
       gap: 24px;
       align-items: start;
     }
@@ -4027,6 +4027,9 @@
               <button type="button" id="sendEmailBtn" class="workflow-action-btn" disabled>
                 Gửi Email
               </button>
+              <button type="button" id="viewTimelineBtn" class="workflow-action-btn" style="background:#ecfdf5;border:1px solid #6ee7b7;color:#047857;font-weight:600;">
+                📈 Xem Timeline
+              </button>
             </div>
 
             <!-- MEASUREMENT -->
@@ -5262,7 +5265,9 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/focus_region.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/timeline.js') }}?v=3.0"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}?v=3.0"></script>
   <script src="{{ url_for('static', filename='js/patient.js') }}"></script>
 
   <!-- ============ HOMEPAGE AUTH LOGIC (KHÔNG SỬA main.js) ============ -->
@@ -5918,12 +5923,24 @@
         });
       }
 
-      // Đăng xuất ở navbar -> dùng lại handler logout của main.js
+      // Đăng xuất ở navbar -> gọi trực tiếp executeLogout và xóa sạch session
       var hpNavLogout = el("hpNavLogoutBtn");
       if (hpNavLogout) {
-        hpNavLogout.addEventListener("click", function () {
-          var mainLogout = el("logoutBtn");
-          if (mainLogout) mainLogout.click();
+        hpNavLogout.addEventListener("click", function (e) {
+          e.preventDefault();
+          hpSaveSession(null);
+          currentUser = null;
+          ["dermascan_current_user", "currentUser", "dermascan_doctor_profile", "role", "user"].forEach(function(k) {
+            try { localStorage.removeItem(k); } catch(err){}
+          });
+          try { sessionStorage.clear(); } catch(err){}
+          if (typeof window.executeLogout === "function") {
+            window.executeLogout();
+          } else {
+            var mainLogout = el("logoutBtn");
+            if (mainLogout) mainLogout.click();
+            else window.location.href = "/logout";
+          }
         });
       }
 

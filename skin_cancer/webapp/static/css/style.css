@@ -1386,9 +1386,11 @@ html[data-theme="dark"] .model-selector-field small {
 
 .analyzer-grid {
   display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 22px;
+  grid-template-columns: 1fr;
+  gap: 24px;
   align-items: start;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 @media (max-width: 960px) {
@@ -1398,11 +1400,11 @@ html[data-theme="dark"] .model-selector-field small {
 }
 
 /* ============================================================
-   ANALYZER INNER GRID (Patient + Upload side-by-side)
+   ANALYZER INNER GRID (Patient + Upload)
 ============================================================ */
 .hp-in-grid {
   display: grid;
-  grid-template-columns: 1fr 1.2fr;
+  grid-template-columns: 1fr;
   gap: 18px;
   margin-top: 20px;
 }

@@ -3,12 +3,12 @@ import hashlib
 import secrets
 import sys
 import traceback
-from flask import Blueprint, current_app, request, jsonify, session, abort
+from flask import Blueprint, current_app, request, jsonify, session, abort, redirect
 from flask_login import current_user, login_user, logout_user
 from flask_wtf.csrf import generate_csrf
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from werkzeug.exceptions import HTTPException
-from ..extensions import db, limiter, login_manager
+from ..extensions import db, limiter, login_manager, csrf
 from ..models import User, AuditLog, DoctorApplication, SecuritySetting
 from ..models.base import utcnow
 from ..services.access import require_roles
@@ -256,37 +256,64 @@ def verify_two_factor():
     return login_response(user)
 
 
-@bp.post('/logout')
-@require_roles()
+@bp.route('/logout', methods=['GET', 'POST'])
+@csrf.exempt
 def logout():
-    # Resolve Flask-Login's LocalProxy before ending the session.  Audit-log
-    # storage must never prevent a user from ending an authenticated session.
-    user = current_user._get_current_object()
+    """Đăng xuất an toàn cho mọi vai trò (Doctor, User, v.v.), xóa sạch session và cookie."""
     try:
-        _audit(user.email, "LOGOUT", True, user)
-        db.session.commit()
-    except SQLAlchemyError:
-        db.session.rollback()
-        current_app.logger.exception("Could not persist logout audit event")
-    logout_user()
+        if current_user.is_authenticated:
+            user = current_user._get_current_object()
+            try:
+                _audit(user.email, "LOGOUT", True, user)
+                db.session.commit()
+            except SQLAlchemyError:
+                db.session.rollback()
+                current_app.logger.exception("Could not persist logout audit event")
+            logout_user()
+    except Exception:
+        pass
     session.clear()
-    return jsonify(success=True, redirect_url='/')
+
+    if request.method == 'GET':
+        resp = redirect('/')
+    else:
+        resp = jsonify(success=True, redirect_url='/')
+
+    cookie_name = current_app.config.get('SESSION_COOKIE_NAME', 'session')
+    remember_cookie = current_app.config.get('REMEMBER_COOKIE_NAME', 'remember_token')
+    resp.delete_cookie(cookie_name, path='/')
+    resp.delete_cookie(remember_cookie, path='/')
+    return resp
 
 
-@bp.post('/admin/logout')
-@require_roles('ADMIN')
+@bp.route('/admin/logout', methods=['GET', 'POST'])
+@csrf.exempt
 def admin_logout():
-    """End the administrator session and remove all session data."""
-    user = current_user._get_current_object()
+    """End the administrator session and remove all session data and cookies."""
     try:
-        _audit(user.email, "ADMIN_LOGOUT", True, user)
-        db.session.commit()
-    except SQLAlchemyError:
-        db.session.rollback()
-        current_app.logger.exception("Could not persist admin logout audit event")
-    logout_user()
+        if current_user.is_authenticated:
+            user = current_user._get_current_object()
+            try:
+                _audit(user.email, "ADMIN_LOGOUT", True, user)
+                db.session.commit()
+            except SQLAlchemyError:
+                db.session.rollback()
+                current_app.logger.exception("Could not persist admin logout audit event")
+            logout_user()
+    except Exception:
+        pass
     session.clear()
-    return jsonify(success=True, redirect_url='/')
+
+    if request.method == 'GET':
+        resp = redirect('/')
+    else:
+        resp = jsonify(success=True, redirect_url='/')
+
+    cookie_name = current_app.config.get('SESSION_COOKIE_NAME', 'session')
+    remember_cookie = current_app.config.get('REMEMBER_COOKIE_NAME', 'remember_token')
+    resp.delete_cookie(cookie_name, path='/')
+    resp.delete_cookie(remember_cookie, path='/')
+    return resp
 
 
 @bp.get('/admin/me')
