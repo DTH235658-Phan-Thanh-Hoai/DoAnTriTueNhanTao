@@ -2488,21 +2488,176 @@
 
     #analyze .section-head { margin-bottom: 26px; }
     #analyze .analyzer-grid { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 24px; max-width: 1000px; margin-inline: auto; }
-    #analyze .panel { min-width: 0; padding: clamp(20px, 2.2vw, 30px); border: 1px solid #e2e8f0; border-radius: 20px; background: #fff; box-shadow: 0 12px 30px rgb(15 23 42 / 6%); }
+    #analyze .panel {
+      min-width: 0;
+      padding: clamp(20px, 2.2vw, 30px);
+      border: 1px solid var(--border, #e2e8f0);
+      border-radius: 20px;
+      background: var(--surface, #ffffff);
+      box-shadow: 0 12px 30px rgb(15 23 42 / 6%);
+      transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
     #analyze .panel:hover { box-shadow: 0 16px 34px rgb(15 23 42 / 9%); }
-    #analyze .panel-head { margin-bottom: 22px; padding-bottom: 17px; }
+    #analyze .panel-head {
+      margin-bottom: 22px;
+      padding-bottom: 17px;
+      border-bottom: 1px solid var(--border, #eef1f6);
+    }
+    #analyze .panel-title { color: var(--ink-900, #0f172a); }
+    #analyze .panel-sub { color: var(--ink-400, #64748b); }
     #analyze .panel-num { background: var(--brand-green); box-shadow: 0 7px 16px rgb(43 161 73 / 20%); }
     #analyze .hp-in-grid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-    #analyze .patient-selector { gap: 14px; padding: 18px; border-radius: 16px; background: #f8fafc; }
+    #analyze .patient-selector {
+      gap: 14px;
+      padding: 18px;
+      border-radius: 16px;
+      border: 1px solid var(--border, #e2e8f0);
+      background: var(--ink-50, #f8fafc);
+    }
     #analyze .dropzone { min-height: 230px; border-radius: 16px; }
-    #analyze .panel-upload .btn-primary { background: var(--brand-green); box-shadow: 0 10px 22px rgb(43 161 73 / 20%); }
-    #analyze .panel-upload .btn-primary:hover:not(:disabled) { background: #23883d; }
+
+    
+    /* ===== HÀNG NÚT THAO TÁC GỌN GÀNG 1 HÀNG ===== */
+    .upload-action-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      margin-top: 14px;
+    }
+    .upload-action-row #analyzeBtn {
+      flex: 1 1 auto;
+      min-width: 0;
+      margin: 0 !important;
+      min-height: 48px;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .upload-action-row #resetBtn {
+      flex: 0 0 auto;
+      margin: 0 !important;
+      min-height: 48px;
+      padding: 12px 18px;
+      font-size: 13.5px;
+      font-weight: 600;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      border: 1.5px solid var(--border-strong, #cbd5e1);
+      background: var(--surface, #ffffff);
+      color: var(--ink-700, #334155);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .upload-action-row #resetBtn:hover {
+      background: var(--ink-50, #f1f5f9);
+      border-color: var(--ink-400, #94a3b8);
+      color: var(--ink-900, #0f172a);
+    }
+    .upload-action-row #resetBtn.hidden {
+      display: none !important;
+    }
+
+    #analyze .panel-upload .btn-primary.is-completed {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+      color: #ffffff !important;
+      opacity: 1 !important;
+      cursor: default !important;
+      box-shadow: 0 8px 20px -4px rgba(22, 163, 74, 0.45) !important;
+    }
+    #analyze .panel-upload .btn-primary.is-completed span {
+      color: #ffffff !important;
+      font-weight: 700 !important;
+    }
+
+    html[data-theme="dark"] .upload-action-row #resetBtn {
+      background: #16203a !important;
+      border-color: #33475f !important;
+      color: #cbd5e1 !important;
+    }
+    html[data-theme="dark"] .upload-action-row #resetBtn:hover {
+      background: #1e293b !important;
+      border-color: #475569 !important;
+      color: #f8fafc !important;
+    }
+    html[data-theme="dark"] #analyze .panel-upload .btn-primary.is-completed {
+      background: linear-gradient(135deg, #16a34a 0%, #15803d 100%) !important;
+      color: #ffffff !important;
+      opacity: 1 !important;
+      box-shadow: 0 8px 22px -4px rgba(22, 163, 74, 0.5) !important;
+    }
+    html[data-theme="dark"] #analyze .panel-upload .btn-primary.is-completed span {
+      color: #ffffff !important;
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-icon {
+      animation: spin 1s linear infinite;
+    }
+
+    /* Button Tải lên & phân tích - Chuẩn hóa màu chữ & nền */
+    #analyze .panel-upload .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14.5px;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    #analyze .panel-upload .btn-primary span {
+      color: inherit !important;
+      font-weight: 700;
+    }
+    #analyze .panel-upload .btn-primary:not(:disabled) {
+      background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 10px 22px rgba(43, 161, 73, 0.35) !important;
+      cursor: pointer !important;
+    }
+    #analyze .panel-upload .btn-primary:not(:disabled):hover {
+      background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+      box-shadow: 0 14px 28px rgba(43, 161, 73, 0.45) !important;
+      transform: translateY(-1px);
+    }
+    #analyze .panel-upload .btn-primary:disabled {
+      background: #e2e8f0 !important;
+      color: #94a3b8 !important;
+      border: 1px solid #cbd5e1 !important;
+      box-shadow: none !important;
+      cursor: not-allowed !important;
+      transform: none !important;
+      opacity: 0.9 !important;
+    }
+
     #analyze :is(input, select, textarea, button):focus-visible { outline: 3px solid rgb(43 161 73 / 28%); outline-offset: 2px; }
     #analyze .state-results { display: grid; gap: 18px; }
     #analyze .verdict, #analyze .hp-result-grid .block, #analyze .interp,
     #analyze .doctor-diagnosis, #analyze .workflow-tools { min-width: 0; border-radius: 18px; }
     #analyze .hp-result-grid { grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr); gap: 18px; }
-    #analyze .hp-result-grid .block { margin: 0; padding: 14px; border: 1px solid #e8edf3; background: #fff; }
+    #analyze .hp-result-grid .block {
+      margin: 0;
+      padding: 14px;
+      border: 1px solid var(--border, #e8edf3);
+      background: var(--surface, #ffffff);
+    }
     #analyze .hp-result-details { display: grid; align-content: start; gap: 14px; min-width: 0; }
     #analyze .hp-result-details .block { margin: 0; }
     #analyze .hp-orig-figure, #analyze .hp-cam-figure { width: min(100%, 420px); margin: 0 auto; border-radius: 14px; }
@@ -2516,17 +2671,273 @@
     #analyze .prob-bar { min-width: 0; border-radius: inherit; }
     #analyze .prob-value { text-align: right; font-variant-numeric: tabular-nums; }
     #analyze .doctor-diagnosis, #analyze .workflow-tools { padding: clamp(18px, 2vw, 24px); }
-    #analyze .doctor-diagnosis { border-color: #e2e8f0; background: #fff; }
+    #analyze .doctor-diagnosis {
+      border: 1px solid var(--border, #e2e8f0);
+      background: var(--surface, #ffffff);
+    }
     #analyze .doctor-review-form { display: grid; gap: 16px; }
     #analyze .doctor-review-field { min-width: 0; }
-    #analyze .doctor-review-field textarea { box-sizing: border-box; width: 100%; min-height: 96px; resize: vertical; border: 1px solid #cbd5e1; border-radius: 12px; padding: 13px 14px; transition: border-color .18s ease, box-shadow .18s ease; }
+    #analyze .doctor-review-field textarea {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 96px;
+      resize: vertical;
+      border: 1px solid var(--border-strong, #cbd5e1);
+      border-radius: 12px;
+      padding: 13px 14px;
+      background: var(--surface, #ffffff);
+      color: var(--ink-900, #0f172a);
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
     #analyze .doctor-review-field textarea:focus { border-color: var(--brand-green); box-shadow: 0 0 0 3px rgb(43 161 73 / 14%); outline: none; }
     #analyze .doctor-review-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding-top: 4px; }
     #analyze .doctor-save-btn { border-color: var(--brand-green); background: var(--brand-green); color: #fff; }
     #analyze .doctor-save-btn:hover:not(:disabled) { background: #23883d; color: #fff; }
-    #analyze .workflow-tools { border: 1px solid #e2e8f0; background: #f8fafc; }
+    #analyze .workflow-tools {
+      border: 1px solid var(--border, #e2e8f0);
+      background: var(--ink-50, #f8fafc);
+    }
     #analyze .workflow-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 12px; }
     #analyze .workflow-action-btn { min-width: 0; min-height: 44px; border-radius: 12px; }
+
+    /* ========================================================
+       DARK MODE ĐỒNG BỘ CAO CẤP CHO #analyze
+       ======================================================== */
+    html[data-theme="dark"] #analyze .panel {
+      background: #121b30 !important;
+      border: 1px solid #223049 !important;
+      box-shadow: 0 16px 40px -26px rgba(0, 0, 0, 0.85) !important;
+    }
+    html[data-theme="dark"] #analyze .panel:hover {
+      box-shadow: 0 22px 48px -26px rgba(0, 0, 0, 0.95) !important;
+    }
+    html[data-theme="dark"] #analyze .panel-head {
+      border-bottom-color: #223049 !important;
+    }
+    html[data-theme="dark"] #analyze .panel-title { color: #f8fafc !important; }
+    html[data-theme="dark"] #analyze .panel-sub { color: #94a3b8 !important; }
+    html[data-theme="dark"] #analyze .patient-selector {
+      background: #0d1526 !important;
+      border: 1px solid #223049 !important;
+    }
+    html[data-theme="dark"] #analyze .patient-selector-head label,
+    html[data-theme="dark"] #analyze .lesion-location-field label,
+    html[data-theme="dark"] #analyze .model-selector-field label {
+      color: #cbd5e1 !important;
+    }
+    html[data-theme="dark"] #analyze .patient-selector > small,
+    html[data-theme="dark"] #analyze .model-selector-field small {
+      color: #8f9db3 !important;
+    }
+    html[data-theme="dark"] #analyze .patient-selector select,
+    html[data-theme="dark"] #analyze .lesion-location-field input {
+      background: #16203a !important;
+      border-color: #33475f !important;
+      color: #f8fafc !important;
+    }
+    html[data-theme="dark"] #analyze .patient-selector select:focus,
+    html[data-theme="dark"] #analyze .lesion-location-field input:focus {
+      border-color: #2ba149 !important;
+      background: #0b1220 !important;
+    }
+    html[data-theme="dark"] #analyze .patient-selector select:disabled {
+      background: #0f172a !important;
+      border-color: #1e293b !important;
+      color: #64748b !important;
+    }
+    html[data-theme="dark"] #analyze .panel-upload .btn-primary:not(:disabled) {
+      background: linear-gradient(135deg, #2ba149 0%, #22833b 100%) !important;
+      color: #ffffff !important;
+      box-shadow: 0 10px 24px -4px rgba(43, 161, 73, 0.5) !important;
+    }
+    html[data-theme="dark"] #analyze .panel-upload .btn-primary:disabled {
+      background: #1e293b !important;
+      color: #64748b !important;
+      border: 1px solid #334155 !important;
+      box-shadow: none !important;
+      cursor: not-allowed !important;
+      opacity: 0.9 !important;
+    }
+    html[data-theme="dark"] #analyze .panel-upload .btn-primary:disabled span {
+      color: #64748b !important;
+    }
+    html[data-theme="dark"] #analyze .hp-result-grid .block {
+      background: #121b30 !important;
+      border-color: #223049 !important;
+    }
+    html[data-theme="dark"] #analyze .block-title { color: #f8fafc !important; }
+    html[data-theme="dark"] #analyze .block-meta {
+      background: #16203a !important;
+      border-color: #223049 !important;
+      color: #94a3b8 !important;
+    }
+    html[data-theme="dark"] #analyze .doctor-diagnosis {
+      background: #121b30 !important;
+      border-color: #223049 !important;
+    }
+    html[data-theme="dark"] #analyze .doctor-diagnosis .block-title { color: #f8fafc !important; }
+    html[data-theme="dark"] #analyze .doctor-diagnosis-sub,
+    html[data-theme="dark"] #analyze .doctor-review-note {
+      color: #94a3b8 !important;
+    }
+    html[data-theme="dark"] #analyze .doctor-review-field label { color: #cbd5e1 !important; }
+    html[data-theme="dark"] #analyze .doctor-review-field textarea {
+      background: #16203a !important;
+      border-color: #33475f !important;
+      color: #f8fafc !important;
+    }
+    html[data-theme="dark"] #analyze .doctor-review-field textarea:focus {
+      border-color: #2ba149 !important;
+      box-shadow: 0 0 0 3px rgba(43, 161, 73, 0.25) !important;
+    }
+    html[data-theme="dark"] #analyze .doctor-review-status {
+      background: #16203a !important;
+      border-color: #33475f !important;
+      color: #94a3b8 !important;
+    }
+    html[data-theme="dark"] #analyze .workflow-tools {
+      background: #121b30 !important;
+      border-color: #223049 !important;
+    }
+    html[data-theme="dark"] #analyze .workflow-tools .block-title { color: #f8fafc !important; }
+    html[data-theme="dark"] #analyze .workflow-action-btn {
+      background: #16203a !important;
+      border-color: #33475f !important;
+      color: #cbd5e1 !important;
+    }
+    html[data-theme="dark"] #analyze .workflow-action-btn:hover:not(:disabled) {
+      background: rgba(43, 161, 73, 0.18) !important;
+      border-color: #2ba149 !important;
+      color: #7dd4a0 !important;
+    }
+    html[data-theme="dark"] #analyze .workflow-action-btn:disabled {
+      background: #0d1526 !important;
+      border-color: #1e293b !important;
+      color: #475467 !important;
+    }
+    html[data-theme="dark"] #analyze .interp {
+      background: #121b30 !important;
+      border-color: #223049 !important;
+      color: #cbd5e1 !important;
+    }
+    html[data-theme="dark"] #analyze .interp-headline { color: #f8fafc !important; }
+    html[data-theme="dark"] #analyze .interp-summary { color: #cbd5e1 !important; }
+    html[data-theme="dark"] #analyze .interp-detail { color: #94a3b8 !important; }
+    html[data-theme="dark"] #analyze .interp-actions {
+      background: #0d1526 !important;
+      border-color: #223049 !important;
+    }
+    html[data-theme="dark"] #analyze .interp-actions-title { color: #f8fafc !important; }
+    html[data-theme="dark"] #analyze .interp-actions-list li { color: #cbd5e1 !important; }
+    html[data-theme="dark"] #analyze .interp-conclusion {
+      background: #0d1526 !important;
+      border-color: #223049 !important;
+    }
+    html[data-theme="dark"] #analyze .interp-conclusion p { color: #cbd5e1 !important; }
+
+    /* ========================================================
+       CHATGPT FEATURE STYLES (Light & Dark)
+       ======================================================== */
+    .interp-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .interp-badges {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chatgpt-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #059669;
+      text-transform: uppercase;
+    }
+    html[data-theme="dark"] .chatgpt-pill {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(16, 185, 129, 0.5);
+      color: #34d399;
+    }
+    .chatgpt-regenerate-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .chatgpt-regenerate-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+      border-color: #94a3b8;
+    }
+    .chatgpt-regenerate-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    html[data-theme="dark"] .chatgpt-regenerate-btn {
+      background: #16203a;
+      border-color: #33475f;
+      color: #cbd5e1;
+    }
+    html[data-theme="dark"] .chatgpt-regenerate-btn:hover:not(:disabled) {
+      background: #1e293b;
+      color: #f8fafc;
+      border-color: #475569;
+    }
+    .doctor-head-actions {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chatgpt-suggest-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #059669;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .chatgpt-suggest-btn:hover {
+      background: rgba(16, 185, 129, 0.2);
+      border-color: #10b981;
+      color: #047857;
+    }
+    html[data-theme="dark"] .chatgpt-suggest-btn {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(16, 185, 129, 0.45);
+      color: #34d399;
+    }
+    html[data-theme="dark"] .chatgpt-suggest-btn:hover {
+      background: rgba(16, 185, 129, 0.28);
+      border-color: #34d399;
+      color: #6ee7b7;
+    }
 
     @media (max-width: 1050px) {
       #analyze .analyzer-grid { grid-template-columns: minmax(0, 1fr); }
@@ -3764,15 +4175,20 @@
               <span id="batchStatusText"></span>
             </div>
 
-            <!-- ANALYZE -->
+            <!-- ACTION BUTTONS: 1 HÀNG GỌN GÀNG -->
+            <div class="upload-action-row" id="uploadActionRow">
+              <button class="btn btn-primary" id="analyzeBtn" disabled>
+                <span>Tải lên & phân tích ảnh đầu tiên</span>
+              </button>
 
-            <button class="btn btn-primary" id="analyzeBtn" disabled>
-              <span> Tải lên & phân tích ảnh đầu tiên </span>
-            </button>
-
-            <button type="button" class="btn btn-ghost hidden" id="resetBtn">
-              Chọn batch ảnh khác
-            </button>
+              <button type="button" class="btn btn-ghost hidden" id="resetBtn" title="Chọn ảnh hoặc batch khác">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                  <path d="M3 3v5h5"/>
+                </svg>
+                <span>Chọn ảnh khác</span>
+              </button>
+            </div>
 
             <!-- UPLOADED ITEMS -->
 
@@ -3925,9 +4341,22 @@
 
           <div class="interp" id="interpCard">
             <div class="interp-head">
-              <span class="severity-badge" id="severityBadge"></span>
-
-              <span class="severity-note" id="severityNote"></span>
+              <div class="interp-badges">
+                <span class="severity-badge" id="severityBadge"></span>
+                <span class="severity-note" id="severityNote"></span>
+                <span class="chatgpt-pill" id="chatgptPill" title="Diễn giải ngữ cảnh thông minh bởi OpenAI ChatGPT">
+                  <svg viewBox="0 0 24 24" fill="currentColor" width="13" height="13">
+                    <path d="M22.28 10.37a5.53 5.53 0 0 0-.46-4.42 5.6 5.6 0 0 0-4.08-2.73 5.66 5.66 0 0 0-4.47.88 5.6 5.6 0 0 0-3.6-1.57 5.65 5.65 0 0 0-5.36 3.9 5.63 5.63 0 0 0-2.3 3.96 5.66 5.66 0 0 0 .8 4.6 5.53 5.53 0 0 0 .46 4.42 5.6 5.6 0 0 0 4.08 2.73 5.66 5.66 0 0 0 4.47-.88 5.6 5.6 0 0 0 3.6 1.57 5.65 5.65 0 0 0 5.36-3.9 5.63 5.63 0 0 0 2.3-3.96 5.66 5.66 0 0 0-.8-4.6z"/>
+                  </svg>
+                  <span>Tư vấn bởi ChatGPT</span>
+                </span>
+              </div>
+              <button type="button" class="chatgpt-regenerate-btn" id="chatgptRefreshBtn" title="Yêu cầu ChatGPT phân tích lại theo ngữ cảnh">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                </svg>
+                <span>Hỏi lại AI</span>
+              </button>
             </div>
 
             <h4 class="interp-headline" id="interpHeadline"></h4>
@@ -3958,9 +4387,14 @@
                 </p>
               </div>
 
-              <span id="doctorReviewStatus" class="doctor-review-status">
-                Chưa lưu
-              </span>
+              <div class="doctor-head-actions">
+                <button type="button" id="applyChatGptSuggestionBtn" class="workflow-small-btn chatgpt-suggest-btn" title="Điền nhanh gợi ý lâm sàng từ phân tích ChatGPT">
+                  ✨ Áp dụng gợi ý ChatGPT
+                </button>
+                <span id="doctorReviewStatus" class="doctor-review-status">
+                  Chưa lưu
+                </span>
+              </div>
             </div>
 
             <div class="doctor-review-form">

@@ -152,6 +152,10 @@ const interpDetail = $("interpDetail");
 const interpActions = $("interpActions");
 
 const interpConclusion = $("interpConclusion");
+const chatgptPill = $("chatgptPill");
+const chatgptRefreshBtn = $("chatgptRefreshBtn");
+const applyChatGptSuggestionBtn = $("applyChatGptSuggestionBtn");
+let currentDoctorSuggestion = null;
 
 // ================= SERVER STATUS =================
 
@@ -654,6 +658,7 @@ function patientDisplayDate(value) {
 // ============================================================
 
 function syncAnalyzeButton() {
+  if (analyzeBtn.classList.contains("is-completed")) return;
   const canUse =
     currentUser &&
     (currentUser.role === "DOCTOR" || currentUser.role === "ADMIN");
@@ -2014,6 +2019,8 @@ function setSelectedFiles(files) {
   renderSelectedFiles();
 
   if (selectedFiles.length) {
+    analyzeBtn.classList.remove("is-completed");
+    analyzeBtn.innerHTML = "<span>Tải lên & phân tích ảnh</span>";
     showPreview(selectedFiles[0]);
 
     syncAnalyzeButton();
@@ -2305,8 +2312,14 @@ analyzeBtn.addEventListener("click", async () => {
     loadingState.classList.remove("hidden");
 
     analyzeBtn.disabled = true;
-
-    analyzeBtn.textContent = "Đang tải ảnh...";
+    analyzeBtn.classList.remove("is-completed");
+    analyzeBtn.innerHTML = `
+      <svg class="spin-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+      </svg>
+      <span>Đang tải ảnh...</span>
+    `;
 
     const batch = await uploadBatch();
     await saveFocusRegions(batch.items);
@@ -2319,13 +2332,20 @@ analyzeBtn.addEventListener("click", async () => {
       throw new Error("Batch không có ảnh hợp lệ.");
     }
 
-    analyzeBtn.textContent = "Đang phân tích...";
+    analyzeBtn.innerHTML = `
+      <svg class="spin-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2">
+        <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+      </svg>
+      <span>Đang phân tích AI...</span>
+    `;
 
     await analyzeCaseImage(first.case_image_id);
 
     resetBtn.classList.remove("hidden");
-
-    analyzeBtn.textContent = "Batch đã tải lên";
+    analyzeBtn.classList.add("is-completed");
+    analyzeBtn.disabled = false;
+    analyzeBtn.innerHTML = "<span>✓ Đã phân tích xong</span>";
   } catch (error) {
     loadingState.classList.add("hidden");
 
@@ -2970,6 +2990,23 @@ function renderResults(data) {
     });
 
     interpConclusion.textContent = interpretation.conclusion;
+
+    // Cập nhật trạng thái ChatGPT
+    if (chatgptPill) {
+      chatgptPill.style.display = interpretation.chatgpt_powered ? "inline-flex" : "none";
+    }
+    if (interpretation.doctor_suggestion) {
+      currentDoctorSuggestion = interpretation.doctor_suggestion;
+      if (applyChatGptSuggestionBtn) {
+        applyChatGptSuggestionBtn.disabled = false;
+        applyChatGptSuggestionBtn.style.display = "inline-flex";
+      }
+    } else {
+      currentDoctorSuggestion = null;
+      if (applyChatGptSuggestionBtn) {
+        applyChatGptSuggestionBtn.disabled = true;
+      }
+    }
   }
 
   // ========================================================
@@ -3121,8 +3158,8 @@ function resetUpload() {
 
   batchStatusText.textContent = "";
 
-  analyzeBtn.textContent = "Tải lên & phân tích ảnh đầu tiên";
-
+  analyzeBtn.classList.remove("is-completed");
+  analyzeBtn.innerHTML = "<span>Tải lên & phân tích ảnh đầu tiên</span>";
   resetBtn.classList.add("hidden");
 
   resultsState.classList.add("hidden");
@@ -3540,3 +3577,94 @@ refreshAuthState();
 resetActionState();
 
 syncAnalyzeButton();
+
+// ============================================================
+// CHATGPT CONSULTATION EVENT LISTENERS
+// ============================================================
+if (chatgptRefreshBtn) {
+  chatgptRefreshBtn.addEventListener("click", async () => {
+    if (!currentAnalysisId) {
+      alert("Chưa có kết quả phân tích để yêu cầu ChatGPT tư vấn.");
+      return;
+    }
+    try {
+      chatgptRefreshBtn.disabled = true;
+      const originalText = chatgptRefreshBtn.innerHTML;
+      chatgptRefreshBtn.innerHTML = `
+        <svg class="spin-icon" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
+          <path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"></path>
+        </svg>
+        <span>Đang hỏi ChatGPT...</span>
+      `;
+
+      const csrfToken = await getCsrfToken();
+      const lesionLoc = lesionLocationInput ? lesionLocationInput.value.trim() : "";
+
+      const res = await fetch(`/api/analyses/${currentAnalysisId}/chatgpt-consult`, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({ lesion_location: lesionLoc }),
+      });
+
+      const data = await responseJson(res);
+      if (!res.ok) {
+        throw new Error(getErrorMessage(data, "Lỗi khi kết nối với ChatGPT."));
+      }
+
+      if (data.consultation) {
+        const c = data.consultation;
+        if (c.headline && interpHeadline) interpHeadline.textContent = c.headline;
+        if (c.summary && interpSummary) interpSummary.textContent = c.summary;
+        if (c.detail && interpDetail) interpDetail.textContent = c.detail;
+        if (Array.isArray(c.actions) && interpActions) {
+          interpActions.innerHTML = "";
+          c.actions.forEach((act) => {
+            const li = document.createElement("li");
+            li.textContent = act;
+            interpActions.appendChild(li);
+          });
+        }
+        if (c.conclusion && interpConclusion) interpConclusion.textContent = c.conclusion;
+
+        if (chatgptPill) chatgptPill.style.display = "inline-flex";
+
+        if (c.doctor_suggestion) {
+          currentDoctorSuggestion = c.doctor_suggestion;
+          if (applyChatGptSuggestionBtn) {
+            applyChatGptSuggestionBtn.disabled = false;
+            applyChatGptSuggestionBtn.style.display = "inline-flex";
+          }
+        }
+      }
+      chatgptRefreshBtn.innerHTML = originalText;
+    } catch (err) {
+      alert(err.message || "Không thể gọi ChatGPT.");
+    } finally {
+      chatgptRefreshBtn.disabled = false;
+    }
+  });
+}
+
+if (applyChatGptSuggestionBtn) {
+  applyChatGptSuggestionBtn.addEventListener("click", () => {
+    if (!currentDoctorSuggestion) {
+      alert("Chưa có gợi ý lâm sàng từ ChatGPT.");
+      return;
+    }
+    if (currentDoctorSuggestion.clinical_note && doctorClinicalNote) {
+      doctorClinicalNote.value = currentDoctorSuggestion.clinical_note;
+    }
+    if (currentDoctorSuggestion.doctor_conclusion && doctorConclusion) {
+      doctorConclusion.value = currentDoctorSuggestion.doctor_conclusion;
+    }
+    if (currentDoctorSuggestion.recommendation && doctorRecommendation) {
+      doctorRecommendation.value = currentDoctorSuggestion.recommendation;
+    }
+    syncDoctorReviewAction();
+  });
+}

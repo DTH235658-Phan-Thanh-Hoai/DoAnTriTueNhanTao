@@ -1731,3 +1731,94 @@ def save_analysis_review_draft(
                 review
             )
     )
+
+# ============================================================
+# CHATGPT CONSULTATION - TƯ VẤN CHẨN ĐOÁN THÔNG MINH
+# ============================================================
+@bp.post('/analyses/<int:analysis_id>/chatgpt-consult')
+@require_roles('ADMIN', 'DOCTOR')
+def chatgpt_consult(analysis_id):
+    """Gọi model ChatGPT để sinh phân tích tự nhiên theo ngữ cảnh hoặc tạo lại tư vấn."""
+    analysis = db.session.get(Analysis, analysis_id)
+    if not analysis:
+        return jsonify({'error': 'Không tìm thấy phân tích.'}), 404
+
+    case = visible_case_or_404(analysis.case_id)
+
+    if not analysis.results:
+        return jsonify({'error': 'Chưa có kết quả phân tích AI để tư vấn.'}), 400
+
+    res = analysis.results[0]
+    pred_class = res.predicted_class
+    p_malig = float(res.binary_probability if res.binary_probability is not None else 0.5)
+    probs_dict = res.class_probabilities or {pred_class: float(res.predicted_probability or 0.5)}
+
+    payload = request.get_json(silent=True) or {}
+    lesion_location = payload.get('lesion_location') or case.lesion_location or ''
+
+    # Cập nhật vị trí tổn thương vào case nếu client truyền vào
+    if payload.get('lesion_location') and payload['lesion_location'] != case.lesion_location:
+        case.lesion_location = payload['lesion_location']
+        db.session.commit()
+
+    context = {
+        'lesion_location': lesion_location,
+        'patient': case.patient_snapshot or (
+            {
+                'full_name': getattr(case.patient, 'full_name', None),
+                'gender': getattr(case.patient, 'gender', None),
+                'dob': str(getattr(case.patient, 'dob', '')) if getattr(case.patient, 'dob', None) else None,
+            }
+            if getattr(case, 'patient', None)
+            else None
+        ),
+    }
+
+    try:
+        from skin_cancer.webapp.app import CLASS_INFO
+    except ImportError:
+        CLASS_INFO = {}
+
+    info = CLASS_INFO.get(pred_class, {
+        'name_vi': pred_class,
+        'is_malignant': p_malig > 0.5,
+        'risk_level': 'Theo dõi',
+        'detail': ''
+    })
+
+    from skin_cancer.webapp.services.chatgpt_service import generate_chatgpt_consultation
+    consultation = generate_chatgpt_consultation(
+        p_malig=p_malig,
+        pred_class=pred_class,
+        probs_dict=probs_dict,
+        class_info=info,
+        context=context,
+    )
+
+    if not consultation:
+        return jsonify({
+            'error': 'Không thể kết nối đến ChatGPT. Vui lòng kiểm tra API key hoặc kết nối mạng.'
+        }), 502
+
+    # Cập nhật vào cache để frontend đọc lại khi refresh
+    try:
+        from skin_cancer.webapp.services.result_cache import get_cached, save_cached
+        cached = get_cached(f'analysis-result:{analysis_id}')
+        if cached and isinstance(cached, dict):
+            interp = cached.get('interpretation', {})
+            interp['headline'] = consultation.get('headline', interp.get('headline'))
+            interp['summary'] = consultation.get('summary', interp.get('summary'))
+            interp['detail'] = consultation.get('detail', interp.get('detail'))
+            interp['actions'] = consultation.get('actions', interp.get('actions'))
+            interp['conclusion'] = consultation.get('conclusion', interp.get('conclusion'))
+            interp['doctor_suggestion'] = consultation.get('doctor_suggestion')
+            interp['chatgpt_powered'] = True
+            cached['interpretation'] = interp
+            save_cached(f'analysis-result:{analysis_id}', cached)
+    except Exception as exc:
+        current_app.logger.warning('Lỗi lưu cache chatgpt consult: %s', exc)
+
+    return jsonify({
+        'success': True,
+        'consultation': consultation
+    })

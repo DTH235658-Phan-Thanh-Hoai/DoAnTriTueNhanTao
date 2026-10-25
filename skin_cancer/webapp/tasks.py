@@ -47,7 +47,19 @@ def _run_analysis(analysis_id, case_image_id):
                 raise ValueError("File ảnh không hợp lệ")
             pil_img = apply_focus_region(pil_img, case_image.focus_region)  # task 1
 
-            data, cam_vis, inference_time_ms = webapp.run_ai_inference(pil_img)
+            context = {
+                "lesion_location": case.lesion_location or "",
+                "patient": case.patient_snapshot or (
+                    {
+                        "full_name": getattr(case.patient, "full_name", None),
+                        "gender": getattr(case.patient, "gender", None),
+                        "dob": str(getattr(case.patient, "dob", "")) if getattr(case.patient, "dob", None) else None,
+                    }
+                    if getattr(case, "patient", None)
+                    else None
+                ),
+            }
+            data, cam_vis, inference_time_ms = webapp.run_ai_inference(pil_img, context=context)
 
             # Lưu ảnh Grad-CAM
             gradcam_dir = (webapp.PROJECT_ROOT / "instance" / "gradcam").resolve()
