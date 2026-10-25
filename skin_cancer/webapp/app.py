@@ -50,7 +50,7 @@ from skin_cancer.webapp.services.uncertainty import check_uncertainty
 from skin_cancer.webapp.services.result_cache import image_hash, get_cached, save_cached, is_redis_available
 from skin_cancer.webapp.services.focus_region import apply_focus_region
 from skin_cancer.webapp.services.onnx_inference import OnnxPredictor
-from skin_cancer.webapp.tasks import analyze_task
+from skin_cancer.webapp.tasks import analyze_task, _run_analysis
 
 # ============================================================
 # CONFIG
@@ -715,46 +715,50 @@ def predict():
 @require_roles("ADMIN", "DOCTOR")
 def analyze_case_image(case_image_id):
     """Tạo Analysis (PENDING), đẩy việc vào hàng đợi Celery rồi trả về ngay."""
-    case_image = db.session.get(CaseImage, case_image_id)
-    if not case_image:
-        return jsonify({"error": "Không tìm thấy ảnh."}), 404
+    try:
+        case_image = db.session.get(CaseImage, case_image_id)
+        if not case_image:
+            return jsonify({"error": "Không tìm thấy ảnh."}), 404
 
-    case = visible_case_or_404(case_image.case_id)
+        case = visible_case_or_404(case_image.case_id)
 
-    if not case_image.image_path or case_image.status == "FAILED":
-        return jsonify({"error": "Ảnh upload không hợp lệ."}), 400
+        if not case_image.image_path or case_image.status == "FAILED":
+            return jsonify({"error": "Ảnh upload không hợp lệ."}), 400
 
-    upload_root = Path(app.config["UPLOAD_FOLDER"]).resolve()
-    image_path = Path(case_image.image_path).resolve()
-    if upload_root not in image_path.parents or not image_path.is_file():
-        return jsonify({"error": "Không tìm thấy file ảnh."}), 404
+        upload_root = Path(app.config["UPLOAD_FOLDER"]).resolve()
+        image_path = Path(case_image.image_path).resolve()
+        if upload_root not in image_path.parents or not image_path.is_file():
+            return jsonify({"error": "Không tìm thấy file ảnh."}), 404
 
-    analysis = Analysis(case_id=case.id, case_image_id=case_image.id, status="PENDING")
-    db.session.add(analysis)
-    db.session.commit()
+        analysis = Analysis(case_id=case.id, case_image_id=case_image.id, status="PENDING")
+        db.session.add(analysis)
+        db.session.commit()
 
-    queued = False
-    if is_redis_available() and analyze_task is not None:
-        try:
-            analyze_task.apply_async(
-                args=[analysis.id, case_image.id],
-                task_id=f"analysis-{analysis.id}",
-            )
-            queued = True
-        except Exception as exc:
-            app.logger.info("Celery/Redis chưa bật, kích hoạt worker chạy ngầm cục bộ: %s", exc)
+        queued = False
+        if is_redis_available() and analyze_task is not None:
+            try:
+                analyze_task.apply_async(
+                    args=[analysis.id, case_image.id],
+                    task_id=f"analysis-{analysis.id}",
+                )
+                queued = True
+            except Exception as exc:
+                app.logger.info("Celery/Redis chưa bật, kích hoạt worker chạy ngầm cục bộ: %s", exc)
 
-    if not queued:
-        # Tự động chạy ngầm bằng Threading ngay trên tiến trình Flask (không cần Docker/Redis/Celery)
-        import threading
-        from .tasks import _run_analysis
-        threading.Thread(
-            target=_run_analysis,
-            args=(analysis.id, case_image.id),
-            daemon=True
-        ).start()
+        if not queued:
+            # Tự động chạy ngầm bằng Threading ngay trên tiến trình Flask (không cần Docker/Redis/Celery)
+            import threading
+            threading.Thread(
+                target=_run_analysis,
+                args=(analysis.id, case_image.id),
+                daemon=True
+            ).start()
 
-    return jsonify({"analysis_id": analysis.id, "status": "PENDING"}), 202
+        return jsonify({"analysis_id": analysis.id, "status": "PENDING"}), 202
+    except Exception as exc:
+        import traceback
+        traceback.print_exc()
+        raise
 
 if __name__ == '__main__':
     print()

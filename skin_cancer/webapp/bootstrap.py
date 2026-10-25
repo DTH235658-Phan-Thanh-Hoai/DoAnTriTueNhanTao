@@ -52,7 +52,15 @@ def register_database_api(app):
 
     @app.errorhandler(HTTPException)
     def http_error(error):
+        orig = getattr(error, 'original_exception', None)
+        if error.code == 500 or orig is not None:
+            app.logger.exception('HTTP Exception %s: %s', error.code, orig or error.description)
         return jsonify(success=False, message=error.description, error=error.description), error.code
+
+    @app.errorhandler(Exception)
+    def unhandled_error(error):
+        app.logger.exception('Unhandled Exception: %s', error)
+        return jsonify(success=False, message='Đã xảy ra lỗi trên máy chủ. Vui lòng thử lại sau.', error=str(error)), 500
 
     @app.errorhandler(SQLAlchemyError)
     def database_error(_error):
