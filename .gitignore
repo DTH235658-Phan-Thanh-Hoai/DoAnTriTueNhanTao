@@ -4,6 +4,12 @@ data/
 *.rar
 *.7z
 
+# ============ ENVIRONMENT & SECRETS ============
+.env
+.env.*
+.env.local
+!.env.example
+
 # ============ VIRTUAL ENV ============
 env/
 venv/
@@ -22,10 +28,12 @@ __pycache__/
 .idea/
 *.swp
 
-# ============ OUTPUT TẠM ============
+# ============ OUTPUT TẠM & RUNTIME ============
 *.log
 *.tmp
 temp/
+instance/*.db-journal
+instance/*.db-wal
 
 # ============ HỆ ĐIỀU HÀNH ============
 .DS_Store

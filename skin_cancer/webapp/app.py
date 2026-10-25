@@ -135,8 +135,9 @@ CLASS_INFO = {
 # ============================================================
 # INTERPRETATION ENGINE - Sinh thông điệp diễn giải
 # ============================================================
-def generate_interpretation(p_malig, pred_class, probs_dict):
-    """Sinh thông điệp diễn giải bằng tiếng Việt dựa trên xác suất."""
+def generate_interpretation(p_malig, pred_class, probs_dict, context=None):
+    """Sinh thông điệp diễn giải bằng tiếng Việt dựa trên xác suất,
+    kết hợp với ChatGPT để tạo câu trả lời tự nhiên tùy ngữ cảnh lâm sàng."""
 
     info = CLASS_INFO[pred_class]
     confidence = probs_dict[pred_class] * 100
@@ -159,98 +160,125 @@ def generate_interpretation(p_malig, pred_class, probs_dict):
         severity_label = 'LÀNH TÍNH'
         severity_note = 'Không đáng lo ngại'
 
-    # Headline diễn giải theo mức độ
-    if p_malig >= 0.85:
-        headline = 'Phát hiện dấu hiệu rất đáng ngờ của tổn thương ác tính'
-    elif p_malig >= 0.65:
-        headline = 'Có dấu hiệu nghi ngờ tổn thương ác tính'
-    elif p_malig >= 0.45:
-        headline = 'Tổn thương có một số đặc điểm cần theo dõi'
+    # Thử gọi OpenAI ChatGPT để tạo phản hồi tự nhiên, chuẩn mực y tế theo ngữ cảnh
+    chatgpt_data = None
+    try:
+        from skin_cancer.webapp.services.chatgpt_service import generate_chatgpt_consultation
+        chatgpt_data = generate_chatgpt_consultation(
+            p_malig=p_malig,
+            pred_class=pred_class,
+            probs_dict=probs_dict,
+            class_info=info,
+            context=context,
+        )
+    except Exception as exc:
+        app.logger.warning("ChatGPT consultation fallback to rule-based: %s", exc)
+
+    if chatgpt_data:
+        headline = chatgpt_data.get("headline", "")
+        summary = chatgpt_data.get("summary", "")
+        detail = chatgpt_data.get("detail", info["detail"])
+        actions = chatgpt_data.get("actions", [])
+        conclusion = chatgpt_data.get("conclusion", "")
+        doctor_suggestion = chatgpt_data.get("doctor_suggestion")
+        chatgpt_powered = True
     else:
-        headline = 'Không phát hiện dấu hiệu ung thư rõ ràng'
+        chatgpt_powered = False
+        doctor_suggestion = None
 
-    # Summary chi tiết
-    summary = (
-        f"Mô hình phân tích hình ảnh và nhận định đây có khoảng "
-        f"{confidence:.0f}% khả năng là {info['name_vi']}. "
-    )
+    if not chatgpt_data:
+    
+        if p_malig >= 0.85:
+            headline = 'Phát hiện dấu hiệu rất đáng ngờ của tổn thương ác tính'
+        elif p_malig >= 0.65:
+            headline = 'Có dấu hiệu nghi ngờ tổn thương ác tính'
+        elif p_malig >= 0.45:
+            headline = 'Tổn thương có một số đặc điểm cần theo dõi'
+        else:
+            headline = 'Không phát hiện dấu hiệu ung thư rõ ràng'
 
-    if info['is_malignant']:
-        if pred_class == 'AK':
-            summary += (
-                "Đây là tổn thương tiền ung thư — tuy chưa phải ung thư "
-                "nhưng cần được xử lý sớm để tránh tiến triển thành ung thư tế bào vảy. "
-            )
+        # Summary chi tiết
+        summary = (
+            f"Mô hình phân tích hình ảnh và nhận định đây có khoảng "
+            f"{confidence:.0f}% khả năng là {info['name_vi']}. "
+        )
+
+        if info['is_malignant']:
+            if pred_class == 'AK':
+                summary += (
+                    "Đây là tổn thương tiền ung thư — tuy chưa phải ung thư "
+                    "nhưng cần được xử lý sớm để tránh tiến triển thành ung thư tế bào vảy. "
+                )
+            else:
+                summary += (
+                    "Đây là tổn thương ác tính — cần được bác sĩ chuyên khoa "
+                    "đánh giá và có hướng xử lý phù hợp. "
+                )
         else:
             summary += (
-                "Đây là tổn thương ác tính — cần được bác sĩ chuyên khoa "
-                "đánh giá và có hướng xử lý phù hợp. "
+                "Đây là tổn thương lành tính, không có dấu hiệu ung thư. "
             )
-    else:
-        summary += (
-            "Đây là tổn thương lành tính, không có dấu hiệu ung thư. "
-        )
 
-    summary += info['description']
+        summary += info['description']
 
-    # Thêm so sánh với lớp thay thế nếu có
-    sorted_probs = sorted(probs_dict.items(), key=lambda x: -x[1])
-    if len(sorted_probs) > 1 and sorted_probs[1][1] > 0.15:
-        alt_cls, alt_prob = sorted_probs[1]
-        alt_info = CLASS_INFO[alt_cls]
-        summary += (
-            f" Ngoài ra, một số đặc điểm trên ảnh cũng có nét tương đồng với "
-            f"{alt_info['name_vi']} ({alt_prob * 100:.0f}%), do đó bác sĩ có thể "
-            f"cần phân biệt giữa hai tổn thương này."
-        )
+        # Thêm so sánh với lớp thay thế nếu có
+        sorted_probs = sorted(probs_dict.items(), key=lambda x: -x[1])
+        if len(sorted_probs) > 1 and sorted_probs[1][1] > 0.15:
+            alt_cls, alt_prob = sorted_probs[1]
+            alt_info = CLASS_INFO[alt_cls]
+            summary += (
+                f" Ngoài ra, một số đặc điểm trên ảnh cũng có nét tương đồng với "
+                f"{alt_info['name_vi']} ({alt_prob * 100:.0f}%), do đó bác sĩ có thể "
+                f"cần phân biệt giữa hai tổn thương này."
+            )
 
-    # Hành động cụ thể theo mức độ
-    if severity == 'urgent':
-        actions = [
-            'Đặt lịch khám bác sĩ chuyên khoa da liễu trong vòng 1–2 tuần tới.',
-            'Chụp ảnh và ghi lại kích thước tổn thương để theo dõi sự thay đổi.',
-            'Không tự ý cào, nặn hoặc bôi thuốc lên tổn thương.',
-            'Mang theo kết quả phân tích này khi đi khám để bác sĩ tham khảo.',
-            'Hạn chế tiếp xúc trực tiếp với ánh nắng mặt trời.',
-        ]
-        conclusion = (
-            "Kết quả này là cảnh báo quan trọng. Việc khám sớm giúp tăng đáng kể "
-            "khả năng điều trị thành công nếu tổn thương thực sự ác tính."
-        )
-    elif severity == 'warning':
-        actions = [
-            'Nên đặt lịch khám bác sĩ da liễu trong vòng 2–4 tuần.',
-            'Theo dõi sự thay đổi về kích thước, màu sắc và hình dạng tổn thương.',
-            'Bảo vệ vùng da bằng kem chống nắng có SPF 50+ khi ra ngoài.',
-            'Tránh tiếp xúc với ánh nắng trong khoảng 10h–16h.',
-            'Chụp ảnh so sánh mỗi tuần để phát hiện thay đổi sớm.',
-        ]
-        conclusion = (
-            "Tổn thương có một số đặc điểm cần được bác sĩ kiểm tra kỹ hơn. "
-            "Không nên quá lo lắng nhưng cũng không nên chủ quan."
-        )
-    elif severity == 'caution':
-        actions = [
-            'Theo dõi tổn thương trong 4–6 tuần tới.',
-            'Nếu tổn thương có thay đổi bất thường, đi khám ngay.',
-            'Chụp ảnh định kỳ để so sánh.',
-            'Tham khảo ý kiến bác sĩ nếu cảm thấy lo lắng.',
-        ]
-        conclusion = (
-            "Kết quả phân tích chưa đủ rõ ràng để kết luận. Cần theo dõi thêm "
-            "và thăm khám nếu có bất kỳ thay đổi nào."
-        )
-    else:
-        actions = [
-            'Kiểm tra da định kỳ 6–12 tháng một lần.',
-            'Sử dụng kem chống nắng hàng ngày để bảo vệ da.',
-            'Chú ý nếu có nốt ruồi mới xuất hiện hoặc nốt cũ thay đổi.',
-            'Duy trì lối sống lành mạnh, không hút thuốc lá.',
-        ]
-        conclusion = (
-            "Kết quả khả quan. Tiếp tục duy trì thói quen chăm sóc da tốt "
-            "và kiểm tra định kỳ để phòng ngừa."
-        )
+        # Hành động cụ thể theo mức độ
+        if severity == 'urgent':
+            actions = [
+                'Đặt lịch khám bác sĩ chuyên khoa da liễu trong vòng 1–2 tuần tới.',
+                'Chụp ảnh và ghi lại kích thước tổn thương để theo dõi sự thay đổi.',
+                'Không tự ý cào, nặn hoặc bôi thuốc lên tổn thương.',
+                'Mang theo kết quả phân tích này khi đi khám để bác sĩ tham khảo.',
+                'Hạn chế tiếp xúc trực tiếp với ánh nắng mặt trời.',
+            ]
+            conclusion = (
+                "Kết quả này là cảnh báo quan trọng. Việc khám sớm giúp tăng đáng kể "
+                "khả năng điều trị thành công nếu tổn thương thực sự ác tính."
+            )
+        elif severity == 'warning':
+            actions = [
+                'Nên đặt lịch khám bác sĩ da liễu trong vòng 2–4 tuần.',
+                'Theo dõi sự thay đổi về kích thước, màu sắc và hình dạng tổn thương.',
+                'Bảo vệ vùng da bằng kem chống nắng có SPF 50+ khi ra ngoài.',
+                'Tránh tiếp xúc với ánh nắng trong khoảng 10h–16h.',
+                'Chụp ảnh so sánh mỗi tuần để phát hiện thay đổi sớm.',
+            ]
+            conclusion = (
+                "Tổn thương có một số đặc điểm cần được bác sĩ kiểm tra kỹ hơn. "
+                "Không nên quá lo lắng nhưng cũng không nên chủ quan."
+            )
+        elif severity == 'caution':
+            actions = [
+                'Theo dõi tổn thương trong 4–6 tuần tới.',
+                'Nếu tổn thương có thay đổi bất thường, đi khám ngay.',
+                'Chụp ảnh định kỳ để so sánh.',
+                'Tham khảo ý kiến bác sĩ nếu cảm thấy lo lắng.',
+            ]
+            conclusion = (
+                "Kết quả phân tích chưa đủ rõ ràng để kết luận. Cần theo dõi thêm "
+                "và thăm khám nếu có bất kỳ thay đổi nào."
+            )
+        else:
+            actions = [
+                'Kiểm tra da định kỳ 6–12 tháng một lần.',
+                'Sử dụng kem chống nắng hàng ngày để bảo vệ da.',
+                'Chú ý nếu có nốt ruồi mới xuất hiện hoặc nốt cũ thay đổi.',
+                'Duy trì lối sống lành mạnh, không hút thuốc lá.',
+            ]
+            conclusion = (
+                "Kết quả khả quan. Tiếp tục duy trì thói quen chăm sóc da tốt "
+                "và kiểm tra định kỳ để phòng ngừa."
+            )
 
     return {
         'severity': severity,
@@ -258,9 +286,11 @@ def generate_interpretation(p_malig, pred_class, probs_dict):
         'severity_note': severity_note,
         'headline': headline,
         'summary': summary,
-        'detail': info['detail'],
+        'detail': detail if ('detail' in locals() and isinstance(detail, str)) else info['detail'],
         'actions': actions,
         'conclusion': conclusion,
+        'doctor_suggestion': doctor_suggestion if 'doctor_suggestion' in locals() else None,
+        'chatgpt_powered': chatgpt_powered if 'chatgpt_powered' in locals() else False,
         'class_info': {
             'name_vi': info['name_vi'],
             'short_vi': info['short_vi'],
@@ -342,7 +372,7 @@ def utcnow_naive():
         timezone.utc
     ).replace(tzinfo=None)
 
-def run_ai_inference(pil_img):
+def run_ai_inference(pil_img, context=None):
     key = image_hash(pil_img)
     cached = get_cached(key)
     if cached and isinstance(cached, dict) and "result" in cached:
@@ -353,7 +383,7 @@ def run_ai_inference(pil_img):
         return result, cam_vis, cached["inference_ms"]
 
     quality = check_image_quality(pil_img)
-    result, cam_vis, ms = _run_model(pil_img)
+    result, cam_vis, ms = _run_model(pil_img, context=context)
     result["quality"] = quality
     result["uncertainty"] = check_uncertainty(result["multiclass"]["probs"])
     result["meta"]["from_cache"] = False
@@ -362,7 +392,7 @@ def run_ai_inference(pil_img):
     return result, cam_vis, ms
 
 
-def _run_model(pil_img):
+def _run_model(pil_img, context=None):
     """
     Chạy EfficientNet-B0 binary + multiclass + Grad-CAM.
 
@@ -485,6 +515,7 @@ def _run_model(pil_img):
             p_malig,
             pred_class,
             probs_dict,
+            context=context,
         )
     )
 
@@ -688,9 +719,10 @@ def predict():
                 }
             ), 400
 
+        lesion_location = request.form.get('lesion_location', '').strip()
         data, _, _ = (
             run_ai_inference(
-                pil_img
+                pil_img, context={'lesion_location': lesion_location}
             )
         )
 

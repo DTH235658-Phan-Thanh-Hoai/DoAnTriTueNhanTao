@@ -70,6 +70,27 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --surface: #121b30;
+  --border: #223049;
+  --border-strong: #33475f;
+  --ink-900: #f8fafc;
+  --ink-800: #e8eef7;
+  --ink-700: #dbe4f0;
+  --ink-600: #c3cede;
+  --ink-500: #a9b6c9;
+  --ink-400: #8f9db3;
+  --ink-300: #64748b;
+  --ink-200: #334155;
+  --ink-100: #1e293b;
+  --ink-50: #0d1526;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px -6px rgba(0, 0, 0, 0.7), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+}
+
 .doctor-stats-toolbar {
   display: flex;
   align-items: end;
@@ -3282,3 +3303,162 @@ html[data-theme="dark"] .model-selector-field small {
     animation: none !important;
   }
 }
+
+/* ============================================================
+   BRAND ALIGNMENT & HIGH-CONTRAST GREEN TEXT / ACCENTS
+   ============================================================ */
+
+/* 1. Nổi bật chữ "chọn ảnh từ máy" (Dropzone link) */
+.dropzone-link {
+  color: #2ba149;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.dropzone-link:hover {
+  color: #23853c;
+  text-shadow: 0 0 10px rgba(43, 161, 73, 0.35);
+}
+
+html[data-theme="dark"] .dropzone-link {
+  color: #4ade80 !important; /* Xanh ngọc phát quang cực sáng, sắc sảo trên nền tối */
+  font-weight: 700 !important;
+  text-shadow: 0 0 12px rgba(74, 222, 128, 0.4);
+}
+
+html[data-theme="dark"] .dropzone-link:hover {
+  color: #86efac !important;
+  text-shadow: 0 0 16px rgba(74, 222, 128, 0.6);
+}
+
+/* 2. Nổi bật thông tin mô hình AI & nhãn trạng thái */
+.model-selector-field output,
+#modelName {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: rgba(43, 161, 73, 0.1);
+  border: 1px solid rgba(43, 161, 73, 0.3);
+  border-radius: 9px;
+  color: #2ba149;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 8px rgba(43, 161, 73, 0.08);
+  width: fit-content;
+}
+
+html[data-theme="dark"] .model-selector-field output,
+html[data-theme="dark"] #modelName {
+  background: rgba(43, 161, 73, 0.18) !important;
+  border-color: rgba(43, 161, 73, 0.5) !important;
+  color: #4ade80 !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.3);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), 0 0 12px rgba(43, 161, 73, 0.25) !important;
+}
+
+/* Badge mô hình (Tông Cam ấm thương hiệu #fd8624) */
+.model-badge {
+  background: rgba(253, 134, 36, 0.12) !important;
+  border: 1px solid rgba(253, 134, 36, 0.35) !important;
+  color: #fd8624 !important;
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-weight: 700;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+html[data-theme="dark"] .model-badge {
+  background: rgba(253, 134, 36, 0.2) !important;
+  border-color: rgba(253, 134, 36, 0.55) !important;
+  color: #fb923c !important;
+  text-shadow: 0 0 8px rgba(253, 134, 36, 0.35);
+}
+
+/* Trạng thái hoạt động & chấm xanh phát quang */
+.nav-status {
+  background: rgba(43, 161, 73, 0.1);
+  border: 1px solid rgba(43, 161, 73, 0.3);
+  color: #2ba149;
+  font-weight: 700;
+}
+
+html[data-theme="dark"] .nav-status {
+  background: rgba(43, 161, 73, 0.18) !important;
+  border-color: rgba(43, 161, 73, 0.5) !important;
+  color: #4ade80 !important;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.35);
+}
+
+.status-dot.online,
+.live-dot {
+  background: #2ba149;
+  box-shadow: 0 0 0 3px rgba(43, 161, 73, 0.25), 0 0 8px #2ba149;
+}
+
+html[data-theme="dark"] .status-dot.online,
+html[data-theme="dark"] .live-dot {
+  background: #4ade80 !important;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.3), 0 0 10px #4ade80 !important;
+}
+
+.status-chip.success,
+.role-badge {
+  background: rgba(43, 161, 73, 0.12);
+  color: #2ba149;
+  font-weight: 700;
+  border: 1px solid rgba(43, 161, 73, 0.3);
+}
+
+html[data-theme="dark"] .status-chip.success,
+html[data-theme="dark"] .role-badge {
+  background: rgba(43, 161, 73, 0.2) !important;
+  color: #4ade80 !important;
+  border-color: rgba(43, 161, 73, 0.5) !important;
+  text-shadow: 0 0 8px rgba(74, 222, 128, 0.3);
+}
+
+/* 3. Đồng bộ khối Dropzone theo bảng màu nhận diện thương hiệu */
+html[data-theme="dark"] .dropzone {
+  background: radial-gradient(circle at 50% 10%, rgba(43, 161, 73, 0.12) 0%, transparent 65%),
+              linear-gradient(180deg, #162438 0%, #101a28 100%) !important;
+  border: 1.5px dashed rgba(43, 161, 73, 0.4) !important;
+  box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.5);
+}
+
+html[data-theme="dark"] .dropzone:hover {
+  border-color: #2ba149 !important;
+  background: radial-gradient(circle at 50% 10%, rgba(43, 161, 73, 0.22) 0%, transparent 70%),
+              linear-gradient(180deg, #1a2a40 0%, #121e2e 100%) !important;
+  box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.6), 0 0 20px rgba(43, 161, 73, 0.25) !important;
+}
+
+html[data-theme="dark"] .dropzone-icon {
+  background: rgba(43, 161, 73, 0.16) !important;
+  border-color: rgba(43, 161, 73, 0.45) !important;
+  color: #4ade80 !important;
+  box-shadow: 0 4px 14px rgba(43, 161, 73, 0.25) !important;
+}
+
+html[data-theme="dark"] .dropzone-title {
+  color: #f8fafc !important;
+  font-weight: 700;
+}
+
+html[data-theme="dark"] .dropzone-sub {
+  color: #94a3b8 !important;
+}
+
+html[data-theme="dark"] .dropzone-meta {
+  color: #64748b !important;
+}
+

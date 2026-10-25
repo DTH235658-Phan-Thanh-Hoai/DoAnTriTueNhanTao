@@ -274,4 +274,6 @@ def database_config():
                     "30",
                 )
             ),
+        "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY", "").strip(),
+        "OPENAI_MODEL": os.getenv("OPENAI_MODEL", "gpt-4o-mini").strip(),
     }
