@@ -2089,7 +2089,8 @@ function renderSelectedFiles() {
 
     const region = document.createElement("button");
     region.type = "button";
-    region.textContent = pendingRegions.has(file.name) ? "Vùng ✓" : "Khoanh vùng";
+    region.className = "btn-region-select";
+    region.textContent = pendingRegions.has(file.name) ? "Đã khoanh vùng ✓" : "Khoanh vùng";
     region.addEventListener("click", async () => {
       const points = await openFocusRegionModal(file, pendingRegions.get(file.name) || []);
       if (points === null) return;

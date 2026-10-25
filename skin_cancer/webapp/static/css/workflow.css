@@ -169,31 +169,72 @@
 }
 
 .selected-file-row span {
+  flex: 1 1 auto;
   min-width: 0;
-
   overflow: hidden;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
 }
 
 .selected-file-row button {
   flex: 0 0 auto;
-
-  width: 26px;
-
-  height: 26px;
-
+  height: 28px;
   border-radius: 7px;
-
   background: #fff;
-
   border: 1px solid var(--border-strong);
+  color: var(--ink-700);
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
 
-  color: var(--ink-500);
+.selected-file-row button.btn-region-select {
+  width: auto;
+  min-width: fit-content;
+  padding: 0 12px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-700);
+  background: #ffffff;
+}
 
+.selected-file-row button.btn-region-select:hover {
+  background: var(--ink-50);
+  border-color: var(--brand);
+  color: var(--brand);
+}
+
+.selected-file-row button.btn-file-remove,
+.selected-file-row button:not(.btn-region-select) {
+  width: 28px;
+  padding: 0;
   font-size: 17px;
+  color: var(--ink-500);
+}
+
+html[data-theme="dark"] .selected-file-row {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+html[data-theme="dark"] .selected-file-row span {
+  color: var(--ink-100);
+}
+
+html[data-theme="dark"] .selected-file-row button {
+  background: var(--surface-raised, #242b35);
+  border-color: var(--border, #3a4555);
+  color: var(--ink-200, #e2e8f0);
+}
+
+html[data-theme="dark"] .selected-file-row button.btn-region-select:hover {
+  background: var(--surface);
+  border-color: var(--brand);
+  color: var(--brand);
 }
 
 /* ================= BATCH ================= */
