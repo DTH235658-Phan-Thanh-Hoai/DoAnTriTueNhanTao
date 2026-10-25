@@ -1,4 +1,4 @@
-"""Task 7: Việc phân tích AI chạy trong worker Celery.
+"""Task 7: Việc phân tích AI chạy trong worker Celery (hoặc thread nền cục bộ).
 
 Đặt file này ở skin_cancer/webapp/tasks.py
 """
@@ -13,6 +13,7 @@ from skin_cancer.webapp.extensions import db
 from skin_cancer.webapp.models import Analysis, AnalysisResult, Case, CaseImage
 from skin_cancer.webapp.services.ai_analysis import mark_analysis_failed
 from skin_cancer.webapp.services.focus_region import apply_focus_region  # task 1
+from skin_cancer.webapp.services.result_cache import save_cached
 
 
 def _webapp():
@@ -75,7 +76,11 @@ def _run_analysis(analysis_id, case_image_id):
             data["analysis_id"] = analysis.id
             data["case_image_id"] = case_image.id
             data["case_id"] = case.id
-            return data  # Celery lưu vào Redis, web lấy qua API status
+
+            # Lưu vào cache để dù không có Redis/Celery web vẫn đọc được ngay
+            save_cached(f"analysis-result:{analysis.id}", data)
+
+            return data  # Celery lưu vào Redis nếu đang dùng Celery
 
         except Exception as exc:
             mark_analysis_failed(analysis_id, case_image_id, exc)
@@ -94,6 +99,6 @@ else:
         return _run_analysis(analysis_id, case_image_id)
 
     def _apply_async_fallback(*args, **kwargs):
-        raise RuntimeError("Thư viện 'celery' chưa được cài đặt. Hãy chạy: pip install celery redis")
+        raise RuntimeError("Thư viện 'celery' chưa được cài đặt.")
 
     analyze_task.apply_async = _apply_async_fallback
