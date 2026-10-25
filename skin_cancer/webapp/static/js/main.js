@@ -2928,7 +2928,16 @@ function renderResults(data) {
       "background:#fff3cd;color:#664d03;padding:10px 14px;border-radius:8px;margin-bottom:12px;";
     verdictCard.parentNode.insertBefore(warnBox, verdictCard);
   }
-  warnBox.innerHTML = warnings.map((w) => "⚠️ " + w).join("<br>");
+  warnBox.innerHTML = "";
+  warnings.forEach((w) => {
+    const item = document.createElement("div");
+    item.style.cssText = "display:flex;align-items:flex-start;gap:8px;line-height:1.5;margin-bottom:4px;";
+    item.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
+    const span = document.createElement("span");
+    span.textContent = w;
+    item.appendChild(span);
+    warnBox.appendChild(item);
+  });
   warnBox.style.display = warnings.length ? "block" : "none";
 
   // ========================================================

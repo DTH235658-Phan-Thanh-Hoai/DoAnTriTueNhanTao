@@ -3,6 +3,7 @@
 Đặt file này ở skin_cancer/webapp/tasks.py
 """
 
+import sys
 import importlib
 from uuid import uuid4
 
@@ -18,6 +19,10 @@ from skin_cancer.webapp.services.result_cache import save_cached
 
 def _webapp():
     # Import muộn để tránh import vòng (app.py cũng import tasks.py)
+    if "skin_cancer.webapp.app" in sys.modules:
+        return sys.modules["skin_cancer.webapp.app"]
+    if "__main__" in sys.modules and hasattr(sys.modules["__main__"], "run_ai_inference"):
+        return sys.modules["__main__"]
     return importlib.import_module("skin_cancer.webapp.app")
 
 
