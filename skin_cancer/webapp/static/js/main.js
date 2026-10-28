@@ -1458,36 +1458,6 @@ const HOMEPAGE_INTERVAL_MS = 5000;
 
 const HOMEPAGE_TRANSITION_MS = 760;
 
-const FALLBACK_HOMEPAGE_SLIDES = [
-  {
-    title: "Đội ngũ y bác sĩ DermaScan",
-    subtitle:
-      "Phòng khám da liễu kết hợp trí tuệ nhân tạo để sàng lọc tổn thương da sớm và chính xác hơn.",
-    image_url:
-      "https://images.unsplash.com/photo-1551076805-e1869033e561?auto=format&fit=crop&w=1920&q=80",
-    button_text: "Bắt đầu phân tích",
-    button_url: "#analyze",
-  },
-  {
-    title: "Chăm sóc da chuyên sâu",
-    subtitle:
-      "Đội ngũ y tế đồng hành cùng bác sĩ trong từng ca sàng lọc, theo dõi và tư vấn điều trị.",
-    image_url:
-      "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=1920&q=80",
-    button_text: "Công nghệ lõi",
-    button_url: "#features",
-  },
-  {
-    title: "Dermoscopy & AI",
-    subtitle:
-      "Hình ảnh soi da độ phân giải cao kết hợp mô hình EfficientNet để hỗ trợ quyết định lâm sàng.",
-    image_url:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1920&q=80",
-    button_text: "Tìm hiểu ngay",
-    button_url: "#features",
-  },
-];
-
 let homepageUsingFallback = false;
 
 // ============================================================
@@ -1801,23 +1771,13 @@ function renderHomepageSlides(slides) {
     if (position === 0) {
       image.fetchPriority = "high";
     }
-
-    image.addEventListener(
-      "error",
-      () => {
-        article.classList.add("image-error");
-        const broken = homepageTrack.querySelectorAll(
-          ".homepage-slide.image-error",
-        ).length;
-        if (
-          !homepageUsingFallback &&
-          broken === homepageSlides.length &&
-          homepageSlides.length
-        ) {
-          homepageUsingFallback = true;
-          renderHomepageSlides(FALLBACK_HOMEPAGE_SLIDES);
-        }
-      },
+      image.addEventListener(
+        "error",
+        () => {
+          article.classList.add("image-error");
+          console.warn("Ảnh banner không tải được:", image.src);
+        },
+        { once: true },
       {
         once: true,
       },
@@ -1924,10 +1884,7 @@ function renderHomepageSlides(slides) {
 // ============================================================
 
 async function loadHomepageSlides() {
-  homepageUsingFallback = false;
-
-  renderHomepageSlides(FALLBACK_HOMEPAGE_SLIDES);
-  homepageUsingFallback = true;
+  renderHomepageSlides([]);
 
   try {
     const response = await fetch("/api/slides/active", {
@@ -1939,21 +1896,14 @@ async function loadHomepageSlides() {
     }
 
     const data = await response.json();
-    const remoteSlides = Array.isArray(data.slides) ? data.slides : [];
+    const slides = Array.isArray(data.slides)
+      ? data.slides
+      : [];
 
-    if (!remoteSlides.length) {
-      homepageUsingFallback = false;
-      renderHomepageSlides([]);
-    } else if (remoteSlides[0].image_url) {
-      const probe = new Image();
-      probe.onload = () => {
-        homepageUsingFallback = false;
-        renderHomepageSlides(remoteSlides);
-      };
-      probe.src = remoteSlides[0].image_url;
-    }
+    renderHomepageSlides(slides);
   } catch (error) {
-    console.warn("Không thể tải banner", error);
+    console.error("Không thể tải banner từ Database:", error);
+    renderHomepageSlides([]);
   }
 }
 

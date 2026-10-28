@@ -1450,3 +1450,61 @@ html[data-theme="dark"] .case-medical-section {
   font-size: 13px;
   color: var(--text-muted, #64748b);
 }
+
+/* Branded account lock/unlock confirmation and API error dialog. */
+.account-status-modal {
+  width: min(460px, 100%);
+  padding: 28px;
+  text-align: left;
+}
+.account-status-modal h2 {
+  margin: 12px 0;
+  color: var(--text);
+  font-size: 21px;
+}
+.account-status-modal p {
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0 0 24px;
+  overflow-wrap: anywhere;
+}
+.account-status-icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  background: color-mix(in srgb, var(--orange) 13%, transparent);
+  color: var(--orange);
+  border-radius: 50%;
+  font-size: 25px;
+  font-weight: 800;
+}
+.account-status-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.account-status-actions button {
+  padding: 10px 16px;
+  border-radius: 9px;
+  cursor: pointer;
+}
+.account-status-actions .primary {
+  background: var(--green);
+  color: #fff;
+  border: 1px solid var(--green);
+}
+.account-status-actions .outline {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--line);
+}
+.account-status-actions button:focus-visible {
+  outline: 3px solid var(--orange);
+  outline-offset: 3px;
+}
+.account-status-actions button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}

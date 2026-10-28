@@ -14,7 +14,7 @@ from ..extensions import db, mail
 from ..models import Analysis, AnalysisResult, Case, CaseImage, User, AuditLog, DoctorApplication, SecuritySetting
 from ..models.base import utcnow
 from ..services.access import require_roles
-from ..services.user_deletion import delete_unrelated_user
+from ..services.user_deletion import delete_unrelated_user, deletable_certificate, cleanup_doctor_certificate
 
 bp = Blueprint("admin", __name__)
 
@@ -392,6 +392,18 @@ def update_user_status(user_id):
         abort(404)
     if user.id == current_user.id:
         return jsonify(success=False, message="Không thể khóa tài khoản đang đăng nhập."), 400
+    if not user.is_active and user.role == "DOCTOR":
+        approved = db.session.scalar(
+            db.select(DoctorApplication.id).where(
+                DoctorApplication.user_id == user.id,
+                DoctorApplication.status == "APPROVED",
+            )
+        )
+        if approved is None:
+            return jsonify(
+                success=False,
+                message="Không thể mở khóa bác sĩ chưa được phê duyệt. Vui lòng xét duyệt hồ sơ tại Quản lý Bác sĩ & Duyệt trước.",
+            ), 409
     user.is_active = not user.is_active
     _admin_audit("USER_UNLOCK" if user.is_active else "USER_LOCK", user)
     db.session.commit()
@@ -424,11 +436,13 @@ def delete_user_permanently(user_id):
         abort(404)
     if user.id == current_user.id:
         return jsonify(success=False, message="Không thể xóa tài khoản đang đăng nhập."), 400
+    certificate = deletable_certificate(user)
     blocker = delete_unrelated_user(user)
     if blocker:
         return jsonify(success=False, message=blocker), 409
     _admin_audit("USER_PERMANENTLY_DELETED", None)
     db.session.commit()
+    cleanup_doctor_certificate(certificate)
     return jsonify(success=True, message="Đã xóa vĩnh viễn tài khoản. Email có thể đăng ký lại.")
 
 
@@ -525,6 +539,7 @@ def _send_doctor_approval_email(doctor):
         mail.send(Message(
             subject="[DermaScan AI] Tài khoản bác sĩ đã được phê duyệt",
             recipients=[doctor.email],
+            html=render_template('emails/doctor_approved.html', DOCTOR_NAME=doctor.full_name, LOGIN_URL=request.url_root),
             body=(
                 f"Kính gửi Bác sĩ {doctor.full_name},\n\n"
                 "Tài khoản bác sĩ của bạn trên hệ thống DermaScan AI đã được "
@@ -550,6 +565,7 @@ def _send_doctor_rejection_email(doctor, reason):
         mail.send(Message(
             subject="[DermaScan AI] Thông báo kết quả xét duyệt hồ sơ bác sĩ",
             recipients=[doctor.email],
+            html=render_template('emails/doctor_rejected.html', DOCTOR_NAME=doctor.full_name, REJECTION_REASON=reason, SUPPORT_URL='mailto:' + (current_app.config.get('SUPPORT_EMAIL') or current_app.config['MAIL_DEFAULT_SENDER'])),
             body=(
                 f"Kính gửi Bác sĩ {doctor.full_name},\n\n"
                 "Hồ sơ đăng ký bác sĩ của bạn trên DermaScan AI chưa được chấp thuận.\n"

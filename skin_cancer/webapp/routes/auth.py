@@ -3,7 +3,7 @@ import hashlib
 import secrets
 import sys
 import traceback
-from flask import Blueprint, current_app, request, jsonify, session, abort, redirect
+from flask import Blueprint, current_app, request, jsonify, session, abort, redirect, render_template
 from flask_login import current_user, login_user, logout_user
 from flask_mail import Message
 from flask_wtf.csrf import generate_csrf
@@ -13,7 +13,7 @@ from ..extensions import db, limiter, login_manager, csrf, mail
 from ..models import User, AuditLog, DoctorApplication, SecuritySetting
 from ..models.base import utcnow
 from ..services.access import require_roles
-from ..services.user_deletion import delete_unrelated_user
+from ..services.user_deletion import delete_unrelated_user, deletable_certificate, cleanup_doctor_certificate
 
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
 
@@ -105,6 +105,7 @@ def _issue_login_otp(user):
     mail.send(Message(
         subject='DermaScan AI - Mã xác thực đăng nhập bác sĩ',
         recipients=[user.email],
+        html=render_template('emails/doctor_otp.html', USER_NAME=user.full_name, OTP_CODE=otp),
         body=(
             f'Mã OTP đăng nhập DermaScan AI của bạn là: {otp}\n'
             'Mã có hiệu lực trong 5 phút và chỉ sử dụng một lần.\n'
@@ -554,9 +555,11 @@ def register():
     existing = db.session.scalar(
         db.select(User).where(User.email == email.strip().lower())
     )
+    old_certificate = None
     if existing:
         if existing.deleted_at is None:
             return jsonify(success=False, message='Email đã được sử dụng.'), 409
+        old_certificate = deletable_certificate(existing)
         blocker = delete_unrelated_user(existing)
         if blocker:
             return jsonify(success=False, message='Email thuộc tài khoản cũ có dữ liệu cần lưu giữ. Vui lòng liên hệ quản trị viên.'), 409
@@ -583,6 +586,7 @@ def register():
         db.session.rollback()
         return jsonify(success=False, message='Email đã được sử dụng.'), 409
 
+    cleanup_doctor_certificate(old_certificate)
     if verification_token:
         _print_terminal("\n==================================================")
         _print_terminal(f" [DERMASCAN AI - EMAIL VERIFICATION] Mã xác thực của tài khoản {user.email} là: {verification_token}")
