@@ -1,5 +1,6 @@
 """Fallbacks, validation and safe asset resolution for singleton site settings."""
 from pathlib import Path, PureWindowsPath
+from copy import deepcopy
 from urllib.parse import urlparse
 
 from ..extensions import db
@@ -14,8 +15,47 @@ class SiteSettingsService:
     FIELDS = (
         'site_name', 'logo_path', 'favicon_path', 'footer_title',
         'footer_description', 'phone', 'email', 'address',
-        'facebook_url', 'copyright_text',
+        'facebook_url', 'copyright_text', 'homepage_config',
     )
+    HOMEPAGE_DEFAULTS = {
+        'vi': {
+            'hero': {'primary_cta': 'Phân tích ảnh', 'secondary_cta': 'Công nghệ lõi'},
+            'features': {
+                'eyebrow': 'Công nghệ lõi', 'title': 'Tính năng cốt lõi của DermaScan AI',
+                'lead': 'Kết hợp thị giác máy tính và y khoa để hỗ trợ sàng lọc có thể giải thích.',
+                'items': [
+                    {'badge': 'Mô hình học sâu', 'title': 'Mô hình EfficientNet-B0', 'description': 'Phân loại tổn thương da từ ảnh dermoscopy.'},
+                    {'badge': 'Giải thích kết quả', 'title': 'Trực quan hóa Grad-CAM', 'description': 'Hiển thị vùng ảnh mô hình chú ý.'},
+                    {'badge': 'Dữ liệu chuẩn quốc tế', 'title': 'Bộ dữ liệu chuẩn ISIC', 'description': 'Bộ ảnh tổn thương da được chuyên gia chú giải.'},
+                ],
+            },
+            'footer_extra': {
+                'about': 'Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và Grad-CAM.',
+                'technology': ['EfficientNet-B0 — phân loại tổn thương da', 'Grad-CAM — bản đồ chú ý', 'Bộ dữ liệu chuẩn ISIC', 'Báo cáo PDF & gửi Email'],
+                'medical_notice': 'Kết quả phân tích chỉ mang tính chất sàng lọc tham khảo, không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ.',
+                'tagline': 'Sàng lọc ung thư da bằng AI',
+            },
+        },
+        'en': {
+            'hero': {'primary_cta': 'Analyze images', 'secondary_cta': 'Core technology'},
+            'features': {
+                'eyebrow': 'Core technology', 'title': 'Core features of DermaScan AI',
+                'lead': 'Explainable AI-powered skin lesion screening.',
+                'items': [
+                    {'badge': 'Deep learning', 'title': 'EfficientNet-B0 model', 'description': 'Dermoscopic image classification.'},
+                    {'badge': 'Explainability', 'title': 'Grad-CAM visualization', 'description': 'Areas the model focuses on.'},
+                    {'badge': 'International data', 'title': 'ISIC dataset', 'description': 'Expert-annotated skin lesion images.'},
+                ],
+            },
+            'footer_extra': {
+                'about': 'AI-powered screening assistance for dermatology professionals using EfficientNet-B0 and Grad-CAM.',
+                'technology': ['EfficientNet-B0 classification', 'Grad-CAM visual explanations', 'ISIC dataset', 'PDF reports and email'],
+                'medical_notice': 'Results are for preliminary screening only, are not a medical diagnosis and do not replace professional medical advice.',
+                'tagline': 'AI-powered skin cancer screening',
+            },
+        },
+        'social_links': {'google': '', 'linkedin': '', 'x': '', 'github': ''},
+    }
     ASSET_FIELDS = {'logo_path', 'favicon_path'}
     ASSET_SUFFIXES = {'.gif', '.ico', '.jpeg', '.jpg', '.png', '.webp'}
     FALLBACKS = {
@@ -29,6 +69,7 @@ class SiteSettingsService:
         'address': '',
         'facebook_url': '',
         'copyright_text': '© 2026 DermaScan AI',
+        'homepage_config': HOMEPAGE_DEFAULTS,
     }
     LIMITS = {
         'site_name': 150,
@@ -84,7 +125,9 @@ class SiteSettingsService:
 
         result = {}
         for name, value in payload.items():
-            if name in self.ASSET_FIELDS:
+            if name == 'homepage_config':
+                result[name] = self._homepage_config(value)
+            elif name in self.ASSET_FIELDS:
                 result[name] = self._asset_value(value, name)
             elif name == 'facebook_url':
                 result[name] = self._facebook_url(value)
@@ -123,6 +166,8 @@ class SiteSettingsService:
             fallback = self.FALLBACKS[name]
             if value in (None, ''):
                 value = fallback
+            if name == 'homepage_config':
+                value = deepcopy(value)
             if name in self.ASSET_FIELDS:
                 try:
                     self.resolve_asset_path(value)
@@ -130,6 +175,73 @@ class SiteSettingsService:
                     value = fallback
             values[name] = value
         return values
+
+    @classmethod
+    def _homepage_config(cls, value):
+        if not isinstance(value, dict) or set(value) - {'vi', 'en', 'social_links'}:
+            raise SiteSettingsValidationError('homepage_config phải là cấu hình hợp lệ.')
+        result = deepcopy(cls.HOMEPAGE_DEFAULTS)
+        for language in ('vi', 'en'):
+            if language not in value:
+                continue
+            content = value[language]
+            if not isinstance(content, dict) or set(content) - {'hero', 'features', 'footer_extra'}:
+                raise SiteSettingsValidationError(f'Nội dung {language} không hợp lệ.')
+            for section in ('hero', 'features', 'footer_extra'):
+                if section not in content:
+                    continue
+                data = content[section]
+                defaults = result[language][section]
+                if not isinstance(data, dict) or set(data) - set(defaults):
+                    raise SiteSettingsValidationError(f'Mục {section} không hợp lệ.')
+                for key, item in data.items():
+                    if key == 'items':
+                        if not isinstance(item, list) or len(item) != 3:
+                            raise SiteSettingsValidationError('Phải có đúng 3 khối tính năng.')
+                        for index, feature in enumerate(item):
+                            if not isinstance(feature, dict) or set(feature) != {'badge', 'title', 'description'}:
+                                raise SiteSettingsValidationError('Nội dung tính năng không hợp lệ.')
+                            defaults['items'][index] = {
+                                name: cls._required_text(feature[name], 500 if name == 'description' else 150)
+                                for name in ('badge', 'title', 'description')
+                            }
+                    elif key == 'technology':
+                        if not isinstance(item, list) or len(item) != 4:
+                            raise SiteSettingsValidationError('Phải có đúng 4 nội dung công nghệ.')
+                        defaults[key] = [cls._required_text(entry, 300) for entry in item]
+                    else:
+                        limit = 1200 if key in ('about', 'medical_notice') else 500
+                        checked = cls._required_text(item, limit)
+                        if key == 'medical_notice' and not (
+                            ('không thay thế' in checked.lower()) if language == 'vi'
+                            else ('not replace' in checked.lower())
+                        ):
+                            raise SiteSettingsValidationError('Lưu ý y khoa phải giữ nội dung không thay thế tư vấn bác sĩ.')
+                        defaults[key] = checked
+        if 'social_links' in value:
+            links = value['social_links']
+            if not isinstance(links, dict) or set(links) - set(result['social_links']):
+                raise SiteSettingsValidationError('Danh sách mạng xã hội không hợp lệ.')
+            for name, url in links.items():
+                result['social_links'][name] = cls._optional_https(url)
+        return result
+
+    @staticmethod
+    def _required_text(value, maximum):
+        if not isinstance(value, str) or not value.strip() or len(value.strip()) > maximum:
+            raise SiteSettingsValidationError('Nội dung không hợp lệ hoặc quá dài.')
+        return value.strip()
+
+    @staticmethod
+    def _optional_https(value):
+        if value in ('', None):
+            return ''
+        if not isinstance(value, str) or len(value) > 500:
+            raise SiteSettingsValidationError('Đường dẫn mạng xã hội không hợp lệ.')
+        parsed = urlparse(value.strip())
+        if parsed.scheme != 'https' or not parsed.netloc or parsed.username or parsed.password:
+            raise SiteSettingsValidationError('Liên kết mạng xã hội phải là HTTPS hợp lệ.')
+        return value.strip()
 
     def _asset_value(self, value, name):
         value = self._string(value, name, self.LIMITS[name], optional=True)

@@ -1,19 +1,148 @@
 """Admin portal pages and the small set of admin dashboard APIs."""
 from datetime import date, datetime, timedelta
 
-from flask import Blueprint, abort, current_app, jsonify, render_template, request, send_from_directory
+from flask import Blueprint, abort, current_app, jsonify, render_template, request, send_from_directory, send_file
 from flask_login import current_user
+from flask_mail import Message
 from sqlalchemy import func, or_
+from sqlalchemy.orm import selectinload
 from pathlib import Path
 from uuid import uuid4
 from werkzeug.utils import secure_filename
 
-from ..extensions import db
-from ..models import Analysis, AnalysisResult, Case, User, AuditLog, DoctorApplication, SecuritySetting
+from ..extensions import db, mail
+from ..models import Analysis, AnalysisResult, Case, CaseImage, User, AuditLog, DoctorApplication, SecuritySetting
 from ..models.base import utcnow
 from ..services.access import require_roles
+from ..services.user_deletion import delete_unrelated_user
 
 bp = Blueprint("admin", __name__)
+
+
+def _patient_name(case):
+    snapshot = case.patient_snapshot or {}
+    return (snapshot.get("full_name") if isinstance(snapshot, dict) else None) or (
+        case.patient.full_name if case.patient else "Chưa có thông tin"
+    )
+
+
+def _case_summary(case):
+    return {
+        "id": case.id, "code": case.case_code,
+        "patient": _patient_name(case),
+        "doctor": case.doctor.full_name if case.doctor else "Chưa phân công",
+        "doctor_id": case.doctor_id, "status": case.status,
+        "created_at": case.created_at.isoformat() if case.created_at else None,
+        "lesion_location": case.lesion_location,
+    }
+
+
+@bp.get("/api/admin/cases")
+@require_roles("ADMIN")
+def admin_cases():
+    search = request.args.get("search", "").strip()[:150]
+    status = request.args.get("status", "").strip().upper()
+    doctor = request.args.get("doctor", "").strip()
+    start = request.args.get("start", "").strip()
+    end = request.args.get("end", "").strip()
+    try:
+        page = max(1, int(request.args.get("page", "1")))
+        date_start = date.fromisoformat(start) if start else None
+        date_end = date.fromisoformat(end) if end else None
+    except ValueError:
+        abort(400, description="Bộ lọc ngày hoặc trang không hợp lệ.")
+    if date_start and date_end and date_start > date_end:
+        abort(400, description="Ngày bắt đầu phải trước hoặc bằng ngày kết thúc.")
+    if status and status not in {"CREATED", "UPLOADED", "ANALYZED", "REVIEWED", "COMPLETED"}:
+        abort(400, description="Trạng thái ca khám không hợp lệ.")
+    if doctor and not doctor.isdecimal():
+        abort(400, description="Bác sĩ không hợp lệ.")
+    query = db.select(Case).join(User, Case.doctor_id == User.id)
+    if search:
+        pattern = f"%{search}%"
+        # Account-backed patient names need their own alias to avoid joining users twice.
+        from sqlalchemy.orm import aliased
+        patient_user = aliased(User)
+        query = db.select(Case).join(User, Case.doctor_id == User.id).outerjoin(
+            patient_user, Case.patient_user_id == patient_user.id
+        ).where(or_(Case.case_code.ilike(pattern), User.full_name.ilike(pattern),
+                    patient_user.full_name.ilike(pattern),
+                    Case.patient_snapshot["full_name"].as_string().ilike(pattern)))
+    if status:
+        query = query.where(Case.status == status)
+    if doctor:
+        query = query.where(Case.doctor_id == int(doctor))
+    if date_start:
+        query = query.where(Case.created_at >= datetime.combine(date_start, datetime.min.time()))
+    if date_end:
+        query = query.where(Case.created_at < datetime.combine(date_end + timedelta(days=1), datetime.min.time()))
+    total = db.session.scalar(db.select(func.count()).select_from(query.order_by(None).subquery())) or 0
+    page_size = 15
+    items = db.session.scalars(query.options(selectinload(Case.patient), selectinload(Case.doctor))
+                               .order_by(Case.created_at.desc(), Case.id.desc())
+                               .offset((page - 1) * page_size).limit(page_size)).all()
+    counts = dict(db.session.execute(db.select(Case.status, func.count(Case.id)).group_by(Case.status)).all())
+    doctors = db.session.scalars(db.select(User).where(User.role == "DOCTOR").order_by(User.full_name)).all()
+    return jsonify(cases=[_case_summary(item) for item in items], page=page,
+                   pages=max(1, (total + page_size - 1) // page_size), total=total,
+                   metrics={"total": sum(counts.values()), "processing": sum(counts.get(key, 0) for key in ("CREATED", "UPLOADED", "ANALYZED", "REVIEWED")), "completed": counts.get("COMPLETED", 0)},
+                   doctors=[{"id": item.id, "name": item.full_name} for item in doctors])
+
+
+@bp.get("/api/admin/cases/<int:case_id>")
+@require_roles("ADMIN")
+def admin_case_detail(case_id):
+    case = db.session.get(Case, case_id)
+    if not case:
+        abort(404)
+    data = _case_summary(case)
+    data["images"] = [{"id": item.id, "filename": item.original_filename,
+                        "status": item.status,
+                        "url": f"/api/admin/cases/{case.id}/images/{item.id}/original"}
+                       for item in case.images]
+    data["analyses"] = [{
+        "id": item.id, "image_id": item.case_image_id, "status": item.status,
+        "area": item.lesion_area_px, "perimeter": item.lesion_perimeter_px,
+        "ratio": item.lesion_ratio,
+        "gradcam_url": f"/api/admin/cases/{case.id}/images/{item.id}/gradcam" if item.gradcam_path else None,
+        "contour_url": f"/api/admin/cases/{case.id}/images/{item.id}/contour" if item.contour_path else None,
+        "results": [{"model": result.model_name, "class": result.predicted_class,
+                     "probability": result.predicted_probability, "binary": result.binary_result,
+                     "class_probabilities": result.class_probabilities}
+                    for result in item.results],
+    } for item in case.analyses]
+    data["reviews"] = [{"status": item.review_status, "doctor": item.doctor.full_name if item.doctor else "-",
+                        "note": item.clinical_note, "conclusion": item.doctor_conclusion,
+                        "recommendation": item.recommendation} for item in case.reviews]
+    return jsonify(data)
+
+
+@bp.get("/api/admin/cases/<int:case_id>/images/<int:image_id>/<kind>")
+@require_roles("ADMIN")
+def admin_case_image(case_id, image_id, kind):
+    case = db.session.get(Case, case_id)
+    if case is None:
+        abort(404)
+    if kind == "original":
+        image = db.session.get(CaseImage, image_id)
+        if not image or image.case_id != case_id:
+            abort(404)
+        path = image.image_path
+        root = Path(current_app.config["UPLOAD_FOLDER"]).resolve()
+    elif kind in {"gradcam", "contour"}:
+        analysis = db.session.get(Analysis, image_id)
+        if not analysis or analysis.case_id != case_id:
+            abort(404)
+        path = analysis.gradcam_path if kind == "gradcam" else analysis.contour_path
+        root = (Path(current_app.config["PROJECT_ROOT"]) / "instance" / "gradcam").resolve() if kind == "gradcam" else Path(current_app.config["MEASUREMENT_FOLDER"]).resolve()
+    else:
+        abort(404)
+    if not path:
+        abort(404)
+    candidate = Path(path).resolve()
+    if root not in candidate.parents or not candidate.is_file():
+        abort(404)
+    return send_file(candidate, as_attachment=False)
 
 
 @bp.get("/api/admin/doctor-certificates/<path:filename>")
@@ -289,17 +418,18 @@ def update_user_role(user_id):
 
 @bp.delete("/api/admin/users/<int:user_id>")
 @require_roles("ADMIN")
-def soft_delete_user(user_id):
+def delete_user_permanently(user_id):
     user = db.session.get(User, user_id)
-    if user is None or user.deleted_at is not None:
+    if user is None:
         abort(404)
     if user.id == current_user.id:
         return jsonify(success=False, message="Không thể xóa tài khoản đang đăng nhập."), 400
-    user.deleted_at = utcnow()
-    user.is_active = False
-    _admin_audit("USER_SOFT_DELETED", user)
+    blocker = delete_unrelated_user(user)
+    if blocker:
+        return jsonify(success=False, message=blocker), 409
+    _admin_audit("USER_PERMANENTLY_DELETED", None)
     db.session.commit()
-    return jsonify(success=True)
+    return jsonify(success=True, message="Đã xóa vĩnh viễn tài khoản. Email có thể đăng ký lại.")
 
 
 @bp.get("/api/admin/doctor-applications")
@@ -320,6 +450,41 @@ def doctor_applications():
     } for item in applications])
 
 
+@bp.get("/api/admin/doctor-applications/history")
+@require_roles("ADMIN")
+def doctor_application_history():
+    status = request.args.get("status", "").strip().upper()
+    if status not in {"", "APPROVED", "REJECTED"}:
+        return jsonify(success=False, message="Trạng thái xét duyệt không hợp lệ."), 400
+    query = db.select(DoctorApplication).where(DoctorApplication.status.in_(("APPROVED", "REJECTED")))
+    if status:
+        query = query.where(DoctorApplication.status == status)
+    search = request.args.get("search", "").strip()
+    if search:
+        term = f"%{search}%"
+        query = query.join(DoctorApplication.user).where(or_(User.full_name.ilike(term), User.email.ilike(term)))
+    try:
+        start = request.args.get("from", "").strip()
+        end = request.args.get("to", "").strip()
+        if start:
+            query = query.where(DoctorApplication.reviewed_at >= datetime.strptime(start, "%Y-%m-%d"))
+        if end:
+            query = query.where(DoctorApplication.reviewed_at < datetime.strptime(end, "%Y-%m-%d") + timedelta(days=1))
+    except ValueError:
+        return jsonify(success=False, message="Ngày lọc không hợp lệ."), 400
+    applications = db.session.scalars(query.options(
+        selectinload(DoctorApplication.user), selectinload(DoctorApplication.reviewer)
+    ).order_by(DoctorApplication.reviewed_at.desc(), DoctorApplication.id.desc())).all()
+    return jsonify(applications=[{
+        "id": item.id, "user_id": item.user_id, "name": item.user.full_name,
+        "email": item.user.email, "certificate_path": item.certificate_path,
+        "status": item.status, "reviewed_at": item.reviewed_at.isoformat() if item.reviewed_at else None,
+        "reviewer_name": item.reviewer.full_name if item.reviewer else "Không xác định",
+        "rejection_reason": item.rejection_reason,
+        "email_status": item.email_notification_status,
+    } for item in applications])
+
+
 @bp.patch("/api/admin/doctor-applications/<int:application_id>")
 @require_roles("ADMIN")
 def review_doctor_application(application_id):
@@ -330,15 +495,72 @@ def review_doctor_application(application_id):
         abort(404)
     if decision not in {"APPROVE", "REJECT"}:
         abort(400, description="Quyết định duyệt không hợp lệ.")
+    reason = str(payload.get("reason") or "").strip()
+    if decision == "REJECT" and (not reason or len(reason) > 1000):
+        return jsonify(success=False, message="Vui lòng nhập lý do từ chối (tối đa 1000 ký tự)."), 400
     if decision == "APPROVE" and not application.certificate_path:
-        return jsonify(success=False, message="C?n t?i ch?ng ch? tr??c khi ph? duy?t."), 400
+        return jsonify(success=False, message="Cần tải chứng chỉ trước khi phê duyệt."), 400
     application.status = "APPROVED" if decision == "APPROVE" else "REJECTED"
+    application.rejection_reason = reason if decision == "REJECT" else None
     application.reviewed_by = current_user.id
     application.reviewed_at = utcnow()
     application.user.is_active = decision == "APPROVE"
     _admin_audit("DOCTOR_APPLICATION_" + decision, application.user)
     db.session.commit()
-    return jsonify(success=True, status=application.status)
+    notification = (_send_doctor_approval_email(application.user) if decision == "APPROVE"
+                    else _send_doctor_rejection_email(application.user, reason))
+    application.email_notification_status = "SENT" if notification["sent"] else "FAILED"
+    db.session.commit()
+    return jsonify(success=True, status=application.status, email_notification=notification)
+
+
+def _send_doctor_approval_email(doctor):
+    """Notify after committing approval; SMTP failures never undo activation."""
+    warning = "Tài khoản bác sĩ đã được phê duyệt nhưng chưa gửi được email thông báo."
+    try:
+        if not all(current_app.config.get(key) for key in (
+            "MAIL_SERVER", "MAIL_USERNAME", "MAIL_PASSWORD", "MAIL_DEFAULT_SENDER"
+        )):
+            raise RuntimeError("SMTP chưa được cấu hình đầy đủ")
+        mail.send(Message(
+            subject="[DermaScan AI] Tài khoản bác sĩ đã được phê duyệt",
+            recipients=[doctor.email],
+            body=(
+                f"Kính gửi Bác sĩ {doctor.full_name},\n\n"
+                "Tài khoản bác sĩ của bạn trên hệ thống DermaScan AI đã được "
+                "quản trị viên phê duyệt thành công và hiện đã được kích hoạt.\n\n"
+                "Bạn có thể đăng nhập bằng email và mật khẩu đã đăng ký. "
+                "Hệ thống sẽ gửi mã OTP qua email mỗi khi bạn đăng nhập.\n\n"
+                "Trân trọng,\nĐội ngũ DermaScan AI"
+            ),
+        ))
+    except Exception:
+        current_app.logger.exception("Không thể gửi email phê duyệt cho bác sĩ id=%s", doctor.id)
+        return {"sent": False, "message": warning}
+    return {"sent": True, "message": "Đã gửi email thông báo phê duyệt cho bác sĩ."}
+
+
+def _send_doctor_rejection_email(doctor, reason):
+    """Send rejection after commit so SMTP failures never reverse the decision."""
+    try:
+        if not all(current_app.config.get(key) for key in (
+            "MAIL_SERVER", "MAIL_USERNAME", "MAIL_PASSWORD", "MAIL_DEFAULT_SENDER"
+        )):
+            raise RuntimeError("SMTP chưa được cấu hình đầy đủ")
+        mail.send(Message(
+            subject="[DermaScan AI] Thông báo kết quả xét duyệt hồ sơ bác sĩ",
+            recipients=[doctor.email],
+            body=(
+                f"Kính gửi Bác sĩ {doctor.full_name},\n\n"
+                "Hồ sơ đăng ký bác sĩ của bạn trên DermaScan AI chưa được chấp thuận.\n"
+                f"Lý do: {reason}\n\n"
+                "Trân trọng,\nĐội ngũ DermaScan AI"
+            ),
+        ))
+    except Exception:
+        current_app.logger.exception("Không thể gửi email từ chối hồ sơ bác sĩ id=%s", doctor.id)
+        return {"sent": False, "message": "Đã từ chối hồ sơ nhưng không gửi được email thông báo."}
+    return {"sent": True, "message": "Đã gửi email thông báo từ chối cho bác sĩ."}
 
 
 @bp.get("/api/admin/audit-logs")

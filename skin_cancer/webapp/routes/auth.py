@@ -5,15 +5,19 @@ import sys
 import traceback
 from flask import Blueprint, current_app, request, jsonify, session, abort, redirect
 from flask_login import current_user, login_user, logout_user
+from flask_mail import Message
 from flask_wtf.csrf import generate_csrf
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 from werkzeug.exceptions import HTTPException
-from ..extensions import db, limiter, login_manager, csrf
+from ..extensions import db, limiter, login_manager, csrf, mail
 from ..models import User, AuditLog, DoctorApplication, SecuritySetting
 from ..models.base import utcnow
 from ..services.access import require_roles
+from ..services.user_deletion import delete_unrelated_user
 
 bp = Blueprint('auth', __name__, url_prefix='/api/auth')
+
+SAMPLE_DOCTOR_EMAIL = 'doctor@dermascan.local'
 
 
 def _hash_token(value):
@@ -60,6 +64,54 @@ def _create_and_log_otp(user):
     _print_terminal(f" [DERMASCAN AI - 2FA SYSTEM] Mã OTP của tài khoản {user.email} là: {otp_code}")
     _print_terminal("==================================================\n")
     return otp_code
+
+
+def _doctor_email_otp_required(user):
+    """Only approved, registered doctors receive an email OTP at each login."""
+    return (
+        user.role == 'DOCTOR'
+        and user.email != SAMPLE_DOCTOR_EMAIL
+        and db.session.scalar(
+            db.select(DoctorApplication.status).where(DoctorApplication.user_id == user.id)
+        ) == 'APPROVED'
+    )
+
+
+def _requires_login_otp(user):
+    if user.role == 'DOCTOR' and user.email == SAMPLE_DOCTOR_EMAIL:
+        return False
+    return _doctor_email_otp_required(user) or user.two_factor_enabled or _admin_2fa_required(user)
+
+
+def _email_hint(email):
+    name, separator, domain = email.partition('@')
+    return f"{name[:1]}***@{domain}" if separator else '***'
+
+
+def _issue_login_otp(user):
+    """Send approved doctors' OTP through configured SMTP; other roles keep existing 2FA."""
+    if not _doctor_email_otp_required(user):
+        _create_and_log_otp(user)
+        return 'Mã xác thực đã được tạo. Vui lòng lấy OTP trong cửa sổ Terminal để tiếp tục.'
+
+    if not all(current_app.config.get(key) for key in (
+        'MAIL_SERVER', 'MAIL_USERNAME', 'MAIL_PASSWORD', 'MAIL_DEFAULT_SENDER'
+    )):
+        raise RuntimeError('SMTP chưa được cấu hình đầy đủ.')
+
+    otp = f"{secrets.randbelow(1000000):06d}"
+    user.two_factor_code_hash = _hash_token(otp)
+    user.two_factor_code_expires_at = utcnow() + timedelta(minutes=5)
+    mail.send(Message(
+        subject='DermaScan AI - Mã xác thực đăng nhập bác sĩ',
+        recipients=[user.email],
+        body=(
+            f'Mã OTP đăng nhập DermaScan AI của bạn là: {otp}\n'
+            'Mã có hiệu lực trong 5 phút và chỉ sử dụng một lần.\n'
+            'Nếu bạn không đăng nhập, hãy bỏ qua email này.'
+        ),
+    ))
+    return f'Mã OTP 6 chữ số đã được gửi đến {_email_hint(user.email)}.'
 
 def _issue_token(user, kind, minutes=30):
     token = secrets.token_urlsafe(32)
@@ -149,14 +201,19 @@ def login():
         _audit(email.strip().lower() if isinstance(email, str) else "", "LOGIN", False, user)
         db.session.commit()
         return jsonify(success=False, message='Email hoặc mật khẩu không hợp lệ'), 401
-    if not user.email_verified:
+    if not user.email_verified and not _doctor_email_otp_required(user):
         return jsonify(success=False, message="Vui lòng xác thực email trước khi đăng nhập."), 403
-    if user.two_factor_enabled or _admin_2fa_required(user):
-        _create_and_log_otp(user)
-        db.session.commit()
+    if _requires_login_otp(user):
         session.clear()
+        try:
+            message = _issue_login_otp(user)
+            db.session.commit()
+        except Exception:
+            db.session.rollback()
+            current_app.logger.exception("Failed to dispatch login OTP")
+            return jsonify(success=False, message="Không gửi được OTP. Vui lòng thử lại sau."), 503
         session["pending_2fa_user_id"] = user.id
-        return jsonify(success=True, requires_2fa=True, message="Mã xác thực đã được tạo. Vui lòng lấy OTP trong cửa sổ Terminal để tiếp tục.")
+        return jsonify(success=True, requires_2fa=True, message=message)
     session.clear()
     login_user(user, remember=False, fresh=True)
     session['role'] = user.role
@@ -200,7 +257,7 @@ def admin_login():
             message='Tài khoản không có quyền quản trị',
         ), 403
 
-    if user.two_factor_enabled or _admin_2fa_required(user):
+    if _requires_login_otp(user):
         _create_and_log_otp(user)
         db.session.commit()
         session.clear()
@@ -223,22 +280,28 @@ def resend_two_factor():
         not user
         or user.deleted_at is not None
         or not user.is_active
-        or not user.email_verified
-        or not (user.two_factor_enabled or _admin_2fa_required(user))
+        or (not user.email_verified and not _doctor_email_otp_required(user))
+        or not _requires_login_otp(user)
     ):
         return jsonify(success=False, message="Phiên xác thực 2 lớp không hợp lệ. Vui lòng đăng nhập lại."), 401
 
-    _create_and_log_otp(user)
-    db.session.commit()
-    return jsonify(success=True, message="Mã OTP mới đã được tạo. Vui lòng lấy mã trong cửa sổ Terminal.")
+    try:
+        message = _issue_login_otp(user)
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        current_app.logger.exception("Failed to resend login OTP")
+        return jsonify(success=False, message="Không gửi được OTP. Vui lòng thử lại sau."), 503
+    return jsonify(success=True, message=message)
 
 
 @bp.post('/verify-2fa')
+@limiter.limit("5 per minute")
 def verify_two_factor():
     payload = request.get_json(silent=True) or {}
     code = str(payload.get("code", "")).strip()
     user = db.session.get(User, session.get("pending_2fa_user_id"))
-    if not user or user.deleted_at is not None or not user.is_active or not (user.two_factor_enabled or _admin_2fa_required(user)) or not user.two_factor_code_expires_at:
+    if not user or user.deleted_at is not None or not user.is_active or not _requires_login_otp(user) or not user.two_factor_code_expires_at:
         return jsonify(success=False, message="Phiên xác thực 2 lớp không hợp lệ."), 401
     if user.two_factor_code_expires_at < utcnow() or not secrets.compare_digest(
         user.two_factor_code_hash or "", _hash_token(code)
@@ -249,6 +312,9 @@ def verify_two_factor():
     session.clear()
     login_user(user, remember=False, fresh=True)
     session["role"] = user.role
+    if _doctor_email_otp_required(user):
+        # Successful email delivery + OTP possession proves mailbox access.
+        user.email_verified = True
     user.two_factor_code_hash = None
     user.two_factor_code_expires_at = None
     _audit(user.email, "2FA_LOGIN", True, user)
@@ -489,7 +555,11 @@ def register():
         db.select(User).where(User.email == email.strip().lower())
     )
     if existing:
-        return jsonify(success=False, message='Email đã được sử dụng.'), 409
+        if existing.deleted_at is None:
+            return jsonify(success=False, message='Email đã được sử dụng.'), 409
+        blocker = delete_unrelated_user(existing)
+        if blocker:
+            return jsonify(success=False, message='Email thuộc tài khoản cũ có dữ liệu cần lưu giữ. Vui lòng liên hệ quản trị viên.'), 409
 
     try:
         user = User(
@@ -506,19 +576,20 @@ def register():
     db.session.add(user)
     if role == "DOCTOR":
         db.session.add(DoctorApplication(user=user, status="PENDING"))
-    verification_token = _issue_token(user, "email_verification", 24)
+    verification_token = _issue_token(user, "email_verification", 24) if role != "DOCTOR" else None
     try:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
         return jsonify(success=False, message='Email đã được sử dụng.'), 409
 
-    _print_terminal("\n==================================================")
-    _print_terminal(f" [DERMASCAN AI - EMAIL VERIFICATION] Mã xác thực của tài khoản {user.email} là: {verification_token}")
-    _print_terminal("==================================================\n")
+    if verification_token:
+        _print_terminal("\n==================================================")
+        _print_terminal(f" [DERMASCAN AI - EMAIL VERIFICATION] Mã xác thực của tài khoản {user.email} là: {verification_token}")
+        _print_terminal("==================================================\n")
     return jsonify(
         success=True,
         user=public_user(user),
-        verification_required=True,
+        verification_required=role != "DOCTOR",
         approval_required=role == "DOCTOR",
     ), 201

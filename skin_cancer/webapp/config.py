@@ -105,7 +105,7 @@ def database_config():
                 "sqlite:///"
                 + (
                     INSTANCE_DIR
-                    / "dermascan.db"
+                    / "dermascan_live.db"
                 ).as_posix(),
             ),
 

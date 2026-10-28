@@ -1260,6 +1260,60 @@ if (logoutBtn) {
 
 let siteSettings = null;
 
+// Áp dụng nội dung động sau mỗi lần dịch giao diện để cấu hình ADMIN được ưu tiên.
+window.applyConfiguredHomepage = function (language) {
+  const configuration = siteSettings?.homepage_config;
+  const current =
+    configuration?.[language === "en" ? "en" : "vi"] || configuration?.vi;
+  if (!current) return;
+  const write = (selector, value) => {
+    const element = document.querySelector(selector);
+    if (element && typeof value === "string") element.textContent = value;
+  };
+  write("#hpHeroCtaText", current.hero?.primary_cta);
+  write(".hp-hero-ghost", current.hero?.secondary_cta);
+  write(".hp-features-head .section-eyebrow", current.features?.eyebrow);
+  write(".hp-features-head .section-title", current.features?.title);
+  write(".hp-features-lead", current.features?.lead);
+  (current.features?.items || []).forEach((feature, index) => {
+    const cards = document.querySelectorAll(".features-grid .feature");
+    const card = cards[index];
+    if (!card) return;
+    for (const [selector, key] of [
+      [".hp-feature-badge", "badge"],
+      [".feature-title", "title"],
+      [".feature-desc", "description"],
+    ]) {
+      const target = card.querySelector(selector);
+      if (target) target.textContent = feature[key] || "";
+    }
+  });
+  write(".hp-footer-about", current.footer_extra?.about);
+  (current.footer_extra?.technology || []).forEach((entry, index) => {
+    const node = document.querySelectorAll(".hp-tech-list li")[index];
+    if (node) node.textContent = entry;
+  });
+  write(".hp-medical-note p", current.footer_extra?.medical_notice);
+  write(".hp-footer-tagline", current.footer_extra?.tagline);
+  const links = {
+    ...(configuration.social_links || {}),
+    facebook: siteSettings?.facebook_url || "",
+  };
+  Object.entries(links).forEach(([name, url]) => {
+    const element = document.querySelector(`.hp-soc-${name}`);
+    if (!element) return;
+    if (typeof url === "string" && url.startsWith("https://")) {
+      element.href = url;
+      element.hidden = false;
+      element.style.display = "";
+    } else {
+      element.removeAttribute("href");
+      element.hidden = true;
+      element.style.display = "none";
+    }
+  });
+};
+
 function setSiteText(id, value) {
   const node = $(id);
 
@@ -1363,6 +1417,8 @@ async function loadSiteSettings() {
     );
 
     setOptionalSiteLink("site-facebook", "Facebook", siteSettings.facebook_url);
+
+    window.applyConfiguredHomepage(document.documentElement.lang);
   } catch (error) {
     console.warn("Không thể tải site settings", error);
   }
@@ -1885,7 +1941,10 @@ async function loadHomepageSlides() {
     const data = await response.json();
     const remoteSlides = Array.isArray(data.slides) ? data.slides : [];
 
-    if (remoteSlides.length && remoteSlides[0].image_url) {
+    if (!remoteSlides.length) {
+      homepageUsingFallback = false;
+      renderHomepageSlides([]);
+    } else if (remoteSlides[0].image_url) {
       const probe = new Image();
       probe.onload = () => {
         homepageUsingFallback = false;
@@ -2090,9 +2149,14 @@ function renderSelectedFiles() {
     const region = document.createElement("button");
     region.type = "button";
     region.className = "btn-region-select";
-    region.textContent = pendingRegions.has(file.name) ? "Đã khoanh vùng ✓" : "Khoanh vùng";
+    region.textContent = pendingRegions.has(file.name)
+      ? "Đã khoanh vùng ✓"
+      : "Khoanh vùng";
     region.addEventListener("click", async () => {
-      const points = await openFocusRegionModal(file, pendingRegions.get(file.name) || []);
+      const points = await openFocusRegionModal(
+        file,
+        pendingRegions.get(file.name) || [],
+      );
       if (points === null) return;
       if (points.length) pendingRegions.set(file.name, points);
       else pendingRegions.delete(file.name);
@@ -2370,7 +2434,8 @@ async function analyzeAndWait(caseImageId) {
     headers: { "X-CSRFToken": csrfToken },
   });
   const started = await responseJson(start);
-  if (!start.ok) throw new Error(getErrorMessage(started, "Phân tích AI thất bại."));
+  if (!start.ok)
+    throw new Error(getErrorMessage(started, "Phân tích AI thất bại."));
 
   const deadline = Date.now() + 180000; // chờ tối đa 3 phút
   while (Date.now() < deadline) {
@@ -2379,9 +2444,11 @@ async function analyzeAndWait(caseImageId) {
       credentials: "same-origin",
     });
     const info = await responseJson(res);
-    if (!res.ok) throw new Error(getErrorMessage(info, "Không lấy được trạng thái."));
+    if (!res.ok)
+      throw new Error(getErrorMessage(info, "Không lấy được trạng thái."));
     if (info.status === "COMPLETED") return info.result;
-    if (info.status === "FAILED") throw new Error(info.error || "Phân tích AI thất bại.");
+    if (info.status === "FAILED")
+      throw new Error(info.error || "Phân tích AI thất bại.");
     // PENDING / PROCESSING: chờ thêm
   }
   throw new Error("Phân tích quá lâu, vui lòng thử lại.");
@@ -2952,7 +3019,8 @@ function renderResults(data) {
   warnBox.innerHTML = "";
   warnings.forEach((w) => {
     const item = document.createElement("div");
-    item.style.cssText = "display:flex;align-items:flex-start;gap:8px;line-height:1.5;margin-bottom:4px;";
+    item.style.cssText =
+      "display:flex;align-items:flex-start;gap:8px;line-height:1.5;margin-bottom:4px;";
     item.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:2px;" aria-hidden="true"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`;
     const span = document.createElement("span");
     span.textContent = w;
@@ -2994,7 +3062,9 @@ function renderResults(data) {
 
     // Cập nhật trạng thái ChatGPT
     if (chatgptPill) {
-      chatgptPill.style.display = interpretation.chatgpt_powered ? "inline-flex" : "none";
+      chatgptPill.style.display = interpretation.chatgpt_powered
+        ? "inline-flex"
+        : "none";
     }
     if (interpretation.doctor_suggestion) {
       currentDoctorSuggestion = interpretation.doctor_suggestion;
@@ -3600,17 +3670,22 @@ if (chatgptRefreshBtn) {
       `;
 
       const csrfToken = await getCsrfToken();
-      const lesionLoc = lesionLocationInput ? lesionLocationInput.value.trim() : "";
+      const lesionLoc = lesionLocationInput
+        ? lesionLocationInput.value.trim()
+        : "";
 
-      const res = await fetch(`/api/analyses/${currentAnalysisId}/chatgpt-consult`, {
-        method: "POST",
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRFToken": csrfToken,
+      const res = await fetch(
+        `/api/analyses/${currentAnalysisId}/chatgpt-consult`,
+        {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": csrfToken,
+          },
+          body: JSON.stringify({ lesion_location: lesionLoc }),
         },
-        body: JSON.stringify({ lesion_location: lesionLoc }),
-      });
+      );
 
       const data = await responseJson(res);
       if (!res.ok) {
@@ -3619,7 +3694,8 @@ if (chatgptRefreshBtn) {
 
       if (data.consultation) {
         const c = data.consultation;
-        if (c.headline && interpHeadline) interpHeadline.textContent = c.headline;
+        if (c.headline && interpHeadline)
+          interpHeadline.textContent = c.headline;
         if (c.summary && interpSummary) interpSummary.textContent = c.summary;
         if (c.detail && interpDetail) interpDetail.textContent = c.detail;
         if (Array.isArray(c.actions) && interpActions) {
@@ -3630,7 +3706,8 @@ if (chatgptRefreshBtn) {
             interpActions.appendChild(li);
           });
         }
-        if (c.conclusion && interpConclusion) interpConclusion.textContent = c.conclusion;
+        if (c.conclusion && interpConclusion)
+          interpConclusion.textContent = c.conclusion;
 
         if (chatgptPill) chatgptPill.style.display = "inline-flex";
 

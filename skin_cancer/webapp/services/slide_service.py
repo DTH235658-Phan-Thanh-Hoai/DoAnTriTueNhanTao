@@ -114,7 +114,7 @@ class SlideService:
         if path is None:
             for root in allowed_roots:
                 candidate = (root / raw).resolve()
-                if candidate.is_relative_to(root):
+                if candidate.is_relative_to(root) and candidate.is_file():
                     path = candidate
                     break
         if path is None or not any(path.is_relative_to(root) for root in allowed_roots):

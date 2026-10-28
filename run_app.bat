@@ -25,23 +25,29 @@ if exist ".venv\Scripts\activate.bat" (
     echo [CANH BAO] Khong tim thay .venv hoac env. Dung python he thong...
 )
 
-REM 2. Check Database
-if not exist "instance\dermascan.db" (
-    echo [2/3] Dang khoi tao co so du lieu mau...
-    python -m flask --app skin_cancer.webapp.database_app db upgrade
-    python -m flask --app skin_cancer.webapp.database_app seed-demo
-    echo [2/3] Khoi tao co so du lieu thanh cong!
-) else (
-    echo [2/3] Co so du lieu da san sang.
+REM 2. Migrate schema and provision real starter accounts once.
+REM The legacy instance\dermascan.db file is not touched by the default config.
+echo [2/3] Kiem tra va cap nhat co so du lieu SQLite...
+python -m flask --app skin_cancer.webapp.database_app db upgrade
+if errorlevel 1 (
+    echo [LOI] Khong the cap nhat database. Dung khoi dong de tranh loi du lieu.
+    pause
+    exit /b 1
 )
+python -m flask --app skin_cancer.webapp.database_app setup-initial --local-starter-accounts
+if errorlevel 1 (
+    echo [LOI] Thiet lap tai khoan that bai. Kiem tra database va thu lai.
+    pause
+    exit /b 1
+)
+echo [2/3] Co so du lieu da san sang.
 
 REM 3. Launch App
 echo [3/3] Dang khoi dong may chu Web va AI...
 echo.
 echo -------------------------------------------------------------------------------
 echo   - Dia chi Web   : http://localhost:5000
-echo   - Bac si demo   : doctor@dermascan.local  / Mat khau: 123456123456
-echo   - Benh nhan     : patient@dermascan.local / Mat khau: 123456123456
+echo   - Tai khoan    : admin@dermascan.local, doctor@dermascan.local, patient@dermascan.local
 echo   - Cache du lieu : SQLite Disk Cache (instance\cache.db - Khong can Docker)
 echo   - Background AI : Tu dong chay ngam (Khong can mo them terminal khac)
 echo   - Dung server   : Nhan to hop phim Ctrl + C

@@ -34,6 +34,7 @@ __pycache__/
 temp/
 instance/*.db-journal
 instance/*.db-wal
+instance/site_media/
 
 # ============ HỆ ĐIỀU HÀNH ============
 .DS_Store

@@ -1,2 +1,0 @@
-filename,case_code,analysis_id,predicted_class,predicted_probability,lesion_area_px,lesion_perimeter_px,lesion_ratio,status,error_message
-photo-1-15750924210731231469169-157509246818817367269.webp,CASE-534D503B6837471D8DDA4FA493FD0F5A,,,,,,,FAILED,Decoded image format does not match file extension

@@ -33,5 +33,7 @@ class DoctorApplication(Timestamps, db.Model):
     status = db.Column(db.String(20), nullable=False, default="PENDING", server_default="PENDING")
     reviewed_by = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"))
     reviewed_at = db.Column(db.DateTime)
+    rejection_reason = db.Column(db.Text)
+    email_notification_status = db.Column(db.String(20))
     user = db.relationship("User", foreign_keys=[user_id], backref="doctor_application", uselist=False)
     reviewer = db.relationship("User", foreign_keys=[reviewed_by])

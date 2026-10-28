@@ -16,6 +16,7 @@ class SiteSetting(db.Model):
     address = db.Column(db.String(500))
     facebook_url = db.Column(db.String(500))
     copyright_text = db.Column(db.String(255))
+    homepage_config = db.Column(db.JSON, nullable=True)
     updated_by = db.Column(db.Integer, fk('users'))
     updated_at = db.Column(db.DateTime, nullable=False, default=utcnow, onupdate=utcnow, server_default=db.func.current_timestamp())
     updater = db.relationship('User')
