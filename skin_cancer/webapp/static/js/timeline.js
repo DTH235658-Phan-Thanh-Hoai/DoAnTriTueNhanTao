@@ -1,7 +1,27 @@
 // Task 4: Timeline tiến triển của bệnh nhân (biểu đồ + bảng các lần chụp).
-// Dùng Chart.js (index.html đã nạp sẵn).
+// Chart.js được nạp khi cần vẽ biểu đồ.
 
 let timelineChart = null;
+let chartJsPromise = null;
+
+function ensureChartJs() {
+  if (window.Chart) return Promise.resolve(window.Chart);
+  if (!chartJsPromise) {
+    chartJsPromise = new Promise((resolve, reject) => {
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js";
+      script.onload = () => window.Chart ? resolve(window.Chart) : reject(new Error("Chart.js failed to initialize"));
+      script.onerror = () => reject(new Error("Chart.js failed to load"));
+      document.head.appendChild(script);
+    }).catch((error) => {
+      chartJsPromise = null;
+      throw error;
+    });
+  }
+  return chartJsPromise;
+}
+
+window.ensureChartJs = ensureChartJs;
 
 async function showTimeline(caseId) {
   if (!caseId) return;
@@ -10,7 +30,9 @@ async function showTimeline(caseId) {
       credentials: "same-origin",
     });
     if (!response.ok) return;
-    renderTimeline(await response.json());
+    const data = await response.json();
+    if ((data.points || []).length > 1) await window.ensureChartJs();
+    renderTimeline(data);
   } catch (err) {
     console.error("Không tải được timeline", err);
   }

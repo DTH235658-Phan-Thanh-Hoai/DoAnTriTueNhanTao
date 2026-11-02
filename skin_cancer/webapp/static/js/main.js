@@ -3639,6 +3639,7 @@ async function loadDoctorStatistics() {
     const data = await responseJson(response);
     if (!response.ok)
       throw new Error(getErrorMessage(data, "Không thể tải thống kê."));
+    await window.ensureChartJs();
     renderDoctorStatistics(data);
     status.textContent = `Dữ liệu từ ${data.filters.from || "tất cả thời gian"} đến ${data.filters.to || "hiện tại"}.`;
   } catch (error) {
