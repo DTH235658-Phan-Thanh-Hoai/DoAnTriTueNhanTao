@@ -1,0 +1,181 @@
+- generic [ref=f1e1]:
+  - complementary [ref=f1e2]:
+    - link "DermaScan AI - Trang chủ" [ref=f1e3] [cursor=pointer]:
+      - /url: /
+      - img "DermaScan AI" [ref=f1e5]
+      - generic [ref=f1e6]:
+        - generic [ref=f1e7]: DermaScan AI
+        - generic [ref=f1e8]: Phân loại tổn thương da bằng EfficientNet
+    - button "Thu gọn menu" [ref=f1e9] [cursor=pointer]: ‹
+    - navigation [ref=f1e10]:
+      - paragraph [ref=f1e11]: QUẢN TRỊ HỆ THỐNG
+      - button "Dashboard Tổng Quan" [ref=f1e12] [cursor=pointer]
+      - button "Quản lý trang chủ" [ref=f1e18] [cursor=pointer]
+      - button "Quản Lý Tài Khoản" [ref=f1e24] [cursor=pointer]
+      - button "Phiên Đăng Nhập & Bảo Mật" [ref=f1e32] [cursor=pointer]
+      - button "Hồ sơ & Bảo mật cá nhân" [ref=f1e38] [cursor=pointer]
+      - button "Quản lý ca khám" [ref=f1e44] [cursor=pointer]
+      - button "Quản Lý Bác Sĩ & Duyệt" [ref=f1e50] [cursor=pointer]
+      - button "Thống Kê & Báo Cáo" [ref=f1e57] [cursor=pointer]
+  - main [ref=f1e61]:
+    - generic [ref=f1e62]:
+      - generic [ref=f1e64]:
+        - paragraph [ref=f1e65]: DERMASCAN AI / AI
+        - heading "Quản lý ca khám" [level=1] [ref=f1e941]
+      - group "Công cụ và tài khoản" [ref=f1e67]:
+        - button "Đổi ngôn ngữ" [ref=f1e69] [cursor=pointer]:
+          - generic [ref=f1e73]: VI
+        - button "Chuyển giao diện tối" [ref=f1e76] [cursor=pointer]
+        - generic [ref=f1e81]:
+          - generic [ref=f1e82]: Q
+          - generic [ref=f1e83]:
+            - strong [ref=f1e84]: Quản trị viên
+            - generic [ref=f1e85]: Quản trị viên
+        - button "Đăng xuất" [ref=f1e86] [cursor=pointer]
+    - generic [ref=f1e794]:
+      - generic "Thống kê ca khám" [ref=f1e795]:
+        - generic [ref=f1e796]:
+          - generic [ref=f1e797]: TỔNG CA KHÁM
+          - generic [ref=f1e798]: "7"
+        - generic [ref=f1e799]:
+          - generic [ref=f1e800]: CHƯA HOÀN THÀNH
+          - generic [ref=f1e801]: "7"
+        - generic [ref=f1e802]:
+          - generic [ref=f1e803]: HOÀN THÀNH
+          - generic [ref=f1e804]: "0"
+      - generic [ref=f1e805]:
+        - generic [ref=f1e806]:
+          - generic [ref=f1e807]:
+            - text: Tìm kiếm
+            - textbox "Tìm kiếm" [ref=f1e808]:
+              - /placeholder: Mã ca, bệnh nhân hoặc bác sĩ
+          - generic [ref=f1e809]:
+            - text: Trạng thái
+            - combobox "Trạng thái" [ref=f1e810]:
+              - option "Tất cả" [selected]
+              - option "Mới tạo"
+              - option "Đã tải ảnh"
+              - option "Đã phân tích"
+              - option "Đã đánh giá"
+              - option "Hoàn thành"
+          - generic [ref=f1e811]:
+            - text: Bác sĩ
+            - combobox "Bác sĩ" [ref=f1e812]:
+              - option "Tất cả bác sĩ" [selected]
+              - option "Bác sĩ"
+              - option "DermaScan QA Doctor"
+              - option "Lê Phan Hiếu"
+          - generic [ref=f1e813]:
+            - text: Từ ngày
+            - textbox "Từ ngày" [ref=f1e814]
+          - generic [ref=f1e815]:
+            - text: Đến ngày
+            - textbox "Đến ngày" [ref=f1e816]
+          - button "Xóa bộ lọc" [ref=f1e817] [cursor=pointer]
+        - paragraph [ref=f1e818]: Tìm thấy 7 ca khám
+        - table [ref=f1e820]:
+          - rowgroup [ref=f1e821]:
+            - row [ref=f1e822]:
+              - columnheader "Mã ca" [ref=f1e823]
+              - columnheader "Bệnh nhân" [ref=f1e824]
+              - columnheader "Bác sĩ" [ref=f1e825]
+              - columnheader "Ngày tạo" [ref=f1e826]
+              - columnheader "Trạng thái" [ref=f1e827]
+              - columnheader "Chi tiết" [ref=f1e828]
+          - rowgroup [ref=f1e829]:
+            - row [ref=f1e942]:
+              - cell "CASE-26AB026A2FCF4594984D30799F4A551B" [ref=f1e943]
+              - cell "QA Patient DS-2026-1031" [ref=f1e944]
+              - cell "DermaScan QA Doctor" [ref=f1e945]
+              - cell "31/10/2026" [ref=f1e946]
+              - cell "Đã phân tích" [ref=f1e947]
+              - cell [ref=f1e948]:
+                - button "Xem chi tiết" [active] [ref=f1e949] [cursor=pointer]
+            - row [ref=f1e950]:
+              - cell "CASE-135E64BA6A354D82A5B6B114099C8D64" [ref=f1e951]
+              - cell "QA Patient DS-2026-1031" [ref=f1e952]
+              - cell "DermaScan QA Doctor" [ref=f1e953]
+              - cell "31/10/2026" [ref=f1e954]
+              - cell "Đã phân tích" [ref=f1e955]
+              - cell [ref=f1e956]:
+                - button "Xem chi tiết" [ref=f1e957] [cursor=pointer]
+            - row [ref=f1e958]:
+              - cell "CASE-5808326FC5D74B37BE1EE1315130A0DD" [ref=f1e959]
+              - cell "Người dùng A" [ref=f1e960]
+              - cell "Bác sĩ" [ref=f1e961]
+              - cell "28/10/2026" [ref=f1e962]
+              - cell "Đã phân tích" [ref=f1e963]
+              - cell [ref=f1e964]:
+                - button "Xem chi tiết" [ref=f1e965] [cursor=pointer]
+            - row [ref=f1e966]:
+              - cell "CASE-4B0DBB5BC0C04ECF83C8973AAA759215" [ref=f1e967]
+              - cell "Người dùng A" [ref=f1e968]
+              - cell "Bác sĩ" [ref=f1e969]
+              - cell "28/10/2026" [ref=f1e970]
+              - cell "Đã phân tích" [ref=f1e971]
+              - cell [ref=f1e972]:
+                - button "Xem chi tiết" [ref=f1e973] [cursor=pointer]
+            - row [ref=f1e974]:
+              - cell "CASE-E8A3E4833C6E40818F06C8F919C66A4B" [ref=f1e975]
+              - cell "Người dùng A" [ref=f1e976]
+              - cell "Bác sĩ" [ref=f1e977]
+              - cell "28/10/2026" [ref=f1e978]
+              - cell "Đã phân tích" [ref=f1e979]
+              - cell [ref=f1e980]:
+                - button "Xem chi tiết" [ref=f1e981] [cursor=pointer]
+            - row [ref=f1e982]:
+              - cell "CASE-1A92F367E1CC4F7583865F0004AEE98D" [ref=f1e983]
+              - cell "Nguyễn Thị B" [ref=f1e984]
+              - cell "Bác sĩ" [ref=f1e985]
+              - cell "26/10/2026" [ref=f1e986]
+              - cell "Đã phân tích" [ref=f1e987]
+              - cell [ref=f1e988]:
+                - button "Xem chi tiết" [ref=f1e989] [cursor=pointer]
+            - row [ref=f1e990]:
+              - cell "CASE-A940F12DB431445986B092D3F51E26C5" [ref=f1e991]
+              - cell "Người dùng A" [ref=f1e992]
+              - cell "Lê Phan Hiếu" [ref=f1e993]
+              - cell "26/10/2026" [ref=f1e994]
+              - cell "Đã đánh giá" [ref=f1e995]
+              - cell [ref=f1e996]:
+                - button "Xem chi tiết" [ref=f1e997] [cursor=pointer]
+        - generic [ref=f1e886]:
+          - button "Trang trước" [disabled] [ref=f1e887]
+          - generic [ref=f1e890]: Trang 1/1
+          - button "Trang sau" [disabled] [ref=f1e891]
+  - dialog [ref=f1e999]:
+    - banner [ref=f1e1000]:
+      - generic [ref=f1e1004]:
+        - heading "Chi tiết chẩn đoán & Hướng điều trị" [level=2] [ref=f1e1005]
+        - paragraph [ref=f1e1006]: "Mã hồ sơ: CASE-26AB026A2FCF4594984D30799F4A551B · Ngày khám: 31/10/2026"
+      - button "Đóng cửa sổ" [ref=f1e1007] [cursor=pointer]
+    - generic [ref=f1e1010]:
+      - generic [ref=f1e1011]:
+        - strong [ref=f1e1016]: Thông tin ca khám & Bác sĩ phụ trách
+        - generic [ref=f1e1017]:
+          - generic [ref=f1e1018]: "Vị trí tổn thương: —"
+          - generic [ref=f1e1019]: "Bác sĩ chẩn đoán: DermaScan QA Doctor"
+          - generic [ref=f1e1020]: "Trạng thái ca: ANALYZED"
+          - generic [ref=f1e1021]: "Bệnh nhân: QA Patient DS-2026-1031"
+      - generic [ref=f1e1022]:
+        - strong [ref=f1e1027]: Kết quả phân loại hình ảnh học DermaScan AI
+        - generic [ref=f1e1028]:
+          - generic [ref=f1e1029]: "Phân loại AI: Lành tính · Độ tin cậy: 89.6%"
+          - paragraph [ref=f1e1030]: U hắc tố (Melanoma)
+          - paragraph [ref=f1e1031]: "Mô hình: EfficientNet-B0 · Phân tích #9"
+          - paragraph [ref=f1e1032]: "Diện tích: 519846 px² · Chu vi: 2710.9587042331696 px · Tỷ lệ: 49.6%"
+      - generic [ref=f1e1033]:
+        - strong [ref=f1e1038]: Nhận định chẩn đoán lâm sàng của Bác sĩ
+        - paragraph [ref=f1e1039]: Chưa có nhận xét chuyên môn được lưu.
+      - generic [ref=f1e1040]:
+        - strong [ref=f1e1045]: Hướng điều trị & Khuyến nghị chăm sóc
+        - paragraph [ref=f1e1046]: Chưa có khuyến nghị từ bác sĩ.
+      - generic [ref=f1e1047]:
+        - strong [ref=f1e1053]: Hình ảnh ca khám
+        - generic [ref=f1e1054]:
+          - figure "MEL_1_conf0.90.jpg" [ref=f1e1055]:
+            - img "Ảnh Dermoscopy" [ref=f1e1056]
+          - 'figure "Grad-CAM #9" [ref=f1e1058]':
+            - img "Ảnh Grad-CAM" [ref=f1e1059]
+          - 'figure "Khoanh vùng #9" [ref=f1e1061]':
+            - img "Ảnh khoanh vùng tổn thương" [ref=f1e1062]

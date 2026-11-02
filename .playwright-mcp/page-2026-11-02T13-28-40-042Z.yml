@@ -1,0 +1,139 @@
+- generic [ref=f1e1]:
+  - complementary [ref=f1e2]:
+    - link "DermaScan AI - Trang chủ" [ref=f1e3] [cursor=pointer]:
+      - /url: /
+      - img "DermaScan AI" [ref=f1e5]
+      - generic [ref=f1e6]:
+        - generic [ref=f1e7]: DermaScan AI
+        - generic [ref=f1e8]: Phân loại tổn thương da bằng EfficientNet
+    - button "Thu gọn menu" [ref=f1e9] [cursor=pointer]: ‹
+    - navigation [ref=f1e10]:
+      - paragraph [ref=f1e11]: QUẢN TRỊ HỆ THỐNG
+      - button "Dashboard Tổng Quan" [ref=f1e12] [cursor=pointer]
+      - button "Quản lý trang chủ" [ref=f1e18] [cursor=pointer]
+      - button "Quản Lý Tài Khoản" [active] [ref=f1e24] [cursor=pointer]
+      - button "Phiên Đăng Nhập & Bảo Mật" [ref=f1e32] [cursor=pointer]
+      - button "Hồ sơ & Bảo mật cá nhân" [ref=f1e38] [cursor=pointer]
+      - button "Quản lý ca khám" [ref=f1e44] [cursor=pointer]
+      - button "Quản Lý Bác Sĩ & Duyệt" [ref=f1e50] [cursor=pointer]
+      - button "Thống Kê & Báo Cáo" [ref=f1e57] [cursor=pointer]
+  - main [ref=f1e61]:
+    - generic [ref=f1e62]:
+      - generic [ref=f1e64]:
+        - paragraph [ref=f1e65]: DERMASCAN AI / ACCOUNTS
+        - heading "Quản Lý Tài Khoản" [level=1] [ref=f1e281]
+      - group "Công cụ và tài khoản" [ref=f1e67]:
+        - button "Đổi ngôn ngữ" [ref=f1e69] [cursor=pointer]:
+          - generic [ref=f1e73]: VI
+        - button "Chuyển giao diện tối" [ref=f1e76] [cursor=pointer]
+        - generic [ref=f1e81]:
+          - generic [ref=f1e82]: Q
+          - generic [ref=f1e83]:
+            - strong [ref=f1e84]: Quản trị viên
+            - generic [ref=f1e85]: Quản trị viên
+        - button "Đăng xuất" [ref=f1e86] [cursor=pointer]
+    - generic [ref=f1e282]:
+      - button "Thêm tài khoản" [ref=f1e284] [cursor=pointer]
+      - generic [ref=f1e286]:
+        - generic [ref=f1e287]:
+          - searchbox [ref=f1e292]
+          - combobox [ref=f1e293]:
+            - option "Tất cả vai trò"
+            - option "Admin"
+            - option "Doctor" [selected]
+            - option "User"
+          - combobox [ref=f1e294]:
+            - option "Mọi trạng thái" [selected]
+            - option "Đang hoạt động"
+            - option "Đã khóa"
+          - button "Xóa bộ lọc" [ref=f1e295] [cursor=pointer]
+        - paragraph [ref=f1e296]: Đang hiển thị 5 tài khoản.
+        - table [ref=f1e298]:
+          - rowgroup [ref=f1e299]:
+            - row [ref=f1e300]:
+              - columnheader "NGƯỜI DÙNG" [ref=f1e301]
+              - columnheader "EMAIL" [ref=f1e302]
+              - columnheader "VAI TRÒ" [ref=f1e303]
+              - columnheader "TRẠNG THÁI" [ref=f1e304]
+              - columnheader "THAO TÁC" [ref=f1e305]
+          - rowgroup [ref=f1e306]:
+            - row [ref=f1e307]:
+              - cell "D DermaScan QA Doctor" [ref=f1e308]:
+                - generic [ref=f1e309]:
+                  - generic [ref=f1e310]: D
+                  - generic [ref=f1e311]: DermaScan QA Doctor
+              - cell "lephanhieu1125ag+dermascanqa20261031@gmail.com" [ref=f1e312]
+              - cell "Doctor" [ref=f1e313]:
+                - combobox [ref=f1e314]:
+                  - option "User"
+                  - option "Doctor" [selected]
+                  - option "Admin"
+              - cell "Đang hoạt động" [ref=f1e315]
+              - cell [ref=f1e316]:
+                - generic [ref=f1e317]:
+                  - button "Khóa tài khoản" [ref=f1e318] [cursor=pointer]
+                  - button "Xóa tài khoản" [ref=f1e322] [cursor=pointer]
+            - row [ref=f1e325]:
+              - cell "L Lê Phan Hiếu" [ref=f1e326]:
+                - generic [ref=f1e327]:
+                  - generic [ref=f1e328]: L
+                  - generic [ref=f1e329]: Lê Phan Hiếu
+              - cell "lephanhieulx2021@gmail.com" [ref=f1e330]
+              - cell "Doctor" [ref=f1e331]:
+                - combobox [ref=f1e332]:
+                  - option "User"
+                  - option "Doctor" [selected]
+                  - option "Admin"
+              - cell "Đang hoạt động" [ref=f1e333]
+              - cell [ref=f1e334]:
+                - generic [ref=f1e335]:
+                  - button "Khóa tài khoản" [ref=f1e336] [cursor=pointer]
+                  - button "Xóa tài khoản" [ref=f1e340] [cursor=pointer]
+            - row [ref=f1e343]:
+              - cell "N Người dùng A" [ref=f1e344]:
+                - generic [ref=f1e345]:
+                  - generic [ref=f1e346]: "N"
+                  - generic [ref=f1e347]: Người dùng A
+              - cell "patient@dermascan.local" [ref=f1e348]
+              - cell "User" [ref=f1e349]:
+                - combobox [ref=f1e350]:
+                  - option "User" [selected]
+                  - option "Doctor"
+                  - option "Admin"
+              - cell "Đang hoạt động" [ref=f1e351]
+              - cell [ref=f1e352]:
+                - generic [ref=f1e353]:
+                  - button "Khóa tài khoản" [ref=f1e354] [cursor=pointer]
+                  - button "Xóa tài khoản" [ref=f1e358] [cursor=pointer]
+            - row [ref=f1e361]:
+              - cell "B Bác sĩ" [ref=f1e362]:
+                - generic [ref=f1e363]:
+                  - generic [ref=f1e364]: B
+                  - generic [ref=f1e365]: Bác sĩ
+              - cell "doctor@dermascan.local" [ref=f1e366]
+              - cell "Doctor" [ref=f1e367]:
+                - combobox [ref=f1e368]:
+                  - option "User"
+                  - option "Doctor" [selected]
+                  - option "Admin"
+              - cell "Đang hoạt động" [ref=f1e369]
+              - cell [ref=f1e370]:
+                - generic [ref=f1e371]:
+                  - button "Khóa tài khoản" [ref=f1e372] [cursor=pointer]
+                  - button "Xóa tài khoản" [ref=f1e376] [cursor=pointer]
+            - row [ref=f1e379]:
+              - cell "Q Quản trị viên" [ref=f1e380]:
+                - generic [ref=f1e381]:
+                  - generic [ref=f1e382]: Q
+                  - generic [ref=f1e383]: Quản trị viên
+              - cell "admin@dermascan.local" [ref=f1e384]
+              - cell "Admin" [ref=f1e385]:
+                - combobox [ref=f1e386]:
+                  - option "User"
+                  - option "Doctor"
+                  - option "Admin" [selected]
+              - cell "Đang hoạt động" [ref=f1e387]
+              - cell [ref=f1e388]:
+                - generic [ref=f1e389]:
+                  - button "Khóa tài khoản" [ref=f1e390] [cursor=pointer]
+                  - button "Xóa tài khoản" [ref=f1e394] [cursor=pointer]

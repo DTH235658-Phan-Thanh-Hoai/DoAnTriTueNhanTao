@@ -1,0 +1,88 @@
+- generic [active] [ref=f8e1]:
+  - banner [ref=f8e2]:
+    - generic [ref=f8e3]:
+      - link "DermaScan AI - Trang chủ" [ref=f8e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f8e12]:
+          - generic [ref=f8e13]: DermaScan AI
+          - generic [ref=f8e14]: Sàng lọc ung thư da bằng AI
+      - group "Công cụ và tài khoản" [ref=f8e15]:
+        - button "Đổi ngôn ngữ" [ref=f8e17] [cursor=pointer]:
+          - generic [ref=f8e21]: VI
+        - button "Chuyển sang giao diện tối" [ref=f8e24] [cursor=pointer]
+        - generic [ref=f8e28]:
+          - button "Đăng nhập" [ref=f8e29] [cursor=pointer]
+          - button "Đăng ký" [ref=f8e30] [cursor=pointer]
+  - region [ref=f8e31]:
+    - generic "Điều hướng banner" [ref=f8e33]
+    - generic [ref=f8e34]:
+      - generic [ref=f8e35]: ✦
+      - heading "DermaScan AI" [level=1] [ref=f8e36]
+      - paragraph [ref=f8e37]: Chỉ dùng cho mục đích nghiên cứu.
+      - generic [ref=f8e38]:
+        - link "Đăng nhập để phân tích" [ref=f8e39] [cursor=pointer]:
+          - /url: "#analyze"
+        - link "Công nghệ lõi" [ref=f8e43] [cursor=pointer]:
+          - /url: "#features"
+  - generic [ref=f8e44]:
+    - generic [ref=f8e45]:
+      - generic [ref=f8e46]: Công nghệ lõi
+      - heading "Tính năng cốt lõi của DermaScan AI" [level=2] [ref=f8e47]
+      - paragraph [ref=f8e48]: Kết hợp thị giác máy tính và y khoa để đưa ra kết quả sàng lọc có thể giải thích được.
+    - generic [ref=f8e49]:
+      - article [ref=f8e50]:
+        - generic [ref=f8e51]: Mô hình học sâu
+        - heading "Mô hình EfficientNet-B0" [level=3] [ref=f8e59]
+        - paragraph [ref=f8e60]: Phân loại tổn thương da từ ảnh dermoscopy với kiến trúc nhẹ, chạy mượt trên cả CPU và GPU.
+      - article [ref=f8e61]:
+        - generic [ref=f8e62]: Giải thích kết quả
+        - heading "Trực quan hóa Grad-CAM" [level=3] [ref=f8e68]
+        - paragraph [ref=f8e69]: Bản đồ nhiệt chỉ ra vùng ảnh mà mô hình tập trung, giúp bác sĩ hình dung cơ sở của từng dự đoán.
+      - article [ref=f8e70]:
+        - generic [ref=f8e71]: Dữ liệu chuẩn quốc tế
+        - heading "Bộ dữ liệu chuẩn ISIC" [level=3] [ref=f8e77]
+        - paragraph [ref=f8e78]: Huấn luyện và kiểm chứng trên bộ ảnh ISIC được chuyên gia da liễu chú giải theo chuẩn quốc tế.
+  - contentinfo [ref=f8e79]:
+    - generic [ref=f8e81]:
+      - generic [ref=f8e82]:
+        - generic [ref=f8e83]:
+          - link "DermaScan AI" [ref=f8e84] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f8e93]: Chỉ dùng cho mục đích nghiên cứu.
+          - paragraph [ref=f8e94]: Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và trực quan hóa Grad-CAM.
+          - generic [ref=f8e95]:
+            - link "Facebook" [ref=f8e96] [cursor=pointer]:
+              - /url: "#"
+            - link "Google" [ref=f8e98] [cursor=pointer]:
+              - /url: "#"
+            - link "LinkedIn" [ref=f8e100] [cursor=pointer]:
+              - /url: "#"
+            - link "Twitter / X" [ref=f8e102] [cursor=pointer]:
+              - /url: "#"
+            - link "GitHub" [ref=f8e104] [cursor=pointer]:
+              - /url: https://github.com/DTH235658-Phan-Thanh-Hoai/DoAnTriTueNhanTao
+        - generic [ref=f8e106]:
+          - heading "Liên hệ" [level=4] [ref=f8e107]
+          - list [ref=f8e108]:
+            - listitem [ref=f8e109]:
+              - generic [ref=f8e114]:
+                - generic [ref=f8e115]: Email
+                - generic [ref=f8e116]: contact@dermascan.ai
+            - listitem [ref=f8e117]:
+              - generic [ref=f8e120]:
+                - generic [ref=f8e121]: Hotline
+                - generic [ref=f8e122]: 1900 6868
+        - generic [ref=f8e123]:
+          - heading "Công nghệ" [level=4] [ref=f8e124]
+          - list [ref=f8e125]:
+            - listitem [ref=f8e126]: EfficientNet-B0 — phân loại tổn thương da
+            - listitem [ref=f8e127]: Grad-CAM — bản đồ chú ý trực quan
+            - listitem [ref=f8e128]: Bộ dữ liệu chuẩn ISIC
+            - listitem [ref=f8e129]: Báo cáo PDF & gửi Email
+        - generic [ref=f8e130]:
+          - heading "Lưu ý y khoa" [level=4] [ref=f8e131]
+          - paragraph [ref=f8e135]:
+            - text: Kết quả phân tích chỉ mang tính chất
+            - strong [ref=f8e136]: sàng lọc tham khảo
+            - text: ", không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ chuyên khoa da liễu."
+      - generic [ref=f8e137]: Sàng lọc ung thư da bằng AI

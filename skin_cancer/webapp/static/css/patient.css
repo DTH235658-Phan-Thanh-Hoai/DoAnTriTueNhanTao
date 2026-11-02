@@ -514,6 +514,11 @@
   color: #dc2626;
   border: 1px solid rgba(239, 68, 68, 0.3);
 }
+.patient-ai-badge.neutral {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
 
 /* Doctor Clinical Assessment Callout */
 .patient-doctor-callout {
@@ -791,6 +796,10 @@ html[data-theme="dark"] .patient-empty-state h4 {
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+  .patient-case-code {
+    overflow-wrap: anywhere;
+  }
+
   .patient-portal-page {
     padding: 20px 14px 60px;
   }

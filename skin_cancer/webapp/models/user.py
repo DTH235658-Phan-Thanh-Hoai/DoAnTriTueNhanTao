@@ -1,3 +1,6 @@
+import hashlib
+import hmac
+from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.orm import validates
@@ -29,6 +32,14 @@ class User(UserMixin, Timestamps, db.Model):
     two_factor_code_expires_at = db.Column(db.DateTime)
     patient_cases = db.relationship('Case', foreign_keys='Case.patient_user_id', back_populates='patient', passive_deletes='all')
     assigned_cases = db.relationship('Case', foreign_keys='Case.doctor_id', back_populates='doctor', passive_deletes='all')
+
+    def get_id(self):
+        secret = current_app.secret_key
+        secret = secret.encode('utf-8') if isinstance(secret, str) else secret
+        key = hmac.new(secret, b'dermascan-ai/flask-login-user-id/v1', hashlib.sha256).digest()
+        user_id = str(self.id)
+        signature = hmac.new(key, f'{user_id}:{self.password_hash}'.encode('utf-8'), hashlib.sha256).hexdigest()
+        return f'v1.{user_id}.{signature}'
 
     @validates('email')
     def normalize_email(self, _key, value):

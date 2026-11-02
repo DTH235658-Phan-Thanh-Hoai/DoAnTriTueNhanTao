@@ -37,6 +37,11 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='css/homepage-management.css') }}"
     />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/custom-select.css') }}"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-date-picker.css') }}" />
   </head>
   <body>
     <aside class="sidebar" id="sidebar">
@@ -866,12 +871,12 @@
                   role="searchbox"
                   class="text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-400"
                   placeholder="Tìm theo tên hoặc email…" /></label
-              ><select id="role-filter" class="text-gray-900 dark:text-white">
+              ><select id="role-filter" data-custom-dropdown aria-label="Lọc theo vai trò" class="text-gray-900 dark:text-white">
                 <option value="">Tất cả vai trò</option>
                 <option value="ADMIN">Admin</option>
                 <option value="DOCTOR">Doctor</option>
                 <option value="USER">User</option></select
-              ><select id="status-filter" class="text-gray-900 dark:text-white">
+              ><select id="status-filter" data-custom-dropdown aria-label="Lọc theo trạng thái" class="text-gray-900 dark:text-white">
                 <option value="">Mọi trạng thái</option>
                 <option value="ACTIVE">Đang hoạt động</option>
                 <option value="LOCKED">Đã khóa</option>
@@ -1081,7 +1086,7 @@
                   autocomplete="off"
               /></label>
               <label
-                >Trạng thái<select id="case-status">
+                >Trạng thái<select id="case-status" data-custom-dropdown>
                   <option value="">Tất cả</option>
                   <option value="CREATED">Mới tạo</option>
                   <option value="UPLOADED">Đã tải ảnh</option>
@@ -1091,7 +1096,7 @@
                 </select></label
               >
               <label
-                >Bác sĩ<select id="case-doctor">
+                >Bác sĩ<select id="case-doctor" data-custom-dropdown>
                   <option value="">Tất cả bác sĩ</option>
                 </select></label
               >
@@ -1206,7 +1211,7 @@
                     placeholder="Tên hoặc email bác sĩ"
                 /></label>
                 <label
-                  >Trạng thái<select id="doctor-history-status">
+                  >Trạng thái<select id="doctor-history-status" data-custom-dropdown>
                     <option value="">Tất cả</option>
                     <option value="APPROVED">Đã duyệt</option>
                     <option value="REJECTED">Từ chối</option>
@@ -1633,7 +1638,7 @@
         <label>Họ và tên<input name="name" required minlength="2" /></label
         ><label>Email<input name="email" type="email" required /></label
         ><label
-          >Vai trò<select name="role">
+          >Vai trò<select name="role" data-custom-dropdown>
             <option value="USER">User</option>
             <option value="DOCTOR">Doctor</option>
             <option value="ADMIN">Admin</option>
@@ -1649,6 +1654,8 @@
         <p class="form-message" id="form-message"></p>
       </form>
     </div>
+    <script src="{{ url_for('static', filename='js/patient_select_dropdown.js') }}?v=2.0"></script>
+    <script src="{{ url_for('static', filename='js/custom_date_picker.js') }}?v=1.0"></script>
     <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
     <script src="{{ url_for('static', filename='js/admin_cases.js') }}"></script>
     <script src="{{ url_for('static', filename='js/homepage_management.js') }}"></script>

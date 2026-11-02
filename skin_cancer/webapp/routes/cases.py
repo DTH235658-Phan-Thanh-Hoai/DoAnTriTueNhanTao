@@ -1,4 +1,5 @@
 from datetime import date, datetime, timedelta
+import math
 from uuid import uuid4
 
 from flask import (
@@ -25,6 +26,10 @@ from ..services.access import (
     visible_cases,
     visible_case_or_404,
     create_case,
+)
+from ..services.uncertainty import (
+    neutralize_interpretation_if_uncertain,
+    uncertainty_for_probabilities,
 )
 
 
@@ -762,6 +767,7 @@ def get_case(
                         'predicted_class': res.predicted_class,
                         'predicted_probability': res.predicted_probability,
                         'class_probabilities': res.class_probabilities,
+                        'uncertainty': uncertainty_for_probabilities(res.class_probabilities),
                     }
                     for res in analysis.results
                 ]
@@ -937,10 +943,27 @@ def doctor_history():
             'patient': patient_name,
             'location': case.lesion_location or 'Chưa xác định',
             'diagnosis': result.predicted_class.upper(),
-            'binary_result': 'malignant' if result.binary_result == 1 else 'benign',
-            'confidence': round((result.predicted_probability or 0) * 100, 1),
+            'binary_result': _binary_result_label(result.binary_result),
+            'binary_probability': result.binary_probability,
+            'confidence': _probability_percent(result.predicted_probability),
         })
     return jsonify(records=records)
+
+
+def _binary_result_label(value):
+    if type(value) is not int:
+        return None
+    if value == 1:
+        return 'malignant'
+    if value == 0:
+        return 'benign'
+    return None
+
+
+def _probability_percent(value):
+    if type(value) not in (int, float) or not math.isfinite(value) or not 0 <= value <= 1:
+        return None
+    return round(value * 100, 1)
 
 
 # ============================================================
@@ -1268,6 +1291,9 @@ def get_analysis(
 
                 'class_probabilities':
                     result.class_probabilities,
+
+                'uncertainty':
+                    uncertainty_for_probabilities(result.class_probabilities),
             }
 
             for result
@@ -1799,6 +1825,10 @@ def chatgpt_consult(analysis_id):
         return jsonify({
             'error': 'Không thể kết nối đến ChatGPT. Vui lòng kiểm tra API key hoặc kết nối mạng.'
         }), 502
+
+    uncertainty = uncertainty_for_probabilities(res.class_probabilities)
+    if uncertainty and uncertainty["is_uncertain"]:
+        consultation = neutralize_interpretation_if_uncertain(consultation)
 
     # Cập nhật vào cache để frontend đọc lại khi refresh
     try:

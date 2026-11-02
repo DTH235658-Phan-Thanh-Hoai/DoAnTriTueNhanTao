@@ -1,0 +1,3 @@
+filename,case_code,analysis_id,predicted_class,predicted_probability,lesion_area_px,lesion_perimeter_px,lesion_ratio,status,error_message
+5972986c-85f4-4141-8f8b-2fef1c423d36.png,CASE-E3F2693481A84FEDA7E5506BD8A2C057,,,,,,,UPLOADED,
+qa-batch-bad.txt,CASE-E3F2693481A84FEDA7E5506BD8A2C057,,,,,,,FAILED,Unsupported file extension

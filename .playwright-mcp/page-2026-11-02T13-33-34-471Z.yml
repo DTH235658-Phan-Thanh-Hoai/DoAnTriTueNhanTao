@@ -1,0 +1,105 @@
+- generic [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "DermaScan AI - Trang chủ" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+        - img "DermaScan AI" [ref=f1e139]
+        - generic [ref=f1e12]:
+          - generic [ref=f1e13]: DermaScan AI
+          - generic [ref=f1e14]: Phân loại tổn thương da bằng EfficientNet
+      - navigation "Menu bệnh nhân" [ref=f1e140]:
+        - button "Lịch sử bệnh án" [ref=f1e141] [cursor=pointer]
+        - button "Hồ sơ cá nhân" [active] [ref=f1e142] [cursor=pointer]
+        - button "Báo cáo y khoa" [ref=f1e143] [cursor=pointer]
+      - group "Công cụ và tài khoản" [ref=f1e15]:
+        - button "Đổi ngôn ngữ" [ref=f1e17] [cursor=pointer]:
+          - generic [ref=f1e21]: VI
+        - button "Chuyển sang giao diện tối" [ref=f1e24] [cursor=pointer]
+        - generic [ref=f1e144]:
+          - generic "Xem thông tin cá nhân" [ref=f1e145] [cursor=pointer]:
+            - generic [ref=f1e146]: "N"
+            - generic [ref=f1e147]:
+              - strong [ref=f1e148]: Người dùng A
+              - generic [ref=f1e149]: User
+          - button "Đăng xuất" [ref=f1e150] [cursor=pointer]
+  - region "Hồ sơ thông tin cá nhân" [ref=f1e391]:
+    - generic [ref=f1e392]:
+      - generic [ref=f1e398]:
+        - heading "Hồ sơ cá nhân & Tiền sử người bệnh" [level=3] [ref=f1e399]
+        - paragraph [ref=f1e400]: Xem và cập nhật thông tin cá nhân của bạn. Dữ liệu chuẩn xác giúp bác sĩ chẩn đoán tốt hơn và xuất báo cáo y khoa chính xác.
+      - generic [ref=f1e401]:
+        - generic [ref=f1e402]:
+          - generic [ref=f1e403]:
+            - generic [ref=f1e404]: Họ và tên bệnh nhân *
+            - textbox "Họ và tên bệnh nhân *" [ref=f1e405]:
+              - /placeholder: Nguyễn Văn A
+              - text: Người dùng A
+          - generic [ref=f1e406]:
+            - generic [ref=f1e407]: Email đăng ký (Tài khoản)
+            - textbox "Email đăng ký (Tài khoản)" [disabled] [ref=f1e408]: patient@dermascan.local
+          - generic [ref=f1e409]:
+            - generic [ref=f1e410]: Số điện thoại liên hệ
+            - textbox "Số điện thoại liên hệ" [ref=f1e411]:
+              - /placeholder: "0901234567"
+          - generic [ref=f1e412]:
+            - generic [ref=f1e413]: Giới tính
+            - combobox "Giới tính" [ref=f1e414]:
+              - option "Nam" [selected]
+              - option "Nữ"
+              - option "Khác"
+          - generic [ref=f1e415]:
+            - generic [ref=f1e416]: Ngày sinh (Năm sinh)
+            - textbox "Ngày sinh (Năm sinh)" [ref=f1e417]
+        - button "Lưu thay đổi thông tin cá nhân" [ref=f1e419] [cursor=pointer]
+  - generic [ref=f1e44]:
+    - generic [ref=f1e45]:
+      - generic [ref=f1e46]: Công nghệ lõi
+      - heading "Tính năng cốt lõi của DermaScan AI" [level=2] [ref=f1e47]
+      - paragraph [ref=f1e48]: Kết hợp thị giác máy tính và y khoa để hỗ trợ sàng lọc có thể giải thích.
+    - generic [ref=f1e49]:
+      - article [ref=f1e50]:
+        - generic [ref=f1e51]: Mô hình học sâu
+        - heading "Mô hình EfficientNet-B0" [level=3] [ref=f1e59]
+        - paragraph [ref=f1e60]: Phân loại tổn thương da từ ảnh dermoscopy.
+      - article [ref=f1e61]:
+        - generic [ref=f1e62]: Giải thích kết quả
+        - heading "Trực quan hóa Grad-CAM" [level=3] [ref=f1e68]
+        - paragraph [ref=f1e69]: Hiển thị vùng ảnh mô hình chú ý.
+      - article [ref=f1e70]:
+        - generic [ref=f1e71]: Dữ liệu chuẩn quốc tế
+        - heading "Bộ dữ liệu chuẩn ISIC" [level=3] [ref=f1e77]
+        - paragraph [ref=f1e78]: Bộ ảnh tổn thương da được chuyên gia chú giải.
+  - contentinfo [ref=f1e79]:
+    - generic [ref=f1e81]:
+      - generic [ref=f1e82]:
+        - generic [ref=f1e83]:
+          - link "DermaScan AI" [ref=f1e84] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f1e93]: Phân loại tổn thương da bằng EfficientNet
+          - paragraph [ref=f1e94]: Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và Grad-CAM.
+        - generic [ref=f1e106]:
+          - heading "Liên hệ" [level=4] [ref=f1e107]
+          - list [ref=f1e108]:
+            - listitem [ref=f1e109]:
+              - generic [ref=f1e114]:
+                - generic [ref=f1e115]: Email
+                - link "contact@dermascan.ai" [ref=f1e260] [cursor=pointer]:
+                  - /url: mailto:contact@dermascan.ai
+            - listitem [ref=f1e117]:
+              - generic [ref=f1e120]:
+                - generic [ref=f1e121]: Hotline
+                - link "1900 6868" [ref=f1e261] [cursor=pointer]:
+                  - /url: tel:1900 6868
+        - generic [ref=f1e123]:
+          - heading "Công nghệ" [level=4] [ref=f1e124]
+          - list [ref=f1e125]:
+            - listitem [ref=f1e126]: EfficientNet-B0 — phân loại tổn thương da
+            - listitem [ref=f1e127]: Grad-CAM — bản đồ chú ý
+            - listitem [ref=f1e128]: Bộ dữ liệu chuẩn ISIC
+            - listitem [ref=f1e129]: Báo cáo PDF & gửi Email
+        - generic [ref=f1e130]:
+          - heading "Lưu ý y khoa" [level=4] [ref=f1e131]
+          - paragraph [ref=f1e135]: Kết quả phân tích chỉ mang tính chất sàng lọc tham khảo, không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ.
+      - generic [ref=f1e137]:
+        - generic [ref=f1e262]: © 2026 DermaScan AI
+        - generic [ref=f1e138]: Sàng lọc ung thư da bằng AI

@@ -1,0 +1,188 @@
+- generic [active] [ref=f5e1]:
+  - banner [ref=f5e2]:
+    - generic [ref=f5e3]:
+      - link "DermaScan AI - Trang chủ":
+        - /url: /
+        - img "DermaScan AI" [ref=f5e136] [cursor=pointer]
+        - generic [ref=f5e11] [cursor=pointer]:
+          - generic [ref=f5e12]: DermaScan AI
+          - generic [ref=f5e13]: Phân loại tổn thương da bằng EfficientNet
+      - navigation "Menu bệnh nhân" [ref=f5e137]:
+        - button "Lịch sử bệnh án" [ref=f5e138] [cursor=pointer]
+        - button "Hồ sơ cá nhân" [ref=f5e139] [cursor=pointer]
+        - button "Báo cáo y khoa" [ref=f5e140] [cursor=pointer]
+      - group "Công cụ và tài khoản" [ref=f5e14]:
+        - button "Đổi ngôn ngữ" [ref=f5e16] [cursor=pointer]
+        - button "Chuyển sang giao diện tối" [ref=f5e22] [cursor=pointer]
+        - generic [ref=f5e141]:
+          - generic "Xem thông tin cá nhân" [ref=f5e142] [cursor=pointer]: "N"
+          - button "Đăng xuất" [ref=f5e144] [cursor=pointer]
+  - region "Lịch sử & Tiền sử bệnh án" [ref=f5e145]:
+    - generic [ref=f5e147]:
+      - generic [ref=f5e148]: Cổng Thông Tin Sức Khỏe Bệnh Nhân
+      - heading "Xin chào, Bệnh nhân!" [level=2] [ref=f5e151]
+      - paragraph [ref=f5e152]: Theo dõi tiến trình thăm khám, dòng thời gian các đợt khám da liễu, kết quả phân loại tổn thương da từ AI và nhận định chuyên khoa từ Bác sĩ.
+    - generic [ref=f5e156]:
+      - generic [ref=f5e161]:
+        - generic [ref=f5e162]: Tổng số lần khám
+        - strong [ref=f5e163]: "4"
+      - generic [ref=f5e169]:
+        - generic [ref=f5e170]: Đợt khám đã hoàn tất
+        - strong [ref=f5e171]: "1"
+      - generic [ref=f5e177]:
+        - generic [ref=f5e178]: Hồ sơ có kết luận y khoa
+        - strong [ref=f5e179]: 100%
+    - generic [ref=f5e180]:
+      - generic [ref=f5e186]:
+        - heading "Dòng thời gian các đợt khám da liễu" [level=3] [ref=f5e187]
+        - paragraph [ref=f5e188]: Bấm vào từng ca khám để xem chi tiết hình ảnh tổn thương, kết quả phân loại mô hình AI, chẩn đoán y khoa từ bác sĩ và phác đồ hướng điều trị tương ứng.
+      - generic [ref=f5e189]:
+        - generic [ref=f5e190] [cursor=pointer]:
+          - generic [ref=f5e191]:
+            - generic [ref=f5e192]: CASE-5808326FC5D74B37BE1EE1315130A0DD
+            - generic [ref=f5e193]: 02:43 29/10/2026
+          - generic [ref=f5e196]:
+            - generic [ref=f5e197]:
+              - generic [ref=f5e198]: Vị trí da chưa chỉ định cụ thể
+              - generic [ref=f5e199]:
+                - text: "Bác sĩ phụ trách:"
+                - strong [ref=f5e200]: Bác sĩ chuyên khoa DermaScan
+            - generic [ref=f5e201]:
+              - generic [ref=f5e202]: Đã phân tích AI
+              - button "Chi tiết chẩn đoán" [ref=f5e203]
+        - generic [ref=f5e206] [cursor=pointer]:
+          - generic [ref=f5e207]:
+            - generic [ref=f5e208]: CASE-4B0DBB5BC0C04ECF83C8973AAA759215
+            - generic [ref=f5e209]: 02:23 29/10/2026
+          - generic [ref=f5e212]:
+            - generic [ref=f5e213]:
+              - generic [ref=f5e214]: Tay trái
+              - generic [ref=f5e215]:
+                - text: "Bác sĩ phụ trách:"
+                - strong [ref=f5e216]: Bác sĩ chuyên khoa DermaScan
+            - generic [ref=f5e217]:
+              - generic [ref=f5e218]: Đã phân tích AI
+              - button "Chi tiết chẩn đoán" [ref=f5e219]
+        - generic [ref=f5e222] [cursor=pointer]:
+          - generic [ref=f5e223]:
+            - generic [ref=f5e224]: CASE-E8A3E4833C6E40818F06C8F919C66A4B
+            - generic [ref=f5e225]: 02:20 29/10/2026
+          - generic [ref=f5e228]:
+            - generic [ref=f5e229]:
+              - generic [ref=f5e230]: Tay trái
+              - generic [ref=f5e231]:
+                - text: "Bác sĩ phụ trách:"
+                - strong [ref=f5e232]: Bác sĩ chuyên khoa DermaScan
+            - generic [ref=f5e233]:
+              - generic [ref=f5e234]: Đã phân tích AI
+              - button "Chi tiết chẩn đoán" [ref=f5e235]
+        - generic [ref=f5e238] [cursor=pointer]:
+          - generic [ref=f5e239]:
+            - generic [ref=f5e240]: CASE-A940F12DB431445986B092D3F51E26C5
+            - generic [ref=f5e241]: 19:45 26/10/2026
+          - generic [ref=f5e244]:
+            - generic [ref=f5e245]:
+              - generic [ref=f5e246]: Tay trái
+              - generic [ref=f5e247]:
+                - text: "Bác sĩ phụ trách:"
+                - strong [ref=f5e248]: Bác sĩ chuyên khoa DermaScan
+            - generic [ref=f5e249]:
+              - generic [ref=f5e250]: Bác sĩ đã kết luận
+              - button "Chi tiết chẩn đoán" [ref=f5e251]
+  - dialog [ref=f5e257]:
+    - generic [ref=f5e259]:
+      - generic [ref=f5e260]:
+        - generic [ref=f5e261]:
+          - heading "Chi tiết chẩn đoán & Hướng điều trị" [level=3] [ref=f5e262]
+          - generic [ref=f5e265]:
+            - text: "Mã hồ sơ:"
+            - strong [ref=f5e266]: CASE-5808326FC5D74B37BE1EE1315130A0DD
+            - text: "· Ngày khám: 02:43 29/10/2026"
+        - button "Đóng" [ref=f5e267] [cursor=pointer]
+      - generic [ref=f5e270]:
+        - generic [ref=f5e271]:
+          - heading "Thông tin ca khám & Bác sĩ phụ trách" [level=4] [ref=f5e272]
+          - generic [ref=f5e276]:
+            - generic [ref=f5e277]:
+              - text: "Vị trí tổn thương:"
+              - strong [ref=f5e278]: Vùng da kiểm tra
+            - generic [ref=f5e279]:
+              - text: "Bác sĩ chẩn đoán:"
+              - strong [ref=f5e280]: Bác sĩ
+            - generic [ref=f5e281]:
+              - text: "Trạng thái ca:"
+              - strong [ref=f5e282]: ANALYZED
+        - generic [ref=f5e283]:
+          - heading "Kết quả phân loại hình ảnh học DermaScan AI" [level=4] [ref=f5e284]
+          - generic [ref=f5e287]:
+            - generic [ref=f5e288]:
+              - generic [ref=f5e289]: "Kết quả nhị phân: Không ghi nhận dấu hiệu ác tính"
+              - generic [ref=f5e290]: "· Xác suất ác tính (đầu ra nhị phân): 4.9%"
+            - paragraph [ref=f5e291]: "Dự đoán đa lớp: Dày sừng lành tính (Lành tính Keratosis)"
+            - paragraph [ref=f5e292]: "Xác suất lớp đa lớp: 86.9%"
+            - paragraph [ref=f5e293]: Tổn thương lành tính bao gồm dày sừng tiết bã, dày sừng dạng lichen hoặc hạt cơm sừng.
+        - generic [ref=f5e294]:
+          - heading "Nhận định chẩn đoán lâm sàng của Bác sĩ" [level=4] [ref=f5e295]
+          - generic [ref=f5e299]:
+            - paragraph [ref=f5e300]: "KẾT LUẬN Y KHOA:"
+            - paragraph [ref=f5e301]: Bác sĩ đang xem xét và hoàn tất kết luận chuyên khoa.
+            - paragraph [ref=f5e302]:
+              - strong [ref=f5e303]: "Ghi chú lâm sàng:"
+              - text: Hình ảnh tổn thương đang trong quá trình theo dõi.
+        - generic [ref=f5e304]:
+          - heading "Hướng điều trị & Khuyến nghị chăm sóc" [level=4] [ref=f5e305]
+          - generic [ref=f5e309]:
+            - paragraph [ref=f5e310]: "PHÁC ĐỒ / HƯỚNG DẪN DÙNG THUỐC:"
+            - paragraph [ref=f5e311]: Tuân thủ hướng dẫn vệ sinh da, tránh tiếp xúc trực tiếp tia UV và tái khám định kỳ theo lịch hẹn.
+  - generic [ref=f5e41]:
+    - generic [ref=f5e42]:
+      - generic [ref=f5e43]: Công nghệ lõi
+      - heading "Tính năng cốt lõi của DermaScan AI" [level=2] [ref=f5e44]
+      - paragraph [ref=f5e45]: Kết hợp thị giác máy tính và y khoa để hỗ trợ sàng lọc có thể giải thích.
+    - generic [ref=f5e46]:
+      - article [ref=f5e47]:
+        - generic [ref=f5e48]: Mô hình học sâu
+        - heading "Mô hình EfficientNet-B0" [level=3] [ref=f5e56]
+        - paragraph [ref=f5e57]: Phân loại tổn thương da từ ảnh dermoscopy.
+      - article [ref=f5e58]:
+        - generic [ref=f5e59]: Giải thích kết quả
+        - heading "Trực quan hóa Grad-CAM" [level=3] [ref=f5e65]
+        - paragraph [ref=f5e66]: Hiển thị vùng ảnh mô hình chú ý.
+      - article [ref=f5e67]:
+        - generic [ref=f5e68]: Dữ liệu chuẩn quốc tế
+        - heading "Bộ dữ liệu chuẩn ISIC" [level=3] [ref=f5e74]
+        - paragraph [ref=f5e75]: Bộ ảnh tổn thương da được chuyên gia chú giải.
+  - contentinfo [ref=f5e76]:
+    - generic [ref=f5e78]:
+      - generic [ref=f5e79]:
+        - generic [ref=f5e80]:
+          - link "DermaScan AI" [ref=f5e81] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f5e90]: Phân loại tổn thương da bằng EfficientNet
+          - paragraph [ref=f5e91]: Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và Grad-CAM.
+        - generic [ref=f5e103]:
+          - heading "Liên hệ" [level=4] [ref=f5e104]
+          - list [ref=f5e105]:
+            - listitem [ref=f5e106]:
+              - generic [ref=f5e111]:
+                - generic [ref=f5e112]: Email
+                - link "contact@dermascan.ai" [ref=f5e254] [cursor=pointer]:
+                  - /url: mailto:contact@dermascan.ai
+            - listitem [ref=f5e114]:
+              - generic [ref=f5e117]:
+                - generic [ref=f5e118]: Hotline
+                - link "1900 6868" [ref=f5e255] [cursor=pointer]:
+                  - /url: tel:1900 6868
+        - generic [ref=f5e120]:
+          - heading "Công nghệ" [level=4] [ref=f5e121]
+          - list [ref=f5e122]:
+            - listitem [ref=f5e123]: EfficientNet-B0 — phân loại tổn thương da
+            - listitem [ref=f5e124]: Grad-CAM — bản đồ chú ý
+            - listitem [ref=f5e125]: Bộ dữ liệu chuẩn ISIC
+            - listitem [ref=f5e126]: Báo cáo PDF & gửi Email
+        - generic [ref=f5e127]:
+          - heading "Lưu ý y khoa" [level=4] [ref=f5e128]
+          - paragraph [ref=f5e132]: Kết quả phân tích chỉ mang tính chất sàng lọc tham khảo, không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ.
+      - generic [ref=f5e134]:
+        - generic [ref=f5e256]: © 2026 DermaScan AI
+        - generic [ref=f5e135]: Sàng lọc ung thư da bằng AI

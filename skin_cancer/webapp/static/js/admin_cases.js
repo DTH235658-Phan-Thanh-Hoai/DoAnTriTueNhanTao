@@ -106,6 +106,7 @@
         ),
       );
       doctorSelect.value = selected;
+      window.CustomSelectDropdown?.refresh(doctorSelect);
       page = data.page;
       pages = data.pages;
       $("#case-count").textContent = `Tìm thấy ${data.total} ca khám`;
@@ -150,7 +151,14 @@
       const classifications = analyses
         .map(
           ({ analysis, result }) =>
-            `<div class="case-medical-result"><span class="case-ai-pill">Phân loại AI: ${result.binary === 0 ? "Lành tính" : result.binary === 1 ? "Nghi ngờ ác tính" : "Chưa xác định"} · Độ tin cậy: ${safePercent(result.probability)}</span><p><b>${display(classLabels[result.class] || result.class)}</b></p><p class="case-medical-muted">Mô hình: ${display(result.model)} · Phân tích #${analysis.id}</p>${analysis.area == null ? "" : `<p class="case-medical-muted">Diện tích: ${display(analysis.area)} px² · Chu vi: ${display(analysis.perimeter)} px · Tỷ lệ: ${safePercent(analysis.ratio)}</p>`}</div>`,
+            (() => {
+              const malignantClasses = new Set(["MEL", "BCC", "SCC", "AK", "AKIEC"]);
+              const hasBinary = result.binary === 0 || result.binary === 1;
+              const hasClass = Boolean(result.class);
+              const mismatch = hasBinary && hasClass && malignantClasses.has(String(result.class).toUpperCase()) !== (result.binary === 1);
+              const uncertain = Boolean(result.uncertainty?.is_uncertain);
+              return `<div class="case-medical-result">${analysis.status !== "COMPLETED" ? `<span class="case-medical-muted">Trạng thái phân tích: ${display(statusLabels[analysis.status] || analysis.status)}</span>` : `<p><b>Kết quả nhị phân:</b> ${hasBinary ? (result.binary === 1 ? "Nghi ngờ ác tính" : "Không ghi nhận dấu hiệu ác tính") : "Chưa có kết quả"} · Xác suất ác tính (đầu ra nhị phân): ${safePercent(result.binary_probability)}</p><p><b>Kết quả đa lớp (dự đoán):</b> ${hasClass ? display(classLabels[result.class] || result.class) : "Chưa có kết quả"} · Xác suất lớp: ${safePercent(result.probability)}</p>${mismatch ? '<p class="case-medical-callout orange" role="status">Hai đầu ra AI không khớp nhau. Đây là các kết quả mô hình riêng biệt; cần bác sĩ đánh giá.</p>' : uncertain ? '<p class="case-medical-callout orange" role="status">Kết quả AI chưa đủ chắc chắn. Cần bác sĩ đánh giá.</p>' : ""}`}<p class="case-medical-muted">Mô hình: ${display(result.model)} · Phân tích #${analysis.id}</p>${analysis.area == null ? "" : `<p class="case-medical-muted">Diện tích: ${display(analysis.area)} px² · Chu vi: ${display(analysis.perimeter)} px · Tỷ lệ: ${safePercent(analysis.ratio)}</p>`}</div>`;
+            })(),
         )
         .join("");
       const ai = section(
@@ -235,7 +243,10 @@
       "#case-to",
     ].forEach((field) => {
       $(field).value = "";
+      if (field === "#case-from" || field === "#case-to") window.CustomDatePicker?.refresh($(field));
     });
+    window.CustomSelectDropdown?.refresh($("#case-status"));
+    window.CustomSelectDropdown?.refresh($("#case-doctor"));
     changed();
   });
   $("#case-prev").addEventListener("click", () => {

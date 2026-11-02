@@ -40,6 +40,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/workflow.css') }}" />
 
   <link rel="stylesheet" href="{{ url_for('static', filename='css/patient.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-select.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/custom-date-picker.css') }}" />
 
   <!-- ============ TAILWIND CSS (CDN) - TRANG CHỦ ============ -->
 
@@ -1966,7 +1968,17 @@
       }
 
       .hp-user-meta {
-        display: none;
+        display: flex;
+        min-width: 0;
+        max-width: clamp(56px, 22vw, 128px);
+      }
+
+      .hp-user-meta strong,
+      .hp-user-meta small {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .hp-user-pill {
@@ -4113,16 +4125,18 @@
 
             <div class="patient-selector">
               <div class="patient-selector-head">
-                <label for="patientSelect"> Bệnh nhân </label>
+                <label id="patientSelectLabel" for="patientSelect"> Bệnh nhân </label>
 
                 <button type="button" id="addTemporaryPatientBtn" class="workflow-small-btn patient-add-btn">
                   + Thêm bệnh nhân
                 </button>
               </div>
 
-              <select id="patientSelect" disabled>
-                <option value="">Đăng nhập bác sĩ để tải danh sách</option>
-              </select>
+              <div id="patientSelectDropdown" class="patient-select-dropdown">
+                <select id="patientSelect" data-custom-dropdown data-placeholder="Đăng nhập bác sĩ để tải danh sách" aria-labelledby="patientSelectLabel" disabled>
+                  <option value="">Đăng nhập bác sĩ để tải danh sách</option>
+                </select>
+              </div>
 
               <small id="patientHelp">
                 Chọn bệnh nhân có tài khoản hoặc thêm bệnh nhân mới.
@@ -4307,7 +4321,7 @@
               <span class="verdict-icon" id="verdictIcon"></span>
 
               <div>
-                <span class="verdict-eyebrow"> Sàng lọc nhị phân </span>
+                <span class="verdict-eyebrow"> Xác suất ác tính · đầu ra nhị phân </span>
 
                 <h3 class="verdict-title" id="verdictTitle"></h3>
               </div>
@@ -4572,13 +4586,13 @@
       </div>
       <div class="history-filter-group">
         <label for="historyPatient">Bệnh nhân:</label>
-        <select id="historyPatient">
+        <select id="historyPatient" data-custom-dropdown>
           <option value="">Tất cả bệnh nhân</option>
         </select>
       </div>
       <div class="history-filter-group">
         <label for="historyDiagnosis">Chẩn đoán:</label>
-        <select id="historyDiagnosis">
+        <select id="historyDiagnosis" data-custom-dropdown>
           <option value="">Tất cả</option>
           <option value="benign">Lành tính</option>
           <option value="malignant">Ác tính</option>
@@ -4607,7 +4621,7 @@
             <th>Bệnh nhân</th>
             <th>Vị trí tổn thương</th>
             <th>Chẩn đoán AI</th>
-            <th>Độ tin cậy</th>
+            <th>Xác suất đa lớp</th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -4892,7 +4906,7 @@
 
           <div class="patient-form-field">
             <label for="patientProfileGender">Giới tính</label>
-            <select id="patientProfileGender">
+            <select id="patientProfileGender" data-custom-dropdown>
               <option value="Nam">Nam</option>
               <option value="Nữ">Nữ</option>
               <option value="Khác">Khác</option>
@@ -5487,7 +5501,7 @@
               <span class="hp-req">*</span>
             </label>
 
-            <select id="hpRegRole">
+            <select id="hpRegRole" data-custom-dropdown>
               <option value="DOCTOR" data-i18n="register.roleDoctor">
                 Bác sĩ (Doctor)
               </option>
@@ -5626,7 +5640,7 @@
           <div class="patient-form-field">
             <label for="tempPatientGender"> Giới tính </label>
 
-            <select id="tempPatientGender">
+            <select id="tempPatientGender" data-custom-dropdown>
               <option value="">Chưa chọn</option>
 
               <option value="Nam">Nam</option>
@@ -5755,7 +5769,9 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
   <script src="{{ url_for('static', filename='js/focus_region.js') }}"></script>
   <script src="{{ url_for('static', filename='js/timeline.js') }}?v=3.0"></script>
-  <script src="{{ url_for('static', filename='js/main.js') }}?v=3.0"></script>
+  <script src="{{ url_for('static', filename='js/patient_select_dropdown.js') }}?v=2.0"></script>
+  <script src="{{ url_for('static', filename='js/custom_date_picker.js') }}?v=1.0"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}?v=3.2"></script>
   <script src="{{ url_for('static', filename='js/patient.js') }}"></script>
 
   <!-- ============ HOMEPAGE AUTH LOGIC (KHÔNG SỬA main.js) ============ -->
@@ -6839,7 +6855,7 @@
           "ui.analysisDate": "Ngày phân tích",
           "ui.lesionLocation": "Vị trí tổn thương",
           "ui.aiDiagnosis": "Chẩn đoán AI",
-          "ui.confidence": "Độ tin cậy",
+          "ui.confidence": "Xác suất đa lớp",
           "ui.action": "Hành động",
           "ui.noMatchingHistory": "Không có bản ghi phù hợp với bộ lọc.",
           "ui.noHistory": "Chưa có dữ liệu lịch sử phân tích.",
@@ -7087,7 +7103,7 @@
           "ui.analysisDate": "Analysis date",
           "ui.lesionLocation": "Lesion location",
           "ui.aiDiagnosis": "AI diagnosis",
-          "ui.confidence": "Confidence",
+          "ui.confidence": "Multiclass probability",
           "ui.action": "Action",
           "ui.noMatchingHistory": "No records match the selected filters.",
           "ui.noHistory": "No analysis history yet.",

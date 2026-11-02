@@ -317,35 +317,66 @@
       // Extract details
       const lesionLoc = c.lesion_location || "Vùng da kiểm tra";
       const analyses = Array.isArray(c.analyses) ? c.analyses : [];
-      const latestAnalysis = analyses.length > 0 ? analyses[analyses.length - 1] : null;
+      // shortcut: ẩn khi có status khác COMPLETED; nới giới hạn khi API xác định analysis hiện hành.
+      const hasNonCompletedAnalysis = analyses.some((item) => item?.status !== "COMPLETED");
+      const analysis = !hasNonCompletedAnalysis && analyses.length > 0
+        ? analyses[analyses.length - 1]
+        : null;
       const reviews = Array.isArray(c.reviews) ? c.reviews : [];
       const latestReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
       const reports = Array.isArray(c.reports) ? c.reports : [];
 
       // AI Result Parsing
       let aiPredictionText = "Chưa có kết quả AI";
-      let aiProbText = "--";
-      let aiClassKey = "benign";
-      let aiTypeLabel = "Lành tính";
-      let aiDesc = "Kết quả kiểm tra AI chưa ghi nhận tổn thương nguy hiểm.";
+      let binaryProbText = "--";
+      let aiClassKey = "neutral";
+      let aiTypeLabel = "Chưa có kết quả nhị phân";
+      let aiDesc = "Chưa có phân tích AI hợp lệ để hiển thị.";
+      let multiclassLabel = "Chưa có kết quả đa lớp";
+      let multiclassProbText = "--";
+      let outputsDisagree = false;
+      let analysisUncertain = false;
 
-      if (latestAnalysis && latestAnalysis.results && latestAnalysis.results.length > 0) {
-        const r = latestAnalysis.results[0];
-        const isMalignant = r.binary_result === 1;
-        aiClassKey = isMalignant ? "malignant" : "benign";
-        aiTypeLabel = isMalignant ? "Ác tính / Cần lưu ý" : "Lành tính";
-
-        const predClass = String(r.predicted_class || "").toLowerCase();
-        const mapped = CLASS_MAP[predClass];
-        if (mapped) {
-          aiPredictionText = mapped.vi;
-          aiDesc = mapped.desc;
-        } else {
-          aiPredictionText = r.predicted_class || "Phân loại tế bào da";
+      if (
+        analysis?.status === "COMPLETED" &&
+        Array.isArray(analysis.results) &&
+        analysis.results.length > 0
+      ) {
+        const r = analysis.results[0];
+        if (r) {
+          analysisUncertain = Boolean(r.uncertainty?.is_uncertain);
+          if (r.binary_result === 0 || r.binary_result === 1) {
+            const isMalignant = r.binary_result === 1;
+            aiClassKey = isMalignant ? "malignant" : "benign";
+            aiTypeLabel = isMalignant ? "Nghi ngờ ác tính" : "Không ghi nhận dấu hiệu ác tính";
+            const binaryProbability = r.binary_probability;
+            if (typeof binaryProbability === "number" && Number.isFinite(binaryProbability) && binaryProbability >= 0 && binaryProbability <= 1) {
+              binaryProbText = `${(binaryProbability * 100).toFixed(1)}%`;
+            }
+          }
+          const predClass = String(r.predicted_class || "").toLowerCase();
+          const mapped = CLASS_MAP[predClass];
+          if (r.predicted_class) {
+            multiclassLabel = mapped ? mapped.vi : r.predicted_class;
+            aiPredictionText = multiclassLabel;
+            aiDesc = mapped ? mapped.desc : "";
+            const probability = r.predicted_probability;
+            if (typeof probability === "number" && Number.isFinite(probability) && probability >= 0 && probability <= 1) {
+              multiclassProbText = `${(probability * 100).toFixed(1)}%`;
+            }
+          }
+          const classIsMalignant = ["mel", "bcc", "scc", "ak", "akiec"].includes(predClass);
+          outputsDisagree = (r.binary_result === 0 || r.binary_result === 1) &&
+            Boolean(r.predicted_class) && classIsMalignant !== (r.binary_result === 1);
+          if (outputsDisagree) {
+            aiClassKey = "neutral";
+            aiDesc = "Hai đầu ra AI không khớp nhau. Cần bác sĩ đánh giá; các dự đoán này không phải kết luận chẩn đoán.";
+          }
+          if (analysisUncertain) {
+            aiClassKey = "neutral";
+            aiDesc = "Kết quả AI chưa đủ chắc chắn. Cần bác sĩ đánh giá; đây không phải kết luận chẩn đoán.";
+          }
         }
-
-        const prob = r.predicted_probability != null ? (r.predicted_probability * 100).toFixed(1) : null;
-        if (prob) aiProbText = `${prob}%`;
       }
 
       // Doctor Review
@@ -400,14 +431,15 @@
           </h4>
           <div>
             <div class="patient-ai-badge ${aiClassKey}">
-              <span>Phân loại AI: ${aiTypeLabel}</span>
-              ${aiProbText !== "--" ? `<span>· Độ tin cậy: ${aiProbText}</span>` : ""}
+              <span>Kết quả nhị phân: ${aiTypeLabel}</span>
+            ${binaryProbText !== "--" ? `<span>· Xác suất ác tính (đầu ra nhị phân): ${binaryProbText}</span>` : ""}
             </div>
-            <p style="font-size: 14.5px; font-weight: 600; color: #0f172a; margin: 0 0 6px;">
-              ${aiPredictionText}
-            </p>
+            <p style="font-size: 14px; font-weight: 600; color: #0f172a; margin: 8px 0 4px;">Dự đoán đa lớp: ${multiclassLabel}</p>
+            ${multiclassProbText !== "--" ? `<p style="font-size:13px;color:var(--ink-500);margin:0 0 6px;">Xác suất lớp đa lớp: ${multiclassProbText}</p>` : ""}
+            ${outputsDisagree ? '<p class="patient-ai-disagreement" role="status">Hai đầu ra AI không khớp nhau. Đây là các kết quả mô hình riêng biệt; cần bác sĩ đánh giá.</p>' : ""}
+            ${analysisUncertain ? '<p class="patient-ai-disagreement" role="status">Kết quả AI được đánh dấu chưa chắc chắn. Cần bác sĩ đánh giá.</p>' : ""}
             <p style="font-size: 13.5px; color: var(--ink-500); line-height: 1.5; margin: 0;">
-              ${aiDesc}
+              ${aiDesc || "Các kết quả AI chỉ mang tính tham khảo và không thay thế đánh giá chuyên môn."}
             </p>
           </div>
         </div>
@@ -483,7 +515,11 @@
     if ($("patientProfileEmail")) $("patientProfileEmail").value = user.email || "";
     if ($("patientProfilePhone")) $("patientProfilePhone").value = user.phone || "";
     if ($("patientProfileGender")) $("patientProfileGender").value = user.gender || "Nam";
-    if ($("patientProfileDob")) $("patientProfileDob").value = user.date_of_birth || "";
+    window.CustomSelectDropdown?.refresh($("patientProfileGender"));
+    if ($("patientProfileDob")) {
+      $("patientProfileDob").value = user.date_of_birth || "";
+      window.CustomDatePicker?.refresh($("patientProfileDob"));
+    }
 
     // Header greetings
     if ($("patientBannerName")) $("patientBannerName").textContent = user.full_name || user.email || "Bệnh nhân";

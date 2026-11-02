@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import hashlib
+import hmac
 import secrets
 import sys
 import traceback
@@ -137,11 +138,30 @@ def _admin_2fa_required(user):
 
 @login_manager.user_loader
 def load_user(user_id):
+    if not isinstance(user_id, str):
+        return None
+    parts = user_id.split('.')
+    if (
+        len(parts) != 3
+        or parts[0] != 'v1'
+        or not parts[1].isascii()
+        or not parts[1].isdecimal()
+        or len(parts[1]) > 19
+        or not parts[2].isascii()
+        or len(parts[2]) != 64
+        or any(char not in '0123456789abcdef' for char in parts[2])
+    ):
+        return None
     try:
-        user = db.session.get(User, int(user_id))
+        numeric_id = int(parts[1])
     except (TypeError, ValueError):
         return None
-    return user if user and user.is_active and user.deleted_at is None else None
+    if numeric_id < 1 or numeric_id > 9223372036854775807:
+        return None
+    user = db.session.get(User, numeric_id)
+    if not user or str(user.id) != parts[1] or not user.is_active or user.deleted_at is not None:
+        return None
+    return user if hmac.compare_digest(user.get_id(), user_id) else None
 
 
 @login_manager.unauthorized_handler
@@ -213,7 +233,7 @@ def login():
             db.session.rollback()
             current_app.logger.exception("Failed to dispatch login OTP")
             return jsonify(success=False, message="Không gửi được OTP. Vui lòng thử lại sau."), 503
-        session["pending_2fa_user_id"] = user.id
+        session["pending_2fa_user_id"] = user.get_id()
         return jsonify(success=True, requires_2fa=True, message=message)
     session.clear()
     login_user(user, remember=False, fresh=True)
@@ -262,7 +282,7 @@ def admin_login():
         _create_and_log_otp(user)
         db.session.commit()
         session.clear()
-        session["pending_2fa_user_id"] = user.id
+        session["pending_2fa_user_id"] = user.get_id()
         return jsonify(success=True, requires_2fa=True, message="Mã xác thực đã được tạo. Vui lòng lấy OTP trong cửa sổ Terminal để tiếp tục.")
     session.clear()
     login_user(user, remember=False, fresh=True)
@@ -276,7 +296,7 @@ def admin_login():
 @limiter.limit("3 per minute")
 def resend_two_factor():
     """Issue a fresh OTP only for the account with a pending 2FA login."""
-    user = db.session.get(User, session.get("pending_2fa_user_id"))
+    user = load_user(session.get("pending_2fa_user_id"))
     if (
         not user
         or user.deleted_at is not None
@@ -301,7 +321,7 @@ def resend_two_factor():
 def verify_two_factor():
     payload = request.get_json(silent=True) or {}
     code = str(payload.get("code", "")).strip()
-    user = db.session.get(User, session.get("pending_2fa_user_id"))
+    user = load_user(session.get("pending_2fa_user_id"))
     if not user or user.deleted_at is not None or not user.is_active or not _requires_login_otp(user) or not user.two_factor_code_expires_at:
         return jsonify(success=False, message="Phiên xác thực 2 lớp không hợp lệ."), 401
     if user.two_factor_code_expires_at < utcnow() or not secrets.compare_digest(
@@ -462,6 +482,7 @@ def change_password():
     current_user.set_password(new_password)
     _audit(current_user.email, "PASSWORD_CHANGED", True, current_user)
     db.session.commit()
+    login_user(current_user, remember=False, fresh=True)
     return jsonify(success=True)
 
 
@@ -500,7 +521,12 @@ def reset_password():
     user.two_factor_code_expires_at = None
     _audit(user.email, "PASSWORD_RESET", True, user)
     db.session.commit()
-    return jsonify(success=True)
+    response = jsonify(success=True)
+    if current_user.is_authenticated and current_user.id == user.id:
+        logout_user()
+        session.clear()
+        response.delete_cookie(current_app.config.get('REMEMBER_COOKIE_NAME', 'remember_token'), path='/')
+    return response
 
 @bp.post('/verify-email')
 def verify_email():

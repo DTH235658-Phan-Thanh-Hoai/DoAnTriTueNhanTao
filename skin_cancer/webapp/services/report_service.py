@@ -52,6 +52,7 @@ from ..models import (
     Report,
     SiteSetting,
 )
+from .uncertainty import uncertainty_for_probabilities
 
 
 # ============================================================
@@ -2585,31 +2586,34 @@ class ReportService:
             )
 
 
-        malignant = (
-            result.binary_result
-            ==
-            1
+        has_binary_result = result.binary_result in (0, 1)
+        malignant = result.binary_result == 1
+        malignant_classes = {"MEL", "BCC", "SCC", "AK", "AKIEC"}
+        class_implies_malignancy = (result.predicted_class or "").upper() in malignant_classes
+        uncertainty = uncertainty_for_probabilities(result.class_probabilities)
+        outputs_disagree = (
+            has_binary_result
+            and bool(result.predicted_class)
+            and class_implies_malignancy != malignant
         )
+        needs_review = outputs_disagree or bool(uncertainty and uncertainty["is_uncertain"])
 
 
-        binary_color = (
-            RED
-            if malignant
-            else GREEN
-        )
+        binary_color = SLATE_500 if needs_review or not has_binary_result else RED if malignant else GREEN
 
 
-        binary_bg = (
-            RED_LIGHT
-            if malignant
-            else GREEN_LIGHT
-        )
+        binary_bg = SLATE_100 if needs_review or not has_binary_result else RED_LIGHT if malignant else GREEN_LIGHT
 
 
         binary_title = (
+            "KẾT QUẢ CẦN BÁC SĨ ĐÁNH GIÁ"
+            if needs_review
+            else
             "NGHI NGỜ ÁC TÍNH"
             if malignant
-            else "LÀNH TÍNH"
+            else "KHÔNG GHI NHẬN DẤU HIỆU ÁC TÍNH"
+            if has_binary_result
+            else "CHƯA CÓ KẾT QUẢ NHỊ PHÂN"
         )
 
 
@@ -2686,7 +2690,7 @@ class ReportService:
             ),
 
             Paragraph(
-                "Xác suất mô hình",
+                "Xác suất ác tính (đầu ra nhị phân)",
                 self.styles[
                     "small"
                 ],
@@ -2748,6 +2752,19 @@ class ReportService:
                 ],
             ),
         ]
+
+        if uncertainty and uncertainty["is_uncertain"]:
+            right.append(Spacer(1, 0.08 * cm))
+            right.append(Paragraph(
+                "Kết quả AI chưa đủ chắc chắn. Cần bác sĩ đánh giá.",
+                ParagraphStyle("AIUncertainResult", parent=self.styles["small"], textColor=AMBER),
+            ))
+        if outputs_disagree:
+            right.append(Spacer(1, 0.08 * cm))
+            right.append(Paragraph(
+                "Hai đầu ra AI không khớp nhau. Đây là các kết quả mô hình riêng biệt; cần bác sĩ đánh giá.",
+                ParagraphStyle("AIOutputMismatch", parent=self.styles["small"], textColor=RED),
+            ))
 
 
         table = Table(

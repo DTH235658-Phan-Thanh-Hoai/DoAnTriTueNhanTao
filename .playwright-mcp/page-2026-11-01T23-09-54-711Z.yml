@@ -1,0 +1,136 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "DermaScan AI - Trang chủ" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - img "DermaScan AI" [ref=e139]
+        - generic [ref=e12]:
+          - generic [ref=e13]: DermaScan AI
+          - generic [ref=e14]: Phân loại tổn thương da bằng EfficientNet
+      - group "Công cụ và tài khoản" [ref=e15]:
+        - button "Đổi ngôn ngữ" [ref=e17] [cursor=pointer]:
+          - generic [ref=e21]: VI
+        - button "Chuyển sang giao diện tối" [ref=e24] [cursor=pointer]
+        - generic [ref=e28]:
+          - button "Đăng nhập" [ref=e29] [cursor=pointer]
+          - button "Đăng ký" [ref=e30] [cursor=pointer]
+  - region "Banner DermaScan AI" [ref=e140]:
+    - generic [ref=e32]:
+      - article [aria-hidden]:
+        - generic:
+          - heading [level=1]: Giới thiệu DermaScan AI
+          - paragraph: Ứng dụng mô hình EfficientNet-B0 để phân loại hình ảnh Dermoscopy, hỗ trợ bác sĩ tham khảo kết quả và đưa ra đánh giá chuyên môn
+      - article [ref=e141]:
+        - img "Phân tích hình ảnh bằng AI" [ref=e142]
+        - generic [ref=e143]:
+          - heading "Phân tích hình ảnh bằng AI" [level=1] [ref=e144]
+          - paragraph [ref=e145]: Tải lên hình ảnh Dermoscopy và nhận kết quả phân loại cùng xác suất dự đoán từ mô hình EfficientNet-B0, giúp hỗ trợ quá trình đánh giá tổn thương da.
+    - generic "Điều hướng banner" [ref=e33]:
+      - button "Banner trước" [ref=e146] [cursor=pointer]: ‹
+      - generic [ref=e147]:
+        - button "Banner 1" [ref=e148] [cursor=pointer]
+        - button "Banner 2" [ref=e149] [cursor=pointer]
+        - button "Banner 3" [ref=e150] [cursor=pointer]
+        - button "Banner 4" [ref=e151] [cursor=pointer]
+        - button "Banner 5" [ref=e152] [cursor=pointer]
+      - button "Banner tiếp theo" [ref=e153] [cursor=pointer]: ›
+  - generic [ref=e44]:
+    - generic [ref=e45]:
+      - generic [ref=e46]: Công nghệ lõi
+      - heading "Tính năng cốt lõi của DermaScan AI" [level=2] [ref=e47]
+      - paragraph [ref=e48]: Kết hợp thị giác máy tính và y khoa để hỗ trợ sàng lọc có thể giải thích.
+    - generic [ref=e49]:
+      - article [ref=e50]:
+        - generic [ref=e51]: Mô hình học sâu
+        - heading "Mô hình EfficientNet-B0" [level=3] [ref=e59]
+        - paragraph [ref=e60]: Phân loại tổn thương da từ ảnh dermoscopy.
+      - article [ref=e61]:
+        - generic [ref=e62]: Giải thích kết quả
+        - heading "Trực quan hóa Grad-CAM" [level=3] [ref=e68]
+        - paragraph [ref=e69]: Hiển thị vùng ảnh mô hình chú ý.
+      - article [ref=e70]:
+        - generic [ref=e71]: Dữ liệu chuẩn quốc tế
+        - heading "Bộ dữ liệu chuẩn ISIC" [level=3] [ref=e77]
+        - paragraph [ref=e78]: Bộ ảnh tổn thương da được chuyên gia chú giải.
+  - contentinfo [ref=e79]:
+    - generic [ref=e81]:
+      - generic [ref=e82]:
+        - generic [ref=e83]:
+          - link "DermaScan AI" [ref=e84] [cursor=pointer]:
+            - /url: /
+          - generic [ref=e93]: Phân loại tổn thương da bằng EfficientNet
+          - paragraph [ref=e94]: Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và Grad-CAM.
+        - generic [ref=e106]:
+          - heading "Liên hệ" [level=4] [ref=e107]
+          - list [ref=e108]:
+            - listitem [ref=e109]:
+              - generic [ref=e114]:
+                - generic [ref=e115]: Email
+                - link "contact@dermascan.ai" [ref=e154] [cursor=pointer]:
+                  - /url: mailto:contact@dermascan.ai
+            - listitem [ref=e117]:
+              - generic [ref=e120]:
+                - generic [ref=e121]: Hotline
+                - link "1900 6868" [ref=e155] [cursor=pointer]:
+                  - /url: tel:1900 6868
+        - generic [ref=e123]:
+          - heading "Công nghệ" [level=4] [ref=e124]
+          - list [ref=e125]:
+            - listitem [ref=e126]: EfficientNet-B0 — phân loại tổn thương da
+            - listitem [ref=e127]: Grad-CAM — bản đồ chú ý
+            - listitem [ref=e128]: Bộ dữ liệu chuẩn ISIC
+            - listitem [ref=e129]: Báo cáo PDF & gửi Email
+        - generic [ref=e130]:
+          - heading "Lưu ý y khoa" [level=4] [ref=e131]
+          - paragraph [ref=e135]: Kết quả phân tích chỉ mang tính chất sàng lọc tham khảo, không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ.
+      - generic [ref=e137]:
+        - generic [ref=e156]: © 2026 DermaScan AI
+        - generic [ref=e138]: Sàng lọc ung thư da bằng AI
+  - dialog [ref=e157]:
+    - generic [ref=e159]:
+      - generic [ref=e160]:
+        - generic [ref=e169]:
+          - strong [ref=e170]: DermaScan AI
+          - text: Sàng lọc ung thư da bằng AI
+        - button "Đóng" [ref=e171] [cursor=pointer]: ×
+      - tablist [ref=e172]:
+        - tab "Đăng nhập" [ref=e173] [cursor=pointer]
+        - tab "Đăng ký" [ref=e174] [cursor=pointer]
+      - generic [ref=e176]:
+        - heading "Tạo tài khoản" [level=3] [ref=e177]
+        - paragraph [ref=e178]: Đăng ký để sử dụng giao diện Phân tích ảnh của DermaScan AI.
+        - generic [ref=e179]:
+          - generic [ref=e180]: Họ và tên *
+          - textbox "Họ và tên *" [ref=e181]:
+            - /placeholder: Nguyễn Văn A
+            - text: QA Test User
+        - generic [ref=e182]:
+          - generic [ref=e183]: Email *
+          - textbox "Email *" [ref=e184]:
+            - /placeholder: you@example.com
+            - text: lephanhieu1125ag@gmail.com
+        - generic [ref=e185]:
+          - generic [ref=e186]: Loại tài khoản *
+          - combobox "Loại tài khoản *" [ref=e187]:
+            - option "Bác sĩ (Docthoặc)"
+            - option "Người dùng (User)" [selected]
+        - generic [ref=e188]:
+          - generic [ref=e189]: Mật khẩu *
+          - generic [ref=e190]:
+            - textbox "Mật khẩu *" [ref=e191]:
+              - /placeholder: ••••••••••••
+              - text: Qa!wfrexo5iXtkm08nf6XuqvpuoeuX8zj8zvhoXxj12tclk7z
+            - button "Hiện mật khẩu" [ref=e192] [cursor=pointer]
+          - paragraph [ref=e196]: Tối thiểu 12 ký tự.
+        - generic [ref=e197]:
+          - generic [ref=e198]: Xác nhận mật khẩu *
+          - textbox "Xác nhận mật khẩu *" [ref=e199]:
+            - /placeholder: ••••••••••••
+            - text: Qa!wfrexo5iXtkm08nf6XuqvpuoeuX8zj8zvhoXxj12tclk7z
+        - generic [ref=e200]:
+          - checkbox "Tôi đồng ý với điều khoản sử dụng và chính sách y khoa của hệ thống." [checked] [ref=e201]
+          - generic [ref=e202]: Tôi đồng ý với điều khoản sử dụng và chính sách y khoa của hệ thống.
+        - button "Đăng ký" [disabled] [ref=e203]
+        - paragraph [ref=e204]:
+          - text: Đã có tài khoản?
+          - button "Đăng nhập" [ref=e205] [cursor=pointer]

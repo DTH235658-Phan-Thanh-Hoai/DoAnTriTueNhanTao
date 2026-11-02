@@ -791,6 +791,8 @@ function resetPatientUiForLoggedOut() {
 
   patientSelect.disabled = true;
 
+  window.CustomSelectDropdown?.refresh(patientSelect);
+
   renderSelectedPatient();
 }
 
@@ -845,6 +847,8 @@ async function loadPatients() {
     });
 
     patientSelect.disabled = false;
+
+    window.CustomSelectDropdown?.refresh(patientSelect);
   } catch (error) {
     console.error(error);
 
@@ -863,6 +867,8 @@ async function loadPatients() {
             `;
 
     patientSelect.disabled = true;
+
+    window.CustomSelectDropdown?.refresh(patientSelect);
 
     renderSelectedPatient();
   }
@@ -1005,6 +1011,8 @@ temporaryPatientForm.addEventListener("submit", (event) => {
   currentReportId = null;
 
   patientSelect.value = "";
+
+  window.CustomSelectDropdown?.refresh(patientSelect);
 
   renderSelectedPatient();
 
@@ -2111,6 +2119,7 @@ function renderSelectedFiles() {
       if (points.length) pendingRegions.set(file.name, points);
       else pendingRegions.delete(file.name);
       renderSelectedFiles();
+      selectedFilesContainer.querySelectorAll(".btn-region-select")[index]?.focus();
     });
     row.append(name, region, remove);
 
@@ -2901,6 +2910,44 @@ sendEmailBtn.addEventListener("click", async () => {
 // RESULT RENDER
 // ============================================================
 
+function safeInterpretationForDisplay(interpretation, isUncertain) {
+  if (!interpretation || !isUncertain) return interpretation;
+  return {
+    ...interpretation,
+    severity: "caution",
+    severity_label: "Cần bác sĩ đánh giá",
+    severity_note: "Kết quả AI chưa đủ chắc chắn.",
+    headline: "Kết quả AI chưa đủ chắc chắn",
+    summary: "Các đầu ra AI chỉ mang tính tham khảo và chưa đủ cơ sở để kết luận an toàn hay loại trừ nguy cơ. Vui lòng trao đổi với bác sĩ.",
+    detail: "Kết quả cần được bác sĩ xem xét cùng thông tin lâm sàng phù hợp.",
+    actions: ["Đề nghị bác sĩ đánh giá kết quả và quyết định bước tiếp theo."],
+    conclusion: "Chưa thể đưa ra kết luận chắc chắn từ kết quả AI này.",
+    doctor_suggestion: null,
+    chatgpt_powered: false,
+  };
+}
+
+function hasAiOutputDisagreement(binary, multiclass) {
+  if (!binary || !multiclass || ![0, 1].includes(binary.prediction)) return false;
+  if (!Array.isArray(multiclass.malignant_list) || !multiclass.pred_class) return false;
+  const classIsMalignant = multiclass.malignant_list.includes(multiclass.pred_class);
+  return classIsMalignant !== (binary.prediction === 1);
+}
+
+function formatDoctorHistoryResult(record, locale = "vi") {
+  const english = locale === "en";
+  const diagnosis = record.diagnosis || (english ? "Unavailable" : "Chưa có dữ liệu");
+  const binaryLabel = record.binary_result === "malignant"
+    ? (english ? "Malignant suspicion" : "Nghi ngờ ác tính")
+    : record.binary_result === "benign"
+      ? (english ? "No malignant signs detected" : "Không ghi nhận dấu hiệu ác tính")
+      : (english ? "Unavailable" : "Chưa có dữ liệu");
+  const binaryProbability = record.binary_probability == null || !Number.isFinite(Number(record.binary_probability)) || Number(record.binary_probability) < 0 || Number(record.binary_probability) > 1
+    ? ""
+    : `; ${english ? "binary malignancy probability" : "xác suất ác tính (nhị phân)"}: ${(Number(record.binary_probability) * 100).toFixed(1)}%`;
+  return `${english ? "Multiclass" : "Đa lớp"}: ${diagnosis} | ${english ? "Binary" : "Nhị phân"}: ${binaryLabel}${binaryProbability}`;
+}
+
 function renderResults(data) {
   const {
     binary,
@@ -2915,14 +2962,18 @@ function renderResults(data) {
   } = data;
 
   const isMalignant = binary.prediction === 1;
+  const isUncertain = Boolean(data.uncertainty?.is_uncertain);
+  const outputsDisagree = hasAiOutputDisagreement(binary, multiclass);
+  const needsReview = isUncertain || outputsDisagree;
+  const displayInterpretation = safeInterpretationForDisplay(interpretation, needsReview);
 
-  verdictCard.classList.remove("benign", "malignant");
+  verdictCard.classList.remove("benign", "malignant", "uncertain");
 
-  verdictCard.classList.add(isMalignant ? "malignant" : "benign");
+  verdictCard.classList.add(needsReview ? "uncertain" : isMalignant ? "malignant" : "benign");
 
-  verdictIcon.innerHTML = isMalignant ? ICON.alert : ICON.check;
+  verdictIcon.innerHTML = needsReview || isMalignant ? ICON.alert : ICON.check;
 
-  verdictTitle.textContent = binary.label_vi;
+  verdictTitle.textContent = needsReview ? "Kết quả cần bác sĩ đánh giá" : binary.label_vi;
 
   const pct = (binary.prob_malignant * 100).toFixed(1);
 
@@ -2934,7 +2985,9 @@ function renderResults(data) {
     verdictFill.style.width = `${pct}%`;
   }, 80);
 
-  verdictNote.textContent = isMalignant
+  verdictNote.textContent = needsReview
+    ? "Các đầu ra AI chỉ mang tính tham khảo; cần bác sĩ đánh giá và không thay thế kết luận chuyên môn."
+    : isMalignant
     ? "Mô hình nhận diện đặc điểm " +
       "nghi ngờ ác tính " +
       `(độ tin cậy ` +
@@ -2948,15 +3001,19 @@ function renderResults(data) {
 
   resultTag.style.display = "inline-block";
 
-  resultTag.textContent = isMalignant ? "ÁC TÍNH" : "LÀNH TÍNH";
+  resultTag.textContent = needsReview
+    ? "CẦN BÁC SĨ ĐÁNH GIÁ"
+    : isMalignant ? "NGHI NGỜ ÁC TÍNH" : "ĐẦU RA NHỊ PHÂN: KHÔNG GHI NHẬN DẤU HIỆU ÁC TÍNH";
 
-  resultTag.className = "panel-tag" + (isMalignant ? " malignant" : "");
+  resultTag.className = "panel-tag" + (needsReview || isMalignant ? " malignant" : "");
 
   // Cảnh báo chất lượng ảnh + model không chắc chắn
   const warnings = [];
   if (data.quality && !data.quality.ok) warnings.push(...data.quality.warnings);
   if (data.uncertainty && data.uncertainty.is_uncertain)
     warnings.push(data.uncertainty.message);
+  if (outputsDisagree)
+    warnings.push("Hai đầu ra AI không khớp nhau. Cần bác sĩ đánh giá.");
 
   let warnBox = document.getElementById("warnBox");
   if (!warnBox) {
@@ -2983,24 +3040,24 @@ function renderResults(data) {
   // INTERPRETATION
   // ========================================================
 
-  if (interpretation) {
-    interpCard.dataset.severity = interpretation.severity;
+  if (displayInterpretation) {
+    interpCard.dataset.severity = displayInterpretation.severity;
 
-    severityBadge.className = "severity-badge " + interpretation.severity;
+    severityBadge.className = "severity-badge " + displayInterpretation.severity;
 
-    severityBadge.textContent = interpretation.severity_label;
+    severityBadge.textContent = displayInterpretation.severity_label;
 
-    severityNote.textContent = "· " + interpretation.severity_note;
+    severityNote.textContent = "· " + displayInterpretation.severity_note;
 
-    interpHeadline.textContent = interpretation.headline;
+    interpHeadline.textContent = displayInterpretation.headline;
 
-    interpSummary.textContent = interpretation.summary;
+    interpSummary.textContent = displayInterpretation.summary;
 
-    interpDetail.textContent = interpretation.detail;
+    interpDetail.textContent = displayInterpretation.detail;
 
     interpActions.innerHTML = "";
 
-    (interpretation.actions || []).forEach((action) => {
+    (displayInterpretation.actions || []).forEach((action) => {
       const li = document.createElement("li");
 
       li.textContent = action;
@@ -3008,16 +3065,16 @@ function renderResults(data) {
       interpActions.appendChild(li);
     });
 
-    interpConclusion.textContent = interpretation.conclusion;
+    interpConclusion.textContent = displayInterpretation.conclusion;
 
     // Cập nhật trạng thái ChatGPT
     if (chatgptPill) {
-      chatgptPill.style.display = interpretation.chatgpt_powered
+      chatgptPill.style.display = displayInterpretation.chatgpt_powered
         ? "inline-flex"
         : "none";
     }
-    if (interpretation.doctor_suggestion) {
-      currentDoctorSuggestion = interpretation.doctor_suggestion;
+    if (displayInterpretation.doctor_suggestion) {
+      currentDoctorSuggestion = displayInterpretation.doctor_suggestion;
       if (applyChatGptSuggestionBtn) {
         applyChatGptSuggestionBtn.disabled = false;
         applyChatGptSuggestionBtn.style.display = "inline-flex";
@@ -3026,7 +3083,16 @@ function renderResults(data) {
       currentDoctorSuggestion = null;
       if (applyChatGptSuggestionBtn) {
         applyChatGptSuggestionBtn.disabled = true;
+        applyChatGptSuggestionBtn.style.display = "none";
       }
+    }
+  }
+
+  if (!displayInterpretation || !displayInterpretation.doctor_suggestion) {
+    currentDoctorSuggestion = null;
+    if (applyChatGptSuggestionBtn) {
+      applyChatGptSuggestionBtn.disabled = true;
+      applyChatGptSuggestionBtn.style.display = "none";
     }
   }
 
@@ -3306,8 +3372,10 @@ function renderDoctorHistory() {
       historyDateLabel(record.date),
       record.patient,
       record.location,
-      record.diagnosis,
-      `${record.confidence}%`,
+      formatDoctorHistoryResult(record, document.documentElement.lang),
+      record.confidence == null || !Number.isFinite(Number(record.confidence))
+        ? "—"
+        : `${Number(record.confidence).toFixed(1)}%`,
     ];
     values.forEach((value, index) => {
       const cell = document.createElement("td");
@@ -3316,7 +3384,7 @@ function renderDoctorHistory() {
       if (index === 1) cell.className = "history-patient";
       if (index === 2) cell.className = "history-location";
       if (index === 3) {
-        cell.className = `history-diagnosis ${record.binary_result}`;
+        cell.className = "history-diagnosis";
       }
       if (index === 4) cell.className = "history-confidence";
       row.appendChild(cell);
@@ -3348,6 +3416,7 @@ function populateHistoryPatients() {
   select.replaceChildren(new Option("Tất cả bệnh nhân", ""));
   patients.forEach((patient) => select.add(new Option(patient, patient)));
   select.value = patients.includes(currentValue) ? currentValue : "";
+  window.CustomSelectDropdown?.refresh(select);
 }
 
 async function loadDoctorHistory() {
@@ -3462,11 +3531,14 @@ function setDefaultStatisticsDates() {
   const to = $("statsTo");
   const from = $("statsFrom");
   if (!to || !from || to.value || from.value) return;
+  const formatLocalDate = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
   const end = new Date();
   const start = new Date(end);
   start.setMonth(start.getMonth() - 5);
-  to.value = end.toISOString().slice(0, 10);
-  from.value = start.toISOString().slice(0, 10);
+  to.value = formatLocalDate(end);
+  from.value = formatLocalDate(start);
+  window.CustomDatePicker?.refresh(to);
+  window.CustomDatePicker?.refresh(from);
 }
 
 function renderDoctorStatistics(data) {

@@ -1,0 +1,183 @@
+- generic [active] [ref=f1e1]:
+  - complementary [ref=f1e2]:
+    - link "DermaScan AI - Trang chủ" [ref=f1e3] [cursor=pointer]:
+      - /url: /
+      - img "DermaScan AI" [ref=f1e5]
+      - generic [ref=f1e6]:
+        - generic [ref=f1e7]: DermaScan AI
+        - generic [ref=f1e8]: Phân loại tổn thương da bằng EfficientNet
+    - button "Thu gọn menu" [ref=f1e9] [cursor=pointer]: ‹
+    - navigation [ref=f1e10]:
+      - paragraph [ref=f1e11]: QUẢN TRỊ HỆ THỐNG
+      - button "Dashboard Tổng Quan" [ref=f1e12] [cursor=pointer]
+      - button "Quản lý trang chủ" [ref=f1e18] [cursor=pointer]
+      - button "Quản Lý Tài Khoản" [ref=f1e24] [cursor=pointer]
+      - button "Phiên Đăng Nhập & Bảo Mật" [ref=f1e32] [cursor=pointer]
+      - button "Hồ sơ & Bảo mật cá nhân" [ref=f1e38] [cursor=pointer]
+      - button "Quản lý ca khám" [ref=f1e44] [cursor=pointer]
+      - button "Quản Lý Bác Sĩ & Duyệt" [ref=f1e50] [cursor=pointer]
+      - button "Thống Kê & Báo Cáo" [ref=f1e57] [cursor=pointer]
+  - main [ref=f1e61]:
+    - generic [ref=f1e62]:
+      - generic [ref=f1e64]:
+        - paragraph [ref=f1e65]: DERMASCAN AI / DASHBOARD
+        - heading "Dashboard Tổng Quan" [level=1] [ref=f1e66]
+      - group "Công cụ và tài khoản" [ref=f1e67]:
+        - button "Đổi ngôn ngữ" [ref=f1e69] [cursor=pointer]:
+          - generic [ref=f1e73]: VI
+        - button "Chuyển giao diện tối" [ref=f1e76] [cursor=pointer]
+        - generic [ref=f1e81]:
+          - generic [ref=f1e82]: Q
+          - generic [ref=f1e83]:
+            - strong [ref=f1e84]: Quản trị viên
+            - generic [ref=f1e85]: Quản trị viên
+        - button "Đăng xuất" [ref=f1e86] [cursor=pointer]
+    - generic [ref=f1e88]:
+      - generic [ref=f1e89]:
+        - generic [ref=f1e90]:
+          - text: HỆ THỐNG ĐANG VẬN HÀNH
+          - paragraph [ref=f1e92]: Đây là tổng quan hoạt động hôm nay.
+        - generic [ref=f1e93]: 02 tháng 11, 2026
+      - generic [ref=f1e94]:
+        - article [ref=f1e95]:
+          - generic [ref=f1e96]: TỔNG TÀI KHOẢN
+          - strong [ref=f1e104]: "5"
+          - text: Dữ liệu hiện tại
+        - article [ref=f1e105]:
+          - generic [ref=f1e106]: CA KHÁM
+          - strong [ref=f1e112]: "7"
+          - text: Dữ liệu hiện tại
+        - article [ref=f1e113]:
+          - generic [ref=f1e114]: LƯỢT PHÂN TÍCH AI
+          - strong [ref=f1e119]: "9"
+          - text: Dữ liệu hiện tại
+        - article [ref=f1e120]:
+          - generic [ref=f1e121]: BÁC SĨ ĐANG HOẠT ĐỘNG
+          - strong [ref=f1e128]: "3"
+          - text: Dữ liệu hiện tại
+      - generic [ref=f1e129]:
+        - article [ref=f1e130]:
+          - generic [ref=f1e131]:
+            - generic [ref=f1e132]:
+              - heading "Tăng trưởng hệ thống" [level=2] [ref=f1e133]
+              - paragraph [ref=f1e134]: Số ca khám và lượt phân tích từ cơ sở dữ liệu
+            - generic [ref=f1e135]: 6 tháng
+          - generic [ref=f1e136]:
+            - generic [ref=f1e137]:
+              - generic [ref=f1e138]: "9"
+              - generic [ref=f1e139]: "5"
+              - generic [ref=f1e140]: "0"
+            - generic [ref=f1e147]:
+              - generic [ref=f1e148]: Thg 6
+              - generic [ref=f1e149]: Thg 7
+              - generic [ref=f1e150]: Thg 8
+              - generic [ref=f1e151]: Thg 9
+              - generic [ref=f1e152]: Thg 10
+              - generic [ref=f1e153]: Thg 11
+          - generic [ref=f1e154]:
+            - generic [ref=f1e155]: Ca khám
+            - generic [ref=f1e157]: Phân tích AI
+        - article [ref=f1e159]:
+          - generic [ref=f1e160]:
+            - generic [ref=f1e161]:
+              - heading "Phân bổ kết quả AI" [level=2] [ref=f1e162]
+              - paragraph [ref=f1e163]: Đầy đủ 8 nhóm EfficientNet-B0 phân loại
+            - generic [ref=f1e164]: EfficientNet-B0
+          - generic [ref=f1e167]:
+            - generic [ref=f1e169]:
+              - generic [ref=f1e170]: "9"
+              - generic [ref=f1e171]: TỔNG LƯỢT
+            - generic [ref=f1e172]:
+              - generic "Melanoma" [ref=f1e173]:
+                - text: Nghi ngờ ác tính
+                - generic [ref=f1e175]: 11,1%
+              - generic "Nevus" [ref=f1e176]:
+                - text: Nốt ruồi lành tính
+                - generic [ref=f1e178]: 0%
+              - generic "Basal cell carcinoma" [ref=f1e179]:
+                - text: Ung thư tế bào đáy
+                - generic [ref=f1e181]: 33,3%
+              - generic "Actinic keratosis" [ref=f1e182]:
+                - text: Dày sừng ánh sáng
+                - generic [ref=f1e184]: 11,1%
+              - generic "Benign keratosis" [ref=f1e185]:
+                - text: Sừng hóa lành tính
+                - generic [ref=f1e187]: 11,1%
+              - generic "Dermatofibroma" [ref=f1e188]:
+                - text: U xơ da lành tính
+                - generic [ref=f1e190]: 22,2%
+              - generic "Vascular lesion" [ref=f1e191]:
+                - text: Tổn thương mạch máu
+                - generic [ref=f1e193]: 0%
+              - generic "Squamous cell carcinoma" [ref=f1e194]:
+                - text: Ung thư tế bào vảy
+                - generic [ref=f1e196]: 11,1%
+          - generic [ref=f1e201]:
+            - generic [ref=f1e202]: Hiệu suất mô hình
+            - generic [ref=f1e203]:
+              - text: EfficientNet-B0 · Độ chính xác
+              - strong [ref=f1e204]: 94.7%
+      - generic [ref=f1e205]:
+        - article [ref=f1e206]:
+          - generic [ref=f1e207]:
+            - generic [ref=f1e208]:
+              - heading "Ca khám gần đây" [level=2] [ref=f1e209]
+              - paragraph [ref=f1e210]: Cập nhật theo thời gian thực
+            - button "Xem tất cả →" [ref=f1e211] [cursor=pointer]
+          - table [ref=f1e213]:
+            - rowgroup [ref=f1e214]:
+              - row [ref=f1e215]:
+                - columnheader "MÃ CA" [ref=f1e216]
+                - columnheader "BÁC SĨ PHỤ TRÁCH" [ref=f1e217]
+                - columnheader "NGÀY TẠO" [ref=f1e218]
+                - columnheader "TRẠNG THÁI" [ref=f1e219]
+            - rowgroup [ref=f1e220]:
+              - row [ref=f1e221]:
+                - cell "CASE-26AB026A2FCF4594984D30799F4A551B" [ref=f1e222]
+                - cell "DermaScan QA Doctor" [ref=f1e223]
+                - cell "31/10/2026" [ref=f1e224]
+                - cell "ANALYZED" [ref=f1e225]
+              - row [ref=f1e226]:
+                - cell "CASE-135E64BA6A354D82A5B6B114099C8D64" [ref=f1e227]
+                - cell "DermaScan QA Doctor" [ref=f1e228]
+                - cell "31/10/2026" [ref=f1e229]
+                - cell "ANALYZED" [ref=f1e230]
+              - row [ref=f1e231]:
+                - cell "CASE-5808326FC5D74B37BE1EE1315130A0DD" [ref=f1e232]
+                - cell "Bác sĩ" [ref=f1e233]
+                - cell "28/10/2026" [ref=f1e234]
+                - cell "ANALYZED" [ref=f1e235]
+              - row [ref=f1e236]:
+                - cell "CASE-4B0DBB5BC0C04ECF83C8973AAA759215" [ref=f1e237]
+                - cell "Bác sĩ" [ref=f1e238]
+                - cell "28/10/2026" [ref=f1e239]
+                - cell "ANALYZED" [ref=f1e240]
+              - row [ref=f1e241]:
+                - cell "CASE-E8A3E4833C6E40818F06C8F919C66A4B" [ref=f1e242]
+                - cell "Bác sĩ" [ref=f1e243]
+                - cell "28/10/2026" [ref=f1e244]
+                - cell "ANALYZED" [ref=f1e245]
+              - row [ref=f1e246]:
+                - cell "CASE-1A92F367E1CC4F7583865F0004AEE98D" [ref=f1e247]
+                - cell "Bác sĩ" [ref=f1e248]
+                - cell "26/10/2026" [ref=f1e249]
+                - cell "ANALYZED" [ref=f1e250]
+        - article [ref=f1e251]:
+          - generic [ref=f1e253]:
+            - heading "Truy cập nhanh" [level=2] [ref=f1e254]
+            - paragraph [ref=f1e255]: Các tác vụ thường dùng
+          - button "Quản lý tài khoản Thêm, sửa và phân quyền →" [ref=f1e256] [cursor=pointer]:
+            - generic [ref=f1e262]:
+              - generic [ref=f1e263]: Quản lý tài khoản
+              - generic [ref=f1e264]: Thêm, sửa và phân quyền
+            - generic [ref=f1e265]: →
+          - button "Duyệt hồ sơ bác sĩ 3 hồ sơ đang chờ duyệt →" [ref=f1e266] [cursor=pointer]:
+            - generic [ref=f1e271]:
+              - generic [ref=f1e272]: Duyệt hồ sơ bác sĩ
+              - generic [ref=f1e273]: 3 hồ sơ đang chờ duyệt
+            - generic [ref=f1e274]: →
+          - button "Xuất báo cáo hệ thống PDF hoặc Excel →" [ref=f1e275] [cursor=pointer]:
+            - generic [ref=f1e277]:
+              - generic [ref=f1e278]: Xuất báo cáo hệ thống
+              - generic [ref=f1e279]: PDF hoặc Excel
+            - generic [ref=f1e280]: →

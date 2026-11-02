@@ -14,6 +14,7 @@ from ..extensions import db, mail
 from ..models import Analysis, AnalysisResult, Case, CaseImage, User, AuditLog, DoctorApplication, SecuritySetting
 from ..models.base import utcnow
 from ..services.access import require_roles
+from ..services.uncertainty import uncertainty_for_probabilities
 from ..services.user_deletion import delete_unrelated_user, deletable_certificate, cleanup_doctor_certificate
 
 bp = Blueprint("admin", __name__)
@@ -108,7 +109,9 @@ def admin_case_detail(case_id):
         "contour_url": f"/api/admin/cases/{case.id}/images/{item.id}/contour" if item.contour_path else None,
         "results": [{"model": result.model_name, "class": result.predicted_class,
                      "probability": result.predicted_probability, "binary": result.binary_result,
-                     "class_probabilities": result.class_probabilities}
+                     "binary_probability": result.binary_probability,
+                     "class_probabilities": result.class_probabilities,
+                     "uncertainty": uncertainty_for_probabilities(result.class_probabilities)}
                     for result in item.results],
     } for item in case.analyses]
     data["reviews"] = [{"status": item.review_status, "doctor": item.doctor.full_name if item.doctor else "-",

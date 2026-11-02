@@ -1,0 +1,199 @@
+- generic [ref=f16e1]:
+  - banner [ref=f16e2]:
+    - generic [ref=f16e3]:
+      - link "DermaScan AI - Trang chủ" [ref=f16e4] [cursor=pointer]:
+        - /url: /
+        - img "DermaScan AI" [ref=f16e6]
+        - generic [ref=f16e7]:
+          - generic [ref=f16e8]: DermaScan AI
+          - generic [ref=f16e9]: Phân loại tổn thương da bằng EfficientNet
+      - navigation "Menu bác sĩ" [ref=f16e124]:
+        - button "Phân tích" [ref=f16e125] [cursor=pointer]
+        - button "Lịch sử" [ref=f16e126] [cursor=pointer]
+        - button "So sánh" [ref=f16e127] [cursor=pointer]
+        - button "Thống kê" [ref=f16e128] [cursor=pointer]
+      - group "Công cụ và tài khoản" [ref=f16e10]:
+        - button "Đổi ngôn ngữ" [ref=f16e12] [cursor=pointer]
+        - button "Chuyển sang giao diện tối" [ref=f16e18] [cursor=pointer]
+        - generic [ref=f16e129]:
+          - generic "Xem thông tin cá nhân" [ref=f16e130] [cursor=pointer]: B
+          - button "Đăng xuất" [ref=f16e132] [cursor=pointer]
+  - region "Banner DermaScan AI" [ref=f16e24]:
+    - article [ref=f16e253]:
+      - img "Trực quan hóa kết quả với Grad-CAM" [ref=f16e254]
+      - generic [ref=f16e255]:
+        - heading "Trực quan hóa kết quả với Grad-CAM" [level=1] [ref=f16e256]
+        - paragraph [ref=f16e257]: Công nghệ Grad-CAM giúp làm nổi bật những vùng hình ảnh có ảnh hưởng đến dự đoán của mô hình, hỗ trợ bác sĩ tham khảo và diễn giải kết quả phân tích.
+    - generic "Điều hướng banner" [ref=f16e31]:
+      - button "Banner trước" [ref=f16e32] [cursor=pointer]: ‹
+      - generic [ref=f16e33]:
+        - button "Banner 1" [ref=f16e34] [cursor=pointer]
+        - button "Banner 2" [ref=f16e35] [cursor=pointer]
+        - button "Banner 3" [ref=f16e36] [cursor=pointer]
+        - button "Banner 4" [ref=f16e37] [cursor=pointer]
+        - button "Banner 5" [ref=f16e38] [cursor=pointer]
+      - button "Banner tiếp theo" [ref=f16e39] [cursor=pointer]: ›
+  - generic [ref=f16e138]:
+    - generic [ref=f16e139]:
+      - generic [ref=f16e140]: Lịch sử phân tích
+      - heading "Lịch sử & Tiền sử bệnh án" [level=2] [ref=f16e141]
+    - generic [ref=f16e142]:
+      - generic [ref=f16e143]:
+        - generic [ref=f16e144]: "Từ ngày:"
+        - textbox "Từ ngày:" [ref=f16e145]
+      - generic [ref=f16e146]:
+        - generic [ref=f16e147]: "Đến ngày:"
+        - textbox "Đến ngày:" [ref=f16e148]
+      - generic [ref=f16e149]:
+        - generic [ref=f16e150]: "Bệnh nhân:"
+        - combobox "Bệnh nhân:" [ref=f16e151]:
+          - option "Tất cả bệnh nhân" [selected]
+          - option "Nguyễn Thị B"
+          - option "Người dùng A"
+          - option "QA Full-System Synthetic 20261102"
+      - generic [ref=f16e152]:
+        - generic [ref=f16e153]: "Chẩn đoán:"
+        - combobox "Chẩn đoán:" [ref=f16e154]:
+          - option "Tất cả" [selected]
+          - option "Lành tính"
+          - option "Ác tính"
+      - generic [ref=f16e155]:
+        - generic [ref=f16e156]: "Tìm kiếm:"
+        - searchbox "Tìm kiếm:" [ref=f16e157]
+      - button "Xuất file" [ref=f16e158] [cursor=pointer]
+    - table [ref=f16e163]:
+      - rowgroup [ref=f16e164]:
+        - row [ref=f16e165]:
+          - columnheader "Ngày phân tích" [ref=f16e166]
+          - columnheader "Bệnh nhân" [ref=f16e167]
+          - columnheader "Vị trí tổn thương" [ref=f16e168]
+          - columnheader "Chẩn đoán AI" [ref=f16e169]
+          - columnheader "Xác suất đa lớp" [ref=f16e170]
+          - columnheader "Hành động" [ref=f16e171]
+      - rowgroup [ref=f16e172]:
+        - row [ref=f16e173]:
+          - cell "2/11/2026" [ref=f16e174]
+          - cell "QA Full-System Synthetic 20261102" [ref=f16e175]
+          - cell "Chưa xác định" [ref=f16e176]
+          - 'cell "Đa lớp: BKL | Nhị phân: Không ghi nhận dấu hiệu ác tính; xác suất ác tính (nhị phân): 0.0%" [ref=f16e177]'
+          - cell "34.2%" [ref=f16e178]
+          - cell [ref=f16e179]:
+            - button "Xem chi tiết ca CASE-E3F2693481A84FEDA7E5506BD8A2C057" [ref=f16e180] [cursor=pointer]: Xem chi tiết
+        - row [ref=f16e181]:
+          - cell "2/11/2026" [ref=f16e182]
+          - cell "QA Full-System Synthetic 20261102" [ref=f16e183]
+          - cell "Chưa xác định" [ref=f16e184]
+          - 'cell "Đa lớp: BKL | Nhị phân: Không ghi nhận dấu hiệu ác tính; xác suất ác tính (nhị phân): 0.0%" [ref=f16e185]'
+          - cell "34.2%" [ref=f16e186]
+          - cell [ref=f16e187]:
+            - button "Xem chi tiết ca CASE-E3F2693481A84FEDA7E5506BD8A2C057" [ref=f16e188] [cursor=pointer]: Xem chi tiết
+        - row [ref=f16e189]:
+          - cell "29/10/2026" [ref=f16e190]
+          - cell "Người dùng A" [ref=f16e191]
+          - cell "Chưa xác định" [ref=f16e192]
+          - 'cell "Đa lớp: BKL | Nhị phân: Không ghi nhận dấu hiệu ác tính; xác suất ác tính (nhị phân): 4.9%" [ref=f16e193]'
+          - cell "86.9%" [ref=f16e194]
+          - cell [ref=f16e195]:
+            - button "Xem chi tiết ca CASE-5808326FC5D74B37BE1EE1315130A0DD" [ref=f16e196] [cursor=pointer]: Xem chi tiết
+        - row [ref=f16e197]:
+          - cell "29/10/2026" [ref=f16e198]
+          - cell "Người dùng A" [ref=f16e199]
+          - cell "Tay trái" [ref=f16e200]
+          - 'cell "Đa lớp: DF | Nhị phân: Không ghi nhận dấu hiệu ác tính; xác suất ác tính (nhị phân): 4.4%" [ref=f16e201]'
+          - cell "99.1%" [ref=f16e202]
+          - cell [ref=f16e203]:
+            - button "Xem chi tiết ca CASE-4B0DBB5BC0C04ECF83C8973AAA759215" [ref=f16e204] [cursor=pointer]: Xem chi tiết
+        - row [ref=f16e205]:
+          - cell "29/10/2026" [ref=f16e206]
+          - cell "Người dùng A" [ref=f16e207]
+          - cell "Tay trái" [ref=f16e208]
+          - 'cell "Đa lớp: BCC | Nhị phân: Nghi ngờ ác tính; xác suất ác tính (nhị phân): 71.3%" [ref=f16e209]'
+          - cell "84.1%" [ref=f16e210]
+          - cell [ref=f16e211]:
+            - button "Xem chi tiết ca CASE-E8A3E4833C6E40818F06C8F919C66A4B" [ref=f16e212] [cursor=pointer]: Xem chi tiết
+        - row [ref=f16e213]:
+          - cell "29/10/2026" [ref=f16e214]
+          - cell "Người dùng A" [ref=f16e215]
+          - cell "Tay trái" [ref=f16e216]
+          - 'cell "Đa lớp: BCC | Nhị phân: Nghi ngờ ác tính; xác suất ác tính (nhị phân): 71.3%" [ref=f16e217]'
+          - cell "84.1%" [ref=f16e218]
+          - cell [ref=f16e219]:
+            - button "Xem chi tiết ca CASE-E8A3E4833C6E40818F06C8F919C66A4B" [ref=f16e220] [cursor=pointer]: Xem chi tiết
+        - row [ref=f16e221]:
+          - cell "29/10/2026" [ref=f16e222]
+          - cell "Người dùng A" [ref=f16e223]
+          - cell "Tay trái" [ref=f16e224]
+          - 'cell "Đa lớp: BCC | Nhị phân: Nghi ngờ ác tính; xác suất ác tính (nhị phân): 71.3%" [ref=f16e225]'
+          - cell "84.1%" [ref=f16e226]
+          - cell [ref=f16e227]:
+            - button "Xem chi tiết ca CASE-E8A3E4833C6E40818F06C8F919C66A4B" [ref=f16e228] [cursor=pointer]: Xem chi tiết
+        - row [ref=f16e229]:
+          - cell "27/10/2026" [ref=f16e230]
+          - cell "Nguyễn Thị B" [ref=f16e231]
+          - cell "Tay phải" [ref=f16e232]
+          - 'cell "Đa lớp: SCC | Nhị phân: Nghi ngờ ác tính; xác suất ác tính (nhị phân): 92.3%" [ref=f16e233]'
+          - cell "98.9%" [ref=f16e234]
+          - cell [ref=f16e235]:
+            - button "Xem chi tiết ca CASE-1A92F367E1CC4F7583865F0004AEE98D" [ref=f16e236] [cursor=pointer]: Xem chi tiết
+  - generic [ref=f16e40]:
+    - generic [ref=f16e41]:
+      - generic [ref=f16e42]: Công nghệ lõi
+      - heading "Tính năng cốt lõi của DermaScan AI" [level=2] [ref=f16e43]
+      - paragraph [ref=f16e44]: Kết hợp thị giác máy tính và y khoa để hỗ trợ sàng lọc có thể giải thích.
+    - generic [ref=f16e45]:
+      - article [ref=f16e46]:
+        - generic [ref=f16e47]: Mô hình học sâu
+        - heading "Mô hình EfficientNet-B0" [level=3] [ref=f16e55]
+        - paragraph [ref=f16e56]: Phân loại tổn thương da từ ảnh dermoscopy.
+      - article [ref=f16e57]:
+        - generic [ref=f16e58]: Giải thích kết quả
+        - heading "Trực quan hóa Grad-CAM" [level=3] [ref=f16e64]
+        - paragraph [ref=f16e65]: Hiển thị vùng ảnh mô hình chú ý.
+      - article [ref=f16e66]:
+        - generic [ref=f16e67]: Dữ liệu chuẩn quốc tế
+        - heading "Bộ dữ liệu chuẩn ISIC" [level=3] [ref=f16e73]
+        - paragraph [ref=f16e74]: Bộ ảnh tổn thương da được chuyên gia chú giải.
+  - contentinfo [ref=f16e75]:
+    - generic [ref=f16e77]:
+      - generic [ref=f16e78]:
+        - generic [ref=f16e79]:
+          - link "DermaScan AI" [ref=f16e80] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f16e89]: Phân loại tổn thương da bằng EfficientNet
+          - paragraph [ref=f16e90]: Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và Grad-CAM.
+        - generic [ref=f16e91]:
+          - heading "Liên hệ" [level=4] [ref=f16e92]
+          - list [ref=f16e93]:
+            - listitem [ref=f16e94]:
+              - generic [ref=f16e99]:
+                - generic [ref=f16e100]: Email
+                - link "contact@dermascan.ai" [ref=f16e101] [cursor=pointer]:
+                  - /url: mailto:contact@dermascan.ai
+            - listitem [ref=f16e102]:
+              - generic [ref=f16e105]:
+                - generic [ref=f16e106]: Hotline
+                - link "1900 6868" [ref=f16e107] [cursor=pointer]:
+                  - /url: tel:1900 6868
+        - generic [ref=f16e108]:
+          - heading "Công nghệ" [level=4] [ref=f16e109]
+          - list [ref=f16e110]:
+            - listitem [ref=f16e111]: EfficientNet-B0 — phân loại tổn thương da
+            - listitem [ref=f16e112]: Grad-CAM — bản đồ chú ý
+            - listitem [ref=f16e113]: Bộ dữ liệu chuẩn ISIC
+            - listitem [ref=f16e114]: Báo cáo PDF & gửi Email
+        - generic [ref=f16e115]:
+          - heading "Lưu ý y khoa" [level=4] [ref=f16e116]
+          - paragraph [ref=f16e120]: Kết quả phân tích chỉ mang tính chất sàng lọc tham khảo, không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ.
+      - generic [ref=f16e121]:
+        - generic [ref=f16e122]: © 2026 DermaScan AI
+        - generic [ref=f16e123]: Sàng lọc ung thư da bằng AI
+  - dialog "Khoanh vùng tổn thương" [ref=f16e238]:
+    - paragraph [ref=f16e239]: Bấm lên ảnh để chấm các điểm quanh vùng tổn thương (tối thiểu 3 điểm). Dùng phím mũi tên để di chuyển, Enter hoặc Space để thêm điểm; Shift + mũi tên di chuyển chậm.
+    - generic "Ảnh khoanh vùng tổn thương" [ref=f16e240]
+    - status [ref=f16e241]: 2 điểm đã chọn.
+    - generic [ref=f16e242]:
+      - button "Hoàn tác điểm cuối" [active] [ref=f16e243] [cursor=pointer]
+      - button "Vẽ lại" [ref=f16e244] [cursor=pointer]
+      - button "Xóa vùng đã lưu" [ref=f16e245] [cursor=pointer]
+      - button "Hủy" [ref=f16e246] [cursor=pointer]
+      - button "Lưu vùng" [disabled] [ref=f16e247]

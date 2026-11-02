@@ -46,7 +46,10 @@ from pytorch_grad_cam.utils.model_targets import ClassifierOutputTarget
 
 import os
 from skin_cancer.webapp.services.image_quality import check_image_quality
-from skin_cancer.webapp.services.uncertainty import check_uncertainty
+from skin_cancer.webapp.services.uncertainty import (
+    apply_uncertainty_safety,
+    check_uncertainty,
+)
 from skin_cancer.webapp.services.result_cache import image_hash, get_cached, save_cached, is_redis_available
 from skin_cancer.webapp.services.focus_region import apply_focus_region
 from skin_cancer.webapp.services.onnx_inference import OnnxPredictor
@@ -377,6 +380,7 @@ def run_ai_inference(pil_img, context=None):
     cached = get_cached(key)
     if cached and isinstance(cached, dict) and "result" in cached:
         result = cached["result"]
+        apply_uncertainty_safety(result)
         result["meta"]["from_cache"] = True
         png = base64.b64decode(result["gradcam"])
         cam_vis = np.array(Image.open(io.BytesIO(png)).convert("RGB"))
@@ -386,6 +390,7 @@ def run_ai_inference(pil_img, context=None):
     result, cam_vis, ms = _run_model(pil_img, context=context)
     result["quality"] = quality
     result["uncertainty"] = check_uncertainty(result["multiclass"]["probs"])
+    apply_uncertainty_safety(result)
     result["meta"]["from_cache"] = False
 
     save_cached(key, {"result": result, "inference_ms": ms})

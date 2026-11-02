@@ -1,0 +1,291 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - link "DermaScan AI - Trang chủ" [ref=f1e4] [cursor=pointer]:
+        - /url: /
+        - img "DermaScan AI" [ref=f1e6]
+        - generic [ref=f1e7]:
+          - generic [ref=f1e8]: DermaScan AI
+          - generic [ref=f1e9]: Phân loại tổn thương da bằng EfficientNet
+      - navigation "Menu bác sĩ" [ref=f1e126]:
+        - button "Phân tích" [ref=f1e127] [cursor=pointer]
+        - button "Lịch sử" [ref=f1e128] [cursor=pointer]
+        - button "So sánh" [ref=f1e129] [cursor=pointer]
+        - button "Thống kê" [ref=f1e130] [cursor=pointer]
+      - group "Công cụ và tài khoản" [ref=f1e10]:
+        - button "Đổi ngôn ngữ" [ref=f1e12] [cursor=pointer]:
+          - generic [ref=f1e16]: VI
+        - button "Chuyển sang giao diện tối" [ref=f1e19] [cursor=pointer]
+        - generic [ref=f1e131]:
+          - generic "Xem thông tin cá nhân" [ref=f1e132] [cursor=pointer]:
+            - generic [ref=f1e133]: B
+            - generic [ref=f1e134]:
+              - strong [ref=f1e135]: Bác sĩ
+              - generic [ref=f1e136]: Docthoặc
+          - button "Đăng xuất" [ref=f1e137] [cursor=pointer]
+  - region "Banner DermaScan AI" [ref=f1e26]:
+    - article [ref=f1e197]:
+      - img "Trực quan hóa kết quả với Grad-CAM" [ref=f1e198]
+      - generic [ref=f1e199]:
+        - heading "Trực quan hóa kết quả với Grad-CAM" [level=1] [ref=f1e200]
+        - paragraph [ref=f1e201]: Công nghệ Grad-CAM giúp làm nổi bật những vùng hình ảnh có ảnh hưởng đến dự đoán của mô hình, hỗ trợ bác sĩ tham khảo và diễn giải kết quả phân tích.
+    - generic "Điều hướng banner" [ref=f1e33]:
+      - button "Banner trước" [ref=f1e34] [cursor=pointer]: ‹
+      - generic [ref=f1e35]:
+        - button "Banner 1" [ref=f1e36] [cursor=pointer]
+        - button "Banner 2" [ref=f1e37] [cursor=pointer]
+        - button "Banner 3" [ref=f1e38] [cursor=pointer]
+        - button "Banner 4" [ref=f1e39] [cursor=pointer]
+        - button "Banner 5" [ref=f1e40] [cursor=pointer]
+      - button "Banner tiếp theo" [ref=f1e41] [cursor=pointer]: ›
+  - generic [ref=f1e143]:
+    - generic [ref=f1e144]:
+      - generic [ref=f1e145]: Giao diện chẩn đoán
+      - heading "Phân tích ảnh" [level=2] [ref=f1e146]
+    - generic [ref=f1e147]:
+      - article [ref=f1e148]:
+        - generic [ref=f1e150]:
+          - generic [ref=f1e151]: "01"
+          - generic [ref=f1e152]:
+            - heading "Ảnh đầu vào" [level=3] [ref=f1e153]
+            - paragraph [ref=f1e154]: Chọn ảnh dermoscopy để phân tích
+        - generic [ref=f1e155]:
+          - generic [ref=f1e157]:
+            - generic [ref=f1e158]:
+              - generic [ref=f1e159]: Bệnh nhân
+              - button "+ Thêm bệnh nhân" [ref=f1e160] [cursor=pointer]
+            - combobox "Bệnh nhân" [ref=f1e161]:
+              - option "Chọn bệnh nhân..." [selected]
+              - option "Người dùng A · patient@dermascan.local"
+            - generic [ref=f1e162]: Chọn bệnh nhân có tài khoản hoặc thêm bệnh nhân mới.
+            - generic [ref=f1e392]:
+              - generic [ref=f1e393]:
+                - strong [ref=f1e394]: QA Full-System Synthetic 20261102
+                - generic [ref=f1e395]: BỆNH NHÂN MỚI
+              - generic [ref=f1e396]: Chưa có thông tin ngày sinh / giới tính
+              - generic [ref=f1e397]: Chưa có thông tin liên hệ
+            - generic [ref=f1e163]:
+              - generic [ref=f1e164]: Vị trí tổn thương
+              - textbox "Vị trí tổn thương" [ref=f1e165]:
+                - /placeholder: "Ví dụ: Cánh tay trái"
+            - generic [ref=f1e166]:
+              - generic [ref=f1e167]: Mô hình AI
+              - status "Mô hình AI" [ref=f1e168]: EfficientNet-B0
+              - generic [ref=f1e169]: Hệ thống sử dụng EfficientNet-B0 cho mọi phân tích.
+          - generic [ref=f1e170]:
+            - generic [ref=f1e398]:
+              - img "Ảnh xem trước" [ref=f1e399]
+              - generic [ref=f1e400]: Ảnh đầu tiên
+              - button "Xóa ảnh" [ref=f1e402] [cursor=pointer]: ×
+            - generic [ref=f1e403]:
+              - generic [ref=f1e404]: 1 ảnh đã chọn
+              - generic [ref=f1e405]:
+                - generic [ref=f1e406]: fullqa-synthetic-qa.png
+                - button "Khoanh vùng" [ref=f1e407] [cursor=pointer]
+                - button "×" [ref=f1e408] [cursor=pointer]
+            - generic [ref=f1e423]: "Batch #10: 1 thành công, 0 lỗi."
+            - generic [ref=f1e180]:
+              - button "✓ Đã phân tích xong" [ref=f1e436] [cursor=pointer]
+              - button "Chọn ảnh khác" [ref=f1e438] [cursor=pointer]
+            - generic [ref=f1e429]:
+              - heading "Tất cả ảnh" [level=4] [ref=f1e430]
+              - generic [ref=f1e431]:
+                - generic [ref=f1e432]:
+                  - strong [ref=f1e433]: fullqa-synthetic-qa.png
+                  - generic [ref=f1e434]: "ID ảnh: 11"
+                - button "Phân tích" [ref=f1e435] [cursor=pointer]
+      - article [ref=f1e183]:
+        - generic [ref=f1e184]:
+          - generic [ref=f1e185]:
+            - generic [ref=f1e186]: "02"
+            - generic [ref=f1e187]:
+              - heading "Kết quả phân tích" [level=3] [ref=f1e188]
+              - paragraph [ref=f1e189]: EfficientNet-B0 + Grad-CAM
+          - generic [ref=f1e443]: LÀNH TÍNH
+        - generic [ref=f1e444]:
+          - generic [ref=f1e445]: Ca này khó, nên hỏi bác sĩ.
+          - generic [ref=f1e450]:
+            - generic [ref=f1e455]:
+              - generic [ref=f1e456]: Sàng lọc nhị phân
+              - heading "LÀNH TÍNH" [level=3] [ref=f1e457]
+            - generic [ref=f1e458]: 0.0%
+            - paragraph [ref=f1e461]: Mô hình không phát hiện đặc điểm ác tính (độ tin cậy 100%).
+          - generic [ref=f1e462]:
+            - generic [ref=f1e464]:
+              - generic [ref=f1e465]:
+                - heading "Ảnh dermoscopy gốc" [level=4] [ref=f1e466]
+                - generic [ref=f1e467]: Dermoscopy
+              - figure "Ảnh gốc" [ref=f1e468]:
+                - img "Ảnh gốc" [ref=f1e469]
+            - generic [ref=f1e471]:
+              - generic [ref=f1e472]:
+                - generic [ref=f1e473]:
+                  - heading "Xác suất từng nhóm tổn thương" [level=4] [ref=f1e474]
+                  - generic [ref=f1e475]: Dày sừng lành · BKL
+                - generic [ref=f1e476]:
+                  - generic [ref=f1e477]:
+                    - generic [ref=f1e478]: BKL
+                    - generic [ref=f1e481]: 34.2%
+                  - generic [ref=f1e482]:
+                    - generic [ref=f1e483]: NV
+                    - generic [ref=f1e486]: 14.6%
+                  - generic [ref=f1e487]:
+                    - generic [ref=f1e488]: SCC
+                    - generic [ref=f1e491]: 11.1%
+                  - generic [ref=f1e492]:
+                    - generic [ref=f1e493]: AK
+                    - generic [ref=f1e496]: 10.8%
+                  - generic [ref=f1e497]:
+                    - generic [ref=f1e498]: VASC
+                    - generic [ref=f1e501]: 10.5%
+                  - generic [ref=f1e502]:
+                    - generic [ref=f1e503]: DF
+                    - generic [ref=f1e506]: 10.0%
+                  - generic [ref=f1e507]:
+                    - generic [ref=f1e508]: BCC
+                    - generic [ref=f1e511]: 4.6%
+                  - generic [ref=f1e512]:
+                    - generic [ref=f1e513]: MEL
+                    - generic [ref=f1e516]: 4.3%
+              - generic [ref=f1e517]:
+                - generic [ref=f1e518]:
+                  - heading "Bản đồ nhiệt Grad-CAM" [level=4] [ref=f1e519]
+                  - generic [ref=f1e520]: Vùng da bất thường
+                - figure "Grad-CAM" [ref=f1e521]:
+                  - img "Grad-CAM" [ref=f1e522]
+          - generic [ref=f1e524]:
+            - generic [ref=f1e525]:
+              - generic [ref=f1e526]:
+                - generic [ref=f1e527]: LÀNH TÍNH
+                - generic [ref=f1e528]: · Không đáng lo ngại
+              - button "Hỏi lại AI" [ref=f1e529] [cursor=pointer]
+            - heading "Không phát hiện dấu hiệu ung thư rõ ràng" [level=4] [ref=f1e533]
+            - paragraph [ref=f1e534]: Mô hình phân tích hình ảnh và nhận định đây có khoảng 34% khả năng là Dày sừng lành tính (Benign Keratosis). Đây là tổn thương lành tính, không có dấu hiệu ung thư. Tổn thương lành tính thường gặp ở người trung niên và cao tuổi. Bề mặt sần, màu nâu hoặc đen, trông giống như bị "dán" lên da.
+            - paragraph [ref=f1e535]: Không có nguy cơ ung thư. Có thể loại bỏ vì mục đích thẩm mỹ nếu gây khó chịu hoặc vướng víu.
+            - generic [ref=f1e536]:
+              - heading "Khuyến nghị" [level=5] [ref=f1e537]
+              - list [ref=f1e538]:
+                - listitem [ref=f1e539]: Kiểm tra da định kỳ 6–12 tháng một lần.
+                - listitem [ref=f1e540]: Sử dụng kem chống nắng hàng ngày để bảo vệ da.
+                - listitem [ref=f1e541]: Chú ý nếu có nốt ruồi mới xuất hiện hoặc nốt cũ thay đổi.
+                - listitem [ref=f1e542]: Duy trì lối sống lành mạnh, không hút thuốc lá.
+            - paragraph [ref=f1e544]: Kết quả khả quan. Tiếp tục duy trì thói quen chăm sóc da tốt và kiểm tra định kỳ để phòng ngừa.
+          - generic [ref=f1e545]:
+            - generic [ref=f1e546]:
+              - generic [ref=f1e547]:
+                - heading "Chẩn đoán của bác sĩ" [level=4] [ref=f1e548]
+                - paragraph [ref=f1e549]: Nhận xét chuyên môn độc lập với kết quả AI
+              - generic [ref=f1e550]:
+                - button "✨ Áp dụng gợi ý ChatGPT" [disabled] [ref=f1e551]
+                - generic [ref=f1e552]: Chưa lưu
+            - generic [ref=f1e553]:
+              - generic [ref=f1e554]:
+                - generic [ref=f1e555]: Ghi chú lâm sàng
+                - textbox "Ghi chú lâm sàng" [ref=f1e556]:
+                  - /placeholder: "Ví dụ: Tổn thương có bờ không đều, màu sắc không đồng nhất..."
+              - generic [ref=f1e557]:
+                - generic [ref=f1e558]: Chẩn đoán / kết luận *
+                - textbox "Chẩn đoán / kết luận *" [ref=f1e559]:
+                  - /placeholder: Nhập chẩn đoán của bác sĩ...
+              - generic [ref=f1e560]:
+                - generic [ref=f1e561]: Khuyến nghị
+                - textbox "Khuyến nghị" [ref=f1e562]:
+                  - /placeholder: "Ví dụ: Khuyến nghị khám chuyên khoa da liễu, sinh thiết nếu cần..."
+              - generic [ref=f1e563]:
+                - paragraph [ref=f1e564]: Kết luận của bác sĩ được lưu riêng, không phải kết quả dự đoán của AI.
+                - button "Lưu chẩn đoán" [ref=f1e565] [cursor=pointer]
+          - generic [ref=f1e566]:
+            - heading "Công cụ sau phân tích" [level=4] [ref=f1e568]
+            - generic [ref=f1e569]:
+              - button "Đã đo tổn thương" [disabled] [ref=f1e599]
+              - button "Tạo phiên bản PDF mới" [ref=f1e597] [cursor=pointer]
+              - button "Xuất Excel" [ref=f1e572] [cursor=pointer]
+              - button "Tải PDF" [ref=f1e573] [cursor=pointer]
+              - button "Gửi Email" [ref=f1e574] [cursor=pointer]
+              - button "Xem Timeline" [ref=f1e575] [cursor=pointer]
+            - generic [ref=f1e600]:
+              - heading "Kết quả đo lường" [level=5] [ref=f1e601]
+              - generic [ref=f1e602]:
+                - generic [ref=f1e603]:
+                  - generic [ref=f1e604]: Diện tích
+                  - strong [ref=f1e605]: "30220.00"
+                  - text: px²
+                - generic [ref=f1e606]:
+                  - generic [ref=f1e607]: Chu vi
+                  - strong [ref=f1e608]: "933.52"
+                  - text: px
+                - generic [ref=f1e609]:
+                  - generic [ref=f1e610]: Tỷ lệ
+                  - strong [ref=f1e611]: "11.53"
+                  - text: "%"
+              - generic [ref=f1e612]:
+                - generic [ref=f1e613]:
+                  - strong [ref=f1e614]: Khoanh vùng tổn thương
+                  - generic [ref=f1e615]: OpenCV Contour
+                - img "Ảnh khoanh vùng tổn thương" [ref=f1e616]
+                - paragraph [ref=f1e617]: Đường viền thể hiện vùng tổn thương được phát hiện bằng xử lý ảnh OpenCV. Các thông số được tính theo pixel, không phải đơn vị mm.
+            - generic [ref=f1e598]: Đã tạo báo cáo v1.
+          - generic [ref=f1e580]:
+            - generic [ref=f1e581]:
+              - generic [ref=f1e587]:
+                - heading "Tiến triển theo thời gian (Timeline)" [level=4] [ref=f1e588]
+                - text: Lịch sử sàng lọc và biến đổi tổn thương qua các lần khám
+              - generic [ref=f1e589]: Theo dõi dài hạn
+            - generic [ref=f1e590]:
+              - paragraph [ref=f1e591]: Bệnh nhân này hiện có 1 lần phân tích được lưu.
+              - generic [ref=f1e594]:
+                - text: Hệ thống cần từ
+                - strong [ref=f1e595]: 2 lần phân tích trở lên
+                - text: của cùng một bệnh nhân để vẽ biểu đồ và đánh giá xu hướng tiến triển.
+  - generic [ref=f1e42]:
+    - generic [ref=f1e43]:
+      - generic [ref=f1e44]: Công nghệ lõi
+      - heading "Tính năng cốt lõi của DermaScan AI" [level=2] [ref=f1e45]
+      - paragraph [ref=f1e46]: Kết hợp thị giác máy tính và y khoa để hỗ trợ sàng lọc có thể giải thích.
+    - generic [ref=f1e47]:
+      - article [ref=f1e48]:
+        - generic [ref=f1e49]: Mô hình học sâu
+        - heading "Mô hình EfficientNet-B0" [level=3] [ref=f1e57]
+        - paragraph [ref=f1e58]: Phân loại tổn thương da từ ảnh dermoscopy.
+      - article [ref=f1e59]:
+        - generic [ref=f1e60]: Giải thích kết quả
+        - heading "Trực quan hóa Grad-CAM" [level=3] [ref=f1e66]
+        - paragraph [ref=f1e67]: Hiển thị vùng ảnh mô hình chú ý.
+      - article [ref=f1e68]:
+        - generic [ref=f1e69]: Dữ liệu chuẩn quốc tế
+        - heading "Bộ dữ liệu chuẩn ISIC" [level=3] [ref=f1e75]
+        - paragraph [ref=f1e76]: Bộ ảnh tổn thương da được chuyên gia chú giải.
+  - contentinfo [ref=f1e77]:
+    - generic [ref=f1e79]:
+      - generic [ref=f1e80]:
+        - generic [ref=f1e81]:
+          - link "DermaScan AI" [ref=f1e82] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f1e91]: Phân loại tổn thương da bằng EfficientNet
+          - paragraph [ref=f1e92]: Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và Grad-CAM.
+        - generic [ref=f1e93]:
+          - heading "Liên hệ" [level=4] [ref=f1e94]
+          - list [ref=f1e95]:
+            - listitem [ref=f1e96]:
+              - generic [ref=f1e101]:
+                - generic [ref=f1e102]: Email
+                - link "contact@dermascan.ai" [ref=f1e103] [cursor=pointer]:
+                  - /url: mailto:contact@dermascan.ai
+            - listitem [ref=f1e104]:
+              - generic [ref=f1e107]:
+                - generic [ref=f1e108]: Hotline
+                - link "1900 6868" [ref=f1e109] [cursor=pointer]:
+                  - /url: tel:1900 6868
+        - generic [ref=f1e110]:
+          - heading "Công nghệ" [level=4] [ref=f1e111]
+          - list [ref=f1e112]:
+            - listitem [ref=f1e113]: EfficientNet-B0 — phân loại tổn thương da
+            - listitem [ref=f1e114]: Grad-CAM — bản đồ chú ý
+            - listitem [ref=f1e115]: Bộ dữ liệu chuẩn ISIC
+            - listitem [ref=f1e116]: Báo cáo PDF & gửi Email
+        - generic [ref=f1e117]:
+          - heading "Lưu ý y khoa" [level=4] [ref=f1e118]
+          - paragraph [ref=f1e122]: Kết quả phân tích chỉ mang tính chất sàng lọc tham khảo, không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ.
+      - generic [ref=f1e123]:
+        - generic [ref=f1e124]: © 2026 DermaScan AI
+        - generic [ref=f1e125]: Sàng lọc ung thư da bằng AI

@@ -4,6 +4,12 @@
 ============================================================ */
 
 :root {
+  color-scheme: light;
+  --select-option-bg: #ffffff;
+  --select-option-color: var(--ink-800);
+  --select-option-active-bg: var(--p-100);
+  --select-option-active-color: var(--ink-900);
+  --select-option-disabled-color: var(--ink-400);
   /* Primary green */
   --p-50: #f0fbf4;
   --p-100: #d8f3e2;
@@ -72,6 +78,11 @@
 
 html[data-theme="dark"] {
   color-scheme: dark;
+  --select-option-bg: var(--surface);
+  --select-option-color: var(--ink-800);
+  --select-option-active-bg: #21453b;
+  --select-option-active-color: #a5efc3;
+  --select-option-disabled-color: var(--ink-400);
   --bg: #0b1220;
   --surface: #121b30;
   --border: #223049;
@@ -89,6 +100,22 @@ html[data-theme="dark"] {
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
   --shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.5), 0 2px 6px -2px rgba(0, 0, 0, 0.3);
   --shadow-lg: 0 12px 32px -6px rgba(0, 0, 0, 0.7), 0 4px 12px -4px rgba(0, 0, 0, 0.4);
+}
+
+select option,
+select optgroup {
+  background-color: var(--select-option-bg);
+  color: var(--select-option-color);
+}
+
+select option:checked,
+select option:hover {
+  background-color: var(--select-option-active-bg);
+  color: var(--select-option-active-color);
+}
+
+select option:disabled {
+  color: var(--select-option-disabled-color);
 }
 
 .doctor-stats-toolbar {
@@ -215,7 +242,7 @@ html[data-theme="dark"] {
 
   .doctor-stats-cards,
   .doctor-stats-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -457,6 +484,36 @@ button {
   padding: 32px 28px 80px;
 }
 
+html.is-doctor .history-page {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 720px) {
+  html.is-doctor .history-filter-group {
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  html.is-doctor .history-filter-group select,
+  html.is-doctor .history-filter-group input {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    flex: 1;
+  }
+
+  html.is-doctor .history-search-group input {
+    width: auto;
+  }
+
+  html.is-doctor .history-table {
+    min-width: 680px;
+  }
+}
+
 .history-filters {
   display: flex;
   align-items: center;
@@ -538,6 +595,10 @@ button {
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+}
+
+html.is-doctor .history-timeline {
+  overflow-x: auto;
 }
 
 .history-table {
@@ -3511,5 +3572,15 @@ html[data-theme="dark"] .dropzone-meta {
     max-width: 660px;
     font-size: clamp(15px, 1.2vw, 17px);
     line-height: 1.55;
+  }
+}
+
+@media (max-width: 720px) {
+  .nav-inner {
+    flex-wrap: wrap;
+  }
+
+  .hp-auth {
+    margin-left: auto;
   }
 }

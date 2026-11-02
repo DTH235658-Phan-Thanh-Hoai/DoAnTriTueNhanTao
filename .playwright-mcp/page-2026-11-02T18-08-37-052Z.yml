@@ -1,0 +1,82 @@
+- generic [active] [ref=f16e1]:
+  - banner [ref=f16e2]:
+    - generic [ref=f16e3]:
+      - link "DermaScan AI - Trang chủ" [ref=f16e4] [cursor=pointer]:
+        - /url: /
+        - img "DermaScan AI" [ref=f16e6]
+        - generic [ref=f16e7]:
+          - generic [ref=f16e8]: DermaScan AI
+          - generic [ref=f16e9]: Phân loại tổn thương da bằng EfficientNet
+      - group "Công cụ và tài khoản" [ref=f16e10]:
+        - button "Đổi ngôn ngữ" [ref=f16e12] [cursor=pointer]
+        - button "Chuyển sang giao diện tối" [ref=f16e18] [cursor=pointer]
+        - generic [ref=f16e21]:
+          - button "Đăng nhập" [ref=f16e22] [cursor=pointer]
+          - button "Đăng ký" [ref=f16e23] [cursor=pointer]
+  - region "Banner DermaScan AI" [ref=f16e24]:
+    - article [ref=f16e26]:
+      - img "Giới thiệu DermaScan AI" [ref=f16e27]
+      - generic [ref=f16e28]:
+        - heading "Giới thiệu DermaScan AI" [level=1] [ref=f16e29]
+        - paragraph [ref=f16e30]: Ứng dụng mô hình EfficientNet-B0 để phân loại hình ảnh Dermoscopy, hỗ trợ bác sĩ tham khảo kết quả và đưa ra đánh giá chuyên môn
+    - generic "Điều hướng banner" [ref=f16e31]:
+      - button "Banner trước" [ref=f16e32] [cursor=pointer]: ‹
+      - generic [ref=f16e33]:
+        - button "Banner 1" [ref=f16e34] [cursor=pointer]
+        - button "Banner 2" [ref=f16e35] [cursor=pointer]
+        - button "Banner 3" [ref=f16e36] [cursor=pointer]
+        - button "Banner 4" [ref=f16e37] [cursor=pointer]
+        - button "Banner 5" [ref=f16e38] [cursor=pointer]
+      - button "Banner tiếp theo" [ref=f16e39] [cursor=pointer]: ›
+  - generic [ref=f16e40]:
+    - generic [ref=f16e41]:
+      - generic [ref=f16e42]: Công nghệ lõi
+      - heading "Tính năng cốt lõi của DermaScan AI" [level=2] [ref=f16e43]
+      - paragraph [ref=f16e44]: Kết hợp thị giác máy tính và y khoa để hỗ trợ sàng lọc có thể giải thích.
+    - generic [ref=f16e45]:
+      - article [ref=f16e46]:
+        - generic [ref=f16e47]: Mô hình học sâu
+        - heading "Mô hình EfficientNet-B0" [level=3] [ref=f16e55]
+        - paragraph [ref=f16e56]: Phân loại tổn thương da từ ảnh dermoscopy.
+      - article [ref=f16e57]:
+        - generic [ref=f16e58]: Giải thích kết quả
+        - heading "Trực quan hóa Grad-CAM" [level=3] [ref=f16e64]
+        - paragraph [ref=f16e65]: Hiển thị vùng ảnh mô hình chú ý.
+      - article [ref=f16e66]:
+        - generic [ref=f16e67]: Dữ liệu chuẩn quốc tế
+        - heading "Bộ dữ liệu chuẩn ISIC" [level=3] [ref=f16e73]
+        - paragraph [ref=f16e74]: Bộ ảnh tổn thương da được chuyên gia chú giải.
+  - contentinfo [ref=f16e75]:
+    - generic [ref=f16e77]:
+      - generic [ref=f16e78]:
+        - generic [ref=f16e79]:
+          - link "DermaScan AI" [ref=f16e80] [cursor=pointer]:
+            - /url: /
+          - generic [ref=f16e89]: Phân loại tổn thương da bằng EfficientNet
+          - paragraph [ref=f16e90]: Ứng dụng y tế hỗ trợ bác sĩ sàng lọc tổn thương da bằng AI, kết hợp EfficientNet-B0 và Grad-CAM.
+        - generic [ref=f16e91]:
+          - heading "Liên hệ" [level=4] [ref=f16e92]
+          - list [ref=f16e93]:
+            - listitem [ref=f16e94]:
+              - generic [ref=f16e99]:
+                - generic [ref=f16e100]: Email
+                - link "contact@dermascan.ai" [ref=f16e101] [cursor=pointer]:
+                  - /url: mailto:contact@dermascan.ai
+            - listitem [ref=f16e102]:
+              - generic [ref=f16e105]:
+                - generic [ref=f16e106]: Hotline
+                - link "1900 6868" [ref=f16e107] [cursor=pointer]:
+                  - /url: tel:1900 6868
+        - generic [ref=f16e108]:
+          - heading "Công nghệ" [level=4] [ref=f16e109]
+          - list [ref=f16e110]:
+            - listitem [ref=f16e111]: EfficientNet-B0 — phân loại tổn thương da
+            - listitem [ref=f16e112]: Grad-CAM — bản đồ chú ý
+            - listitem [ref=f16e113]: Bộ dữ liệu chuẩn ISIC
+            - listitem [ref=f16e114]: Báo cáo PDF & gửi Email
+        - generic [ref=f16e115]:
+          - heading "Lưu ý y khoa" [level=4] [ref=f16e116]
+          - paragraph [ref=f16e120]: Kết quả phân tích chỉ mang tính chất sàng lọc tham khảo, không phải chẩn đoán y khoa và không thay thế tư vấn trực tiếp với bác sĩ.
+      - generic [ref=f16e121]:
+        - generic [ref=f16e122]: © 2026 DermaScan AI
+        - generic [ref=f16e123]: Sàng lọc ung thư da bằng AI
