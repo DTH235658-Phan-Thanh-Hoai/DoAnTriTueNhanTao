@@ -16,6 +16,19 @@ from ..models.base import utcnow
 from ..services.access import require_roles
 from ..services.uncertainty import uncertainty_for_probabilities
 from ..services.user_deletion import delete_unrelated_user, deletable_certificate, cleanup_doctor_certificate
+from io import BytesIO
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
+from openpyxl.utils import get_column_letter
+from io import BytesIO
+from flask import send_file, jsonify
+from openpyxl import Workbook
+from openpyxl.styles import Font, Alignment, PatternFill
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+
 
 bp = Blueprint("admin", __name__)
 
@@ -684,3 +697,230 @@ def update_security_settings():
     _admin_audit("SECURITY_SETTINGS_UPDATED", current_user)
     db.session.commit()
     return jsonify(success=True)
+
+
+@bp.get("/api/admin/reports/export")
+@require_roles("ADMIN")
+def export_report():
+    start_str = request.args.get("start", "").strip()
+    end_str = request.args.get("end", "").strip()
+    file_format = request.args.get("format", "json").lower()
+
+    if not start_str or not end_str:
+        abort(400, description="Vui lòng cung cấp đầy đủ ngày bắt đầu và kết thúc.")
+
+    try:
+        start_date = date.fromisoformat(start_str)
+        end_date = date.fromisoformat(end_str)
+        if start_date > end_date:
+            abort(400, description="Ngày bắt đầu phải nhỏ hơn hoặc bằng ngày kết thúc.")
+    except ValueError:
+        abort(400, description="Định dạng ngày không hợp lệ (YYYY-MM-DD).")
+
+    start_dt = datetime.combine(start_date, datetime.min.time())
+    end_dt = datetime.combine(end_date + timedelta(days=1), datetime.min.time())
+
+    # 1. Lấy dữ liệu
+    cases = db.session.scalars(
+        db.select(Case).where(Case.created_at >= start_dt, Case.created_at < end_dt)
+    ).all()
+    
+    analyses = db.session.scalars(
+        db.select(Analysis)
+        .join(Case, Analysis.case_id == Case.id)
+        .options(selectinload(Analysis.results))
+        .where(Analysis.created_at >= start_dt, Analysis.created_at < end_dt, Analysis.status == "COMPLETED")
+    ).all()
+
+    # 2. Tính toán thống kê
+    total_cases = len(cases)
+    completed_cases = sum(1 for c in cases if c.status == "COMPLETED")
+    total_analyses = len(analyses)
+    
+    total_time_seconds = 0
+    class_counts = {}
+    benign_count = 0
+    malignant_count = 0
+
+    for a in analyses:
+        if a.started_at and a.completed_at:
+            total_time_seconds += (a.completed_at - a.started_at).total_seconds()
+        for r in a.results:
+            if r.binary_result == 1:
+                malignant_count += 1
+            elif r.binary_result == 0:
+                benign_count += 1
+            if r.predicted_class:
+                cls = r.predicted_class.upper()
+                class_counts[cls] = class_counts.get(cls, 0) + 1
+
+    avg_time_seconds = (total_time_seconds / total_analyses) if total_analyses > 0 else 0
+
+    # 3. Trả về JSON (Để cập nhật giao diện)
+    if file_format == "json":
+        return jsonify({
+            "total_cases": total_cases,
+            "completed_cases": completed_cases,
+            "total_analyses": total_analyses,
+            "avg_time_seconds": round(avg_time_seconds, 2),
+            "benign_count": benign_count,
+            "malignant_count": malignant_count,
+            "class_counts": class_counts
+        })
+
+    # 4. Trả về PDF
+        # 4. Trả về PDF
+    elif file_format == "pdf":
+        from reportlab.pdfbase import pdfmetrics
+        from reportlab.pdfbase.ttfonts import TTFont
+        import os
+
+        # Đăng ký font chữ hỗ trợ tiếng Việt
+        font_name = "Helvetica" # Mặc định
+        try:
+            # Tìm font Arial chuẩn của Windows
+            font_path = r"C:\Windows\Fonts\arial.ttf"
+            if os.path.exists(font_path):
+                pdfmetrics.registerFont(TTFont('ArialUnicode', font_path))
+                font_name = 'ArialUnicode'
+            else:
+                # Fallback cho MacOS/Linux
+                if os.path.exists('/System/Library/Fonts/Supplemental/Arial.ttf'):
+                    pdfmetrics.registerFont(TTFont('ArialUnicode', '/System/Library/Fonts/Supplemental/Arial.ttf'))
+                    font_name = 'ArialUnicode'
+                elif os.path.exists('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'):
+                    pdfmetrics.registerFont(TTFont('ArialUnicode', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))
+                    font_name = 'ArialUnicode'
+        except Exception as e:
+            print("Không thể load font Unicode:", e)
+
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=A4)
+        elements = []
+        styles = getSampleStyleSheet()
+        
+        # Gán font tiếng Việt cho style
+        title_style = styles['Title']
+        title_style.fontName = font_name
+
+        # Tiêu đề
+        elements.append(Paragraph(f"BÁO CÁO THỐNG KÊ DERMASCAN AI ({start_date.strftime('%d/%m/%Y')} - {end_date.strftime('%d/%m/%Y')})", title_style))
+        elements.append(Spacer(1, 20))
+
+        # --- BẢNG 1: CHỈ SỐ CHUNG ---
+        data1 = [
+            ["CHỈ SỐ", "GIÁ TRỊ"],
+            ["Tổng ca khám", str(total_cases)],
+            ["Ca khám hoàn thành", str(completed_cases)],
+            ["Tổng lượt phân tích AI", str(total_analyses)],
+            ["Thời gian phân tích TB (giây)", str(round(avg_time_seconds, 2))]
+        ]
+
+        table1 = Table(data1, colWidths=[250, 100])
+        table1.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#2BA149")), # Xanh lá
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), font_name),
+            ('FONTNAME', (0, 1), (-1, -1), font_name),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
+        elements.append(table1)
+        elements.append(Spacer(1, 30)) # Khoảng cách giữa 2 bảng
+
+        # --- BẢNG 2: PHÂN BỐ KẾT QUẢ ---
+        data2 = [
+            ["PHÂN BỐ KẾT QUẢ", "SỐ LƯỢNG"],
+            ["Lành tính (Benign)", str(benign_count)],
+            ["Ác tính / Nghi ngờ (Malignant)", str(malignant_count)]
+        ]
+        for cls, count in class_counts.items():
+            data2.append([f"Phân loại {cls}", str(count)])
+
+        table2 = Table(data2, colWidths=[250, 100])
+        table2.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#fd8624")), # Cam
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), font_name),
+            ('FONTNAME', (0, 1), (-1, -1), font_name),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black),
+        ]))
+        elements.append(table2)
+
+        doc.build(elements)
+        buffer.seek(0)
+        return send_file(buffer, mimetype="application/pdf", as_attachment=True, download_name=f"Report_{start_date}_{end_date}.pdf")
+
+    # 5. Trả về Excel (Mặc định)
+        # 5. Trả về Excel (Mặc định)
+    else:
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Báo cáo"
+        
+        # Gán độ rộng cột
+        ws.column_dimensions['A'].width = 40
+        ws.column_dimensions['B'].width = 25
+
+        # Định dạng Font & Màu
+        title_font = Font(bold=True, size=14)
+        header_font = Font(bold=True, color="FFFFFF")
+        green_fill = PatternFill(start_color="2BA149", end_color="2BA149", fill_type="solid")
+        orange_fill = PatternFill(start_color="FD8624", end_color="FD8624", fill_type="solid")
+        center_align = Alignment(horizontal="center", vertical="center")
+
+        # --- TIÊU ĐỀ CHUNG ---
+        ws.append(["BÁO CÁO THỐNG KÊ DERMASCAN AI", ""])
+        ws["A1"].font = title_font
+        ws.append([])
+        ws.append(["Từ ngày", start_date.strftime("%d/%m/%Y")])
+        ws.append(["Đến ngày", end_date.strftime("%d/%m/%Y")])
+        ws.append([])
+
+        # --- BẢNG 1: CHỈ SỐ CHUNG (Màu Xanh) ---
+        ws.append(["CHỈ SỐ", "GIÁ TRỊ"])
+        for cell in ws[6]:
+            cell.font = header_font
+            cell.fill = green_fill
+            cell.alignment = center_align
+
+        ws.append(["Tổng ca khám", total_cases])
+        ws.append(["Ca khám hoàn thành", completed_cases])
+        ws.append(["Tổng lượt phân tích AI", total_analyses])
+        ws.append(["Thời gian phân tích TB (giây)", round(avg_time_seconds, 2)])
+        
+        # Thêm 1 dòng trống để ngăn cách 2 bảng
+        ws.append([]) 
+
+        # --- BẢNG 2: PHÂN BỐ KẾT QUẢ (Màu Cam) ---
+        ws.append(["PHÂN BỐ KẾT QUẢ", "SỐ LƯỢNG"])
+        # Lấy dòng hiện tại để tô màu header
+        current_row = ws.max_row
+        for cell in ws[current_row]:
+            cell.font = header_font
+            cell.fill = orange_fill
+            cell.alignment = center_align
+
+        ws.append(["Lành tính (Benign)", benign_count])
+        ws.append(["Ác tính / Nghi ngờ (Malignant)", malignant_count])
+        
+        # Đổ dữ liệu các phân loại chi tiết (BKL, BCC, DF...)
+        for cls, count in class_counts.items():
+            ws.append([f"Phân loại {cls}", count])
+
+        # Lưu vào bộ nhớ tạm
+        output = BytesIO()
+        wb.save(output)
+        output.seek(0)
+        
+        return send_file(
+            output,
+            mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            as_attachment=True,
+            download_name=f"DermaScan_Report_{start_date.strftime('%d%m%Y')}_{end_date.strftime('%d%m%Y')}.xlsx"
+        )

@@ -1,0 +1,1008 @@
+/* ============================================================
+   DERMASCAN AI · SITE THEME v1  (trang chính: trang chủ, bác sĩ, bệnh nhân)
+   Cùng ngôn ngữ thiết kế với custom-theme.css của trang quản trị:
+   xanh lá + cam, ưu tiên gradient, Sora + Inter, hỗ trợ Light / Dark.
+
+   CÁCH DÙNG: nạp file này SAU cùng trong index.html, ngay dưới
+   <link ... doctor-analysis-layout.css> vì index.html có nhiều khối
+   <style> inline cứng màu, file này phải đứng sau chúng để thắng.
+   ============================================================ */
+
+/* ---------- 0. TOKENS ---------- */
+:root {
+    --p-50: #effcf4;
+    --p-100: #d5f5e2;
+    --p-200: #a8e9c3;
+    --p-300: #6fd89f;
+    --p-400: #35c378;
+    --p-500: #1fae5f;
+    --p-600: #12924d;
+    --p-700: #0f7a42;
+    --p-800: #0a5a31;
+    --p-900: #07422a;
+
+    --a-50: #fff6ec;
+    --a-100: #ffe8d0;
+    --a-200: #ffd1a1;
+    --a-300: #ffb35e;
+    --a-400: #ff9a38;
+    --a-500: #ff7a1f;
+    --a-600: #f0560a;
+    --a-700: #c2430a;
+
+    --ink-900: #0f281c;
+    --ink-800: #173626;
+    --ink-700: #274a38;
+    --ink-600: #3d5f4e;
+    --ink-500: #5d7266;
+    --ink-400: #7b9084;
+    --ink-300: #a5b4ab;
+    --ink-200: #d5dfd8;
+    --ink-100: #e8efea;
+    --ink-50: #f5f9f6;
+
+    --bg: #f2f7f3;
+    --surface: #ffffff;
+    --border: #e1eae4;
+    --border-strong: #cfdcd3;
+
+    --radius: 14px;
+    --radius-lg: 20px;
+    --radius-xl: 26px;
+
+    --shadow-sm: 0 1px 2px rgba(9, 74, 42, 0.06), 0 8px 18px -14px rgba(9, 74, 42, 0.3);
+    --shadow: 0 18px 36px -26px rgba(9, 74, 42, 0.42), 0 1px 2px rgba(9, 74, 42, 0.05);
+    --shadow-lg: 0 28px 54px -28px rgba(9, 74, 42, 0.5);
+    --glow-green: 0 10px 28px -10px rgba(15, 122, 66, 0.55);
+    --glow-orange: 0 10px 28px -10px rgba(240, 86, 10, 0.55);
+
+    --g-green: linear-gradient(135deg, #2cc56f 0%, #0f7a42 58%, #07502d 100%);
+    --g-orange: linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%);
+    --g-brand: linear-gradient(120deg, #2cc56f 0%, #ff7a1f 100%);
+    --g-tint: linear-gradient(100deg, rgba(44, 197, 111, 0.12), rgba(255, 138, 43, 0.12));
+    --accent-text: #0f7a42;
+
+    --select-option-active-bg: var(--p-50);
+    --select-option-active-color: var(--p-800);
+    --font-display: "Sora", "Inter", system-ui, sans-serif;
+}
+
+html[data-theme="dark"] {
+    --bg: #0a130f;
+    --surface: #101d17;
+    --border: #1e3027;
+    --border-strong: #2c4437;
+    --ink-900: #f1f8f3;
+    --ink-800: #e3efe7;
+    --ink-700: #d0e0d6;
+    --ink-600: #b6cbbf;
+    --ink-500: #97ada0;
+    --ink-400: #7f968a;
+    --ink-300: #5e7468;
+    --ink-200: #2a3f33;
+    --ink-100: #1a2c22;
+    --ink-50: #0f1b15;
+    --p-50: rgba(44, 197, 111, 0.1);
+    --p-100: rgba(44, 197, 111, 0.16);
+    --a-50: rgba(255, 138, 43, 0.1);
+    --a-100: rgba(255, 138, 43, 0.16);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+    --shadow: 0 18px 36px -26px rgba(0, 0, 0, 0.85);
+    --shadow-lg: 0 28px 54px -28px rgba(0, 0, 0, 0.9);
+    --accent-text: #7ee2a8;
+    --select-option-active-bg: #1a3a2a;
+    --select-option-active-color: #a5efc3;
+}
+
+/* ---------- 1. NỀN, CHỌN CHỮ, THANH CUỘN ---------- */
+html body {
+    color: var(--ink-800);
+    background-color: var(--bg);
+    background-image: radial-gradient(760px 420px at 100% -8%, rgba(255, 138, 43, 0.13), transparent 62%), radial-gradient(720px 420px at 12% -10%, rgba(44, 197, 111, 0.13), transparent 60%);
+    background-attachment: fixed;
+}
+::selection {
+    background: rgba(44, 197, 111, 0.28);
+    color: inherit;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(44, 197, 111, 0.55), rgba(255, 138, 43, 0.55));
+    border-radius: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ============================================================
+   2. THANH ĐIỀU HƯỚNG
+   ============================================================ */
+html body .nav {
+    background: rgba(255, 255, 255, 0.82) !important;
+    border-bottom: 0 !important;
+    box-shadow: 0 14px 30px -26px rgba(9, 74, 42, 0.6) !important;
+}
+html body .nav::after {
+    content: "";
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 2px;
+    background: var(--g-brand);
+    opacity: 0.85;
+    pointer-events: none;
+}
+html[data-theme="dark"] body .nav {
+    background: rgba(16, 29, 23, 0.84) !important;
+}
+
+html body .brand-mark {
+    position: relative;
+    background: var(--g-green) !important;
+    border-radius: 13px !important;
+    box-shadow:
+        0 12px 20px -10px rgba(15, 122, 66, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+}
+html body .brand-mark::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--g-orange);
+    border: 2px solid var(--surface);
+}
+html body .brand-name {
+    font-family: var(--font-display) !important;
+    color: var(--ink-900) !important;
+}
+html body .brand-dot {
+    color: var(--a-500) !important;
+}
+html body .brand-sub {
+    color: var(--ink-400) !important;
+}
+
+/* Tab bác sĩ / bệnh nhân */
+html body .doctor-nav {
+    padding: 5px;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--ink-50);
+}
+html body .doctor-nav-tab {
+    padding: 8px 18px;
+    border-radius: 999px;
+    color: var(--ink-500);
+    font-family: var(--font-display);
+    font-weight: 600;
+}
+html body .doctor-nav-tab:hover {
+    background: var(--g-tint);
+    color: var(--accent-text);
+}
+html body .doctor-nav-tab.is-active {
+    background: var(--g-green) !important;
+    color: #ffffff !important;
+    box-shadow:
+        0 12px 20px -12px rgba(15, 122, 66, 0.85),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* Nút đăng nhập / đăng ký, ngôn ngữ, tài khoản */
+html body .hp-auth-login {
+    background: var(--g-green) !important;
+    box-shadow: 0 12px 20px -12px rgba(15, 122, 66, 0.85) !important;
+}
+html body .hp-auth-register {
+    background: var(--g-orange) !important;
+    box-shadow: 0 12px 20px -12px rgba(240, 86, 10, 0.85) !important;
+}
+html body .hp-auth-btn:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+}
+html body .hp-icon-btn,
+html body .hp-user-pill {
+    border: 1px solid var(--border) !important;
+    background: var(--ink-50) !important;
+    color: var(--ink-700);
+}
+html body .hp-icon-btn:hover,
+html body .hp-icon-btn[aria-expanded="true"],
+html body .hp-user-pill:hover {
+    background: var(--g-tint) !important;
+    border-color: rgba(15, 122, 66, 0.3) !important;
+    color: var(--accent-text);
+}
+html body .hp-user-avatar {
+    background: var(--g-brand) !important;
+    color: #fff !important;
+}
+html body .hp-lang-menu {
+    border-radius: 16px !important;
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+html body .hp-lang-item.is-active {
+    background: var(--g-tint) !important;
+    color: var(--accent-text) !important;
+}
+html body .hp-auth-logout:hover {
+    background: var(--g-orange) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+
+/* ============================================================
+   3. TRANG CHỦ: SLIDESHOW + NÚT HERO
+   ============================================================ */
+html body .homepage-slideshow {
+    background: linear-gradient(135deg, #07422a 0%, #0f7a42 60%, #c2430a 140%) !important;
+}
+html body .hp-hero-cta {
+    background: var(--g-orange) !important;
+    box-shadow: 0 18px 32px -14px rgba(240, 86, 10, 0.85) !important;
+}
+html body .hp-hero-cta:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+}
+html body .hp-hero-ghost {
+    background: rgba(255, 255, 255, 0.92) !important;
+    border-color: rgba(168, 233, 195, 0.9) !important;
+    color: var(--p-700) !important;
+    backdrop-filter: blur(8px);
+}
+html body .hp-hero-ghost:hover {
+    background: #ffffff !important;
+    transform: translateY(-2px);
+}
+html body .homepage-slide-button {
+    background: var(--g-orange) !important;
+    color: #fff !important;
+    border: 0 !important;
+}
+html body .homepage-slide-indicator.is-active {
+    background: var(--g-orange) !important;
+}
+
+/* ============================================================
+   4. TÍNH NĂNG (FEATURES)
+   ============================================================ */
+html body .section-eyebrow {
+    color: var(--accent-text) !important;
+}
+html body .section-title {
+    font-family: var(--font-display);
+    color: var(--ink-900);
+}
+html body .feature {
+    border-radius: 26px !important;
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    box-shadow: var(--shadow) !important;
+}
+html body .feature:hover {
+    transform: translateY(-5px);
+    border-color: rgba(15, 122, 66, 0.28) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+html body .feature-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 17px !important;
+    border: 0 !important;
+    color: #ffffff !important;
+}
+html body .feature-icon-green {
+    background: var(--g-green) !important;
+    box-shadow: 0 14px 22px -12px rgba(15, 122, 66, 0.85);
+}
+html body .feature-icon-orange {
+    background: var(--g-orange) !important;
+    box-shadow: 0 14px 22px -12px rgba(240, 86, 10, 0.85);
+}
+html body .hp-feature-badge {
+    border: 1px solid rgba(15, 122, 66, 0.22) !important;
+    background: var(--g-tint) !important;
+    color: var(--accent-text) !important;
+}
+
+/* ============================================================
+   5. FOOTER
+   ============================================================ */
+html body .hp-footer,
+html body .footer {
+    background:
+        radial-gradient(520px 320px at 100% 0%, rgba(255, 122, 31, 0.26), transparent 65%), radial-gradient(560px 340px at 0% 100%, rgba(44, 197, 111, 0.18), transparent 60%),
+        linear-gradient(160deg, #0a3d24 0%, #07422a 45%, #052a1b 100%) !important;
+    color: #d3eadb !important;
+}
+html body .hp-footer-accent {
+    background: var(--g-brand) !important;
+}
+html body .hp-footer-logo-mark {
+    background: var(--g-green) !important;
+}
+html body .hp-social-link {
+    border-radius: 12px;
+    transition:
+        transform 0.2s,
+        background 0.2s;
+}
+html body .hp-social-link:hover {
+    transform: translateY(-2px);
+    background: var(--g-orange) !important;
+    color: #fff !important;
+}
+html body .hp-contact-ic {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffb35e !important;
+}
+html body .hp-footer-heading::after {
+    background: var(--g-brand) !important;
+}
+
+/* ============================================================
+   6. TRANG PHÂN TÍCH (BÁC SĨ)
+   ============================================================ */
+html body .panel,
+html body #analyze .panel {
+    border-radius: 26px !important;
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    box-shadow: var(--shadow) !important;
+}
+html body .panel-num,
+html body #analyze .panel-num {
+    background: var(--g-green) !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    border-radius: 13px !important;
+    box-shadow: 0 12px 20px -12px rgba(15, 122, 66, 0.85);
+    font-family: var(--font-display);
+}
+html body .panel-title,
+html body #analyze .panel-title {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    color: var(--ink-900);
+}
+html body .panel-tag {
+    border: 1px solid rgba(15, 122, 66, 0.22) !important;
+    background: var(--g-tint) !important;
+    color: var(--accent-text) !important;
+}
+html body .panel-tag.malignant {
+    border-color: rgba(240, 86, 10, 0.3) !important;
+    color: var(--a-700) !important;
+}
+
+html body .dropzone,
+html body #analyze .dropzone {
+    border: 1.6px dashed rgba(18, 146, 77, 0.5) !important;
+    border-radius: 24px !important;
+    background:
+        radial-gradient(280px 170px at 100% 0%, rgba(255, 138, 43, 0.13), transparent 70%), radial-gradient(280px 170px at 0% 100%, rgba(44, 197, 111, 0.13), transparent 70%), var(--surface) !important;
+}
+html body .dropzone:hover,
+html body .dropzone.dragover {
+    border-color: var(--a-500) !important;
+    background:
+        radial-gradient(280px 170px at 100% 0%, rgba(255, 138, 43, 0.22), transparent 70%), radial-gradient(280px 170px at 0% 100%, rgba(44, 197, 111, 0.16), transparent 70%), var(--surface) !important;
+}
+html body .dropzone-icon {
+    background: var(--g-orange) !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 16px 26px -14px rgba(240, 86, 10, 0.85) !important;
+}
+html body .dropzone-link {
+    color: var(--accent-text) !important;
+}
+
+/* Nút */
+html body .btn-primary,
+html body #analyze .panel-upload .btn-primary:not(:disabled) {
+    background: var(--g-green) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    box-shadow:
+        0 16px 26px -14px rgba(15, 122, 66, 0.9),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+}
+html body .btn-primary:hover:not(:disabled),
+html body #analyze .panel-upload .btn-primary:not(:disabled):hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+html body .btn-primary:disabled {
+    background: var(--ink-200) !important;
+    box-shadow: none !important;
+    color: var(--ink-400) !important;
+}
+html body .btn-ghost,
+html body .upload-action-row #resetBtn {
+    border-radius: 14px;
+    border: 1px solid var(--border) !important;
+    background: var(--ink-50) !important;
+    color: var(--ink-700) !important;
+}
+html body .btn-ghost:hover,
+html body .upload-action-row #resetBtn:hover {
+    background: var(--g-tint) !important;
+    border-color: rgba(15, 122, 66, 0.3) !important;
+    color: var(--accent-text) !important;
+}
+
+html body .workflow-action-btn,
+html body #analyze .workflow-action-btn {
+    border-radius: 14px !important;
+    border: 1px solid var(--border) !important;
+    background: var(--ink-50) !important;
+    color: var(--ink-700) !important;
+}
+html body .workflow-action-btn:hover:not(:disabled) {
+    background: var(--g-tint) !important;
+    border-color: rgba(15, 122, 66, 0.3) !important;
+    color: var(--accent-text) !important;
+    transform: translateY(-1px);
+}
+html body .doctor-save-btn,
+html body #analyze .doctor-save-btn {
+    background: var(--g-orange) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 26px -14px rgba(240, 86, 10, 0.9) !important;
+}
+html body .patient-add-btn {
+    border-radius: 12px;
+    border: 1px solid rgba(15, 122, 66, 0.28) !important;
+    background: var(--g-tint) !important;
+    color: var(--accent-text) !important;
+}
+
+/* Kết quả */
+html body .verdict {
+    border-radius: 24px !important;
+    box-shadow: var(--shadow) !important;
+}
+html body .verdict.benign {
+    background: radial-gradient(260px 160px at 100% 0%, rgba(44, 197, 111, 0.22), transparent 70%), var(--surface) !important;
+    border-color: rgba(15, 122, 66, 0.3) !important;
+}
+html body .verdict.malignant {
+    background: radial-gradient(260px 160px at 100% 0%, rgba(255, 138, 43, 0.26), transparent 70%), var(--surface) !important;
+    border-color: rgba(240, 86, 10, 0.35) !important;
+}
+html body .verdict.benign .verdict-icon {
+    background: var(--g-green) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 22px -12px rgba(15, 122, 66, 0.85);
+}
+html body .verdict.malignant .verdict-icon {
+    background: var(--g-orange) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 22px -12px rgba(240, 86, 10, 0.85);
+}
+html body .verdict-title {
+    font-family: var(--font-display);
+}
+html body .verdict.benign .verdict-meter-fill,
+html body .prob-bar.benign {
+    background: linear-gradient(90deg, #35c378, #0f7a42) !important;
+}
+html body .verdict.malignant .verdict-meter-fill,
+html body .prob-bar.malignant {
+    background: linear-gradient(90deg, #ffb35e, #f0560a) !important;
+}
+html body .pred-badge {
+    background: var(--g-tint) !important;
+    color: var(--accent-text) !important;
+}
+html body .block-title {
+    font-family: var(--font-display);
+    color: var(--ink-900);
+}
+html body #analyze .hp-result-grid .block,
+html body #analyze .doctor-diagnosis,
+html body #analyze .workflow-tools,
+html body #analyze .interp,
+html body #analyze .patient-selector {
+    border-radius: 20px !important;
+}
+
+/* Form trong trang */
+html body input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]),
+html body select,
+html body textarea {
+    border-radius: 12px;
+}
+html body input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]):focus,
+html body select:focus,
+html body textarea:focus {
+    outline: none !important;
+    border-color: var(--p-500) !important;
+    box-shadow: 0 0 0 4px rgba(44, 197, 111, 0.18) !important;
+}
+
+/* ============================================================
+   7. LỊCH SỬ · SO SÁNH · THỐNG KÊ
+   ============================================================ */
+html body .history-filters,
+html body .doctor-stats-toolbar {
+    padding: 16px 18px;
+    border-radius: 22px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+}
+html body .history-timeline,
+html body .history-table {
+    border-radius: 22px;
+}
+html body .history-table thead,
+html body .history-table th {
+    background: var(--ink-50);
+    color: var(--ink-500);
+    letter-spacing: 0.08em;
+}
+html body .history-table tbody tr {
+    transition: background 0.2s;
+}
+html body .history-table tbody tr:hover {
+    background: var(--g-tint);
+}
+html body .history-export-btn {
+    border-radius: 12px;
+    border: 0 !important;
+    background: var(--g-orange) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 22px -12px rgba(240, 86, 10, 0.85);
+}
+html body .history-action-btn {
+    border-radius: 10px;
+}
+html body .history-action-btn:hover {
+    background: var(--g-tint);
+    color: var(--accent-text);
+}
+html body .history-diagnosis.benign {
+    background: linear-gradient(135deg, rgba(44, 197, 111, 0.18), rgba(44, 197, 111, 0.06)) !important;
+    color: var(--accent-text) !important;
+}
+html body .history-diagnosis.malignant {
+    background: linear-gradient(135deg, rgba(255, 138, 43, 0.24), rgba(255, 138, 43, 0.08)) !important;
+    color: var(--a-700) !important;
+}
+html[data-theme="dark"] body .history-diagnosis.malignant {
+    color: #ffb070 !important;
+}
+
+html body .compare-card,
+html body .compare-result,
+html body .doctor-chart-card {
+    border-radius: 24px;
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+}
+html body .compare-card-badge.before {
+    background: var(--g-tint);
+    color: var(--accent-text);
+}
+html body .compare-card-badge.after {
+    background: var(--g-orange);
+    color: #fff;
+}
+html body .compare-dropzone {
+    border-radius: 20px;
+    border-color: rgba(18, 146, 77, 0.45);
+}
+html body .compare-dropzone:hover,
+html body .compare-dropzone.dragover {
+    border-color: var(--a-500);
+    background: var(--g-tint);
+}
+html body .compare-dropzone-icon {
+    background: var(--g-orange) !important;
+    color: #fff !important;
+}
+html body .compare-compare-btn {
+    border: 0;
+    border-radius: 14px;
+    background: var(--g-orange) !important;
+    color: #fff !important;
+    box-shadow: 0 16px 26px -14px rgba(240, 86, 10, 0.9);
+}
+html body .compare-compare-btn:disabled {
+    background: var(--ink-200) !important;
+    box-shadow: none;
+    color: var(--ink-400) !important;
+}
+
+html body .doctor-stat-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 22px;
+    border-color: var(--border);
+    box-shadow: var(--shadow);
+}
+html body .doctor-stat-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--g-green);
+}
+html body .doctor-stat-card.malignant::before {
+    background: var(--g-orange);
+}
+html body .doctor-stat-card.confidence::before {
+    background: var(--g-brand);
+}
+html body .doctor-stat-card strong {
+    font-family: var(--font-display);
+    font-size: 32px;
+    letter-spacing: -0.03em;
+}
+html body .doctor-stat-card.benign strong {
+    color: var(--accent-text);
+}
+html body .doctor-stat-card.malignant strong {
+    color: var(--a-600);
+}
+
+/* ============================================================
+   8. CỔNG BỆNH NHÂN
+   ============================================================ */
+html body .patient-page-title {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+html body .patient-page-icon.green,
+html body .patient-stat-icon.green {
+    background: var(--g-green) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 22px -12px rgba(15, 122, 66, 0.85);
+}
+html body .patient-page-icon.orange,
+html body .patient-stat-icon.orange {
+    background: var(--g-orange) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 22px -12px rgba(240, 86, 10, 0.85);
+}
+html body .patient-stat-icon.blue {
+    background: var(--g-brand) !important;
+    color: #fff !important;
+    box-shadow: 0 14px 22px -12px rgba(15, 122, 66, 0.7);
+}
+html body .patient-welcome-banner {
+    border-radius: 28px !important;
+    border: 1px solid var(--border) !important;
+    background:
+        radial-gradient(340px 200px at 100% 0%, rgba(255, 138, 43, 0.28), transparent 70%), radial-gradient(360px 220px at 0% 100%, rgba(44, 197, 111, 0.22), transparent 70%), var(--surface) !important;
+    box-shadow: var(--shadow) !important;
+}
+html body .patient-welcome-text h2 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+html body .patient-welcome-badge {
+    background: var(--g-tint) !important;
+    border: 1px solid rgba(15, 122, 66, 0.22) !important;
+    color: var(--accent-text) !important;
+}
+html body .patient-welcome-icon {
+    background: var(--g-orange) !important;
+    color: #fff !important;
+    box-shadow: 0 16px 26px -14px rgba(240, 86, 10, 0.9);
+}
+html body .patient-stat-card,
+html body .patient-glass-card,
+html body .patient-timeline-item {
+    border-radius: 22px !important;
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    box-shadow: var(--shadow) !important;
+}
+html body .patient-stat-card {
+    transition:
+        transform 0.25s,
+        box-shadow 0.25s;
+}
+html body .patient-stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg) !important;
+}
+html body .patient-stat-info strong {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+}
+html body .patient-timeline-item:hover {
+    border-color: rgba(15, 122, 66, 0.3) !important;
+    box-shadow: var(--shadow-lg) !important;
+}
+html body .patient-timeline-list::before {
+    background: linear-gradient(180deg, #2cc56f, #ff7a1f) !important;
+    width: 3px;
+    border-radius: 3px;
+    opacity: 0.4;
+}
+html body .patient-timeline-item.status-completed::after {
+    background: var(--g-green) !important;
+}
+html body .patient-timeline-item.status-analyzed::after {
+    background: var(--g-orange) !important;
+}
+html body .patient-case-code {
+    color: var(--accent-text) !important;
+    font-family: var(--font-display);
+}
+html body .patient-status-pill {
+    border-radius: 999px;
+    font-weight: 700;
+}
+html body .patient-status-pill.completed,
+html body .patient-status-pill.reviewed {
+    background: linear-gradient(135deg, rgba(44, 197, 111, 0.2), rgba(44, 197, 111, 0.07)) !important;
+    color: var(--accent-text) !important;
+}
+html body .patient-status-pill.analyzed,
+html body .patient-status-pill.created {
+    background: linear-gradient(135deg, rgba(255, 138, 43, 0.24), rgba(255, 138, 43, 0.08)) !important;
+    color: var(--a-700) !important;
+}
+html[data-theme="dark"] body .patient-status-pill.analyzed,
+html[data-theme="dark"] body .patient-status-pill.created {
+    color: #ffb070 !important;
+}
+html body .patient-action-link {
+    color: var(--accent-text) !important;
+}
+html body .patient-btn-primary {
+    background: var(--g-green) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 26px -14px rgba(15, 122, 66, 0.9) !important;
+}
+html body .patient-btn-accent {
+    background: var(--g-orange) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 16px 26px -14px rgba(240, 86, 10, 0.9) !important;
+}
+html body .patient-btn-primary:hover,
+html body .patient-btn-accent:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+html body .patient-download-btn {
+    border-radius: 12px;
+    border: 1px solid rgba(15, 122, 66, 0.28) !important;
+    background: var(--g-tint) !important;
+    color: var(--accent-text) !important;
+}
+html body .patient-download-btn:hover {
+    background: var(--g-green) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+html body .patient-reports-table th {
+    background: var(--ink-50) !important;
+    color: var(--ink-500) !important;
+    letter-spacing: 0.08em;
+}
+html body .patient-reports-table tr:hover td {
+    background: var(--g-tint) !important;
+}
+html body .patient-ai-badge.benign {
+    background: linear-gradient(135deg, rgba(44, 197, 111, 0.2), rgba(44, 197, 111, 0.07)) !important;
+    color: var(--accent-text) !important;
+}
+html body .patient-ai-badge.malignant {
+    background: linear-gradient(135deg, rgba(255, 138, 43, 0.24), rgba(255, 138, 43, 0.08)) !important;
+    color: var(--a-700) !important;
+}
+html body .patient-empty-state svg {
+    color: var(--p-400);
+}
+
+/* ============================================================
+   9. HỘP THOẠI: ĐĂNG NHẬP, HỒ SƠ, BỆNH NHÂN
+   ============================================================ */
+html body .hp-auth-backdrop,
+html body .profile-modal-backdrop,
+html body .patient-modal-backdrop {
+    background: rgba(5, 36, 22, 0.58) !important;
+    backdrop-filter: blur(6px);
+}
+html body .hp-auth-dialog,
+html body .profile-modal-dialog,
+html body .patient-modal-dialog {
+    border-radius: 28px !important;
+    border: 1px solid var(--border) !important;
+    background: var(--surface) !important;
+    box-shadow: 0 44px 90px -34px rgba(5, 36, 22, 0.7) !important;
+}
+html body .hp-auth-dialog::before,
+html body .profile-modal-dialog::before {
+    background: var(--g-brand) !important;
+    height: 4px;
+}
+html body .hp-auth-brand-mark {
+    background: var(--g-green) !important;
+}
+html body .hp-auth-close:hover,
+html body .profile-modal-close:hover,
+html body .patient-modal-close:hover {
+    background: var(--g-orange) !important;
+    color: #fff !important;
+}
+html body .hp-auth-tab.is-active,
+html body .hp-auth-tab[data-view="login"].is-active {
+    background: var(--g-green) !important;
+    color: #fff !important;
+    box-shadow: 0 12px 20px -12px rgba(15, 122, 66, 0.85);
+}
+html body .hp-auth-tab[data-view="register"].is-active {
+    background: var(--g-orange) !important;
+    box-shadow: 0 12px 20px -12px rgba(240, 86, 10, 0.85);
+}
+html body .hp-btn-green,
+html body .profile-btn-primary {
+    background: var(--g-green) !important;
+    box-shadow: 0 16px 26px -14px rgba(15, 122, 66, 0.9) !important;
+    color: #fff !important;
+}
+html body .hp-btn-orange {
+    background: var(--g-orange) !important;
+    box-shadow: 0 16px 26px -14px rgba(240, 86, 10, 0.9) !important;
+}
+html body .hp-btn-submit {
+    border-radius: 14px;
+}
+html body .hp-btn-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    filter: brightness(1.06);
+}
+html body .profile-avatar-img,
+html body .profile-avatar-initials {
+    background: var(--g-brand) !important;
+    color: #fff;
+}
+html body .profile-avatar-upload-btn {
+    border-radius: 12px;
+}
+html body .hp-auth-alt .hp-to-login {
+    color: var(--accent-text) !important;
+}
+html body .hp-auth-alt .hp-to-register {
+    color: var(--a-600) !important;
+}
+
+/* ============================================================
+   10. DARK MODE: bề mặt cứng màu từ các khối <style> inline
+   ============================================================ */
+html[data-theme="dark"] body .panel,
+html[data-theme="dark"] body #analyze .panel,
+html[data-theme="dark"] body .feature,
+html[data-theme="dark"] body .compare-card,
+html[data-theme="dark"] body .compare-result,
+html[data-theme="dark"] body .doctor-chart-card,
+html[data-theme="dark"] body .doctor-stat-card,
+html[data-theme="dark"] body .history-filters,
+html[data-theme="dark"] body .history-timeline,
+html[data-theme="dark"] body .patient-stat-card,
+html[data-theme="dark"] body .patient-glass-card,
+html[data-theme="dark"] body .patient-timeline-item,
+html[data-theme="dark"] body .hp-auth-dialog,
+html[data-theme="dark"] body .profile-modal-dialog,
+html[data-theme="dark"] body .patient-modal-dialog,
+html[data-theme="dark"] body .hp-lang-menu {
+    background: var(--surface) !important;
+    border-color: var(--border) !important;
+}
+html[data-theme="dark"] body #analyze .hp-result-grid .block,
+html[data-theme="dark"] body #analyze .doctor-diagnosis,
+html[data-theme="dark"] body #analyze .workflow-tools,
+html[data-theme="dark"] body #analyze .patient-selector,
+html[data-theme="dark"] body #analyze .interp,
+html[data-theme="dark"] body .patient-detail-group,
+html[data-theme="dark"] body .selected-patient-card {
+    background: var(--ink-50) !important;
+    border-color: var(--border) !important;
+}
+html[data-theme="dark"] body input:not([type="checkbox"]):not([type="radio"]),
+html[data-theme="dark"] body select,
+html[data-theme="dark"] body textarea {
+    background-color: var(--ink-50);
+    border-color: var(--border-strong);
+    color: var(--ink-800);
+}
+html[data-theme="dark"] body .patient-welcome-banner {
+    background:
+        radial-gradient(340px 200px at 100% 0%, rgba(255, 138, 43, 0.2), transparent 70%), radial-gradient(360px 220px at 0% 100%, rgba(44, 197, 111, 0.16), transparent 70%), var(--surface) !important;
+}
+html[data-theme="dark"] body .history-table thead,
+html[data-theme="dark"] body .history-table th,
+html[data-theme="dark"] body .patient-reports-table th {
+    background: var(--ink-50) !important;
+}
+
+/* ============================================================
+   11. TRUY CẬP + CHUYỂN ĐỘNG
+   ============================================================ */
+html body :is(a, button, [role="button"]):focus-visible {
+    outline: 3px solid rgba(44, 197, 111, 0.45);
+    outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+    html body .feature,
+    html body .patient-stat-card,
+    html body .btn-primary,
+    html body .hp-btn-submit,
+    html body .patient-btn-primary,
+    html body .patient-btn-accent {
+        transition: none !important;
+    }
+    html body .feature:hover,
+    html body .patient-stat-card:hover {
+        transform: none !important;
+    }
+}
+
+/* ============================================================
+   12. SỬA CÁC CHỖ BỊ KHỐI <style> INLINE (navy, cứng màu) CHẶN
+   ============================================================ */
+html body #analyze .panel-upload .btn-primary:disabled,
+html body #analyze .patient-selector select:disabled {
+    background: var(--ink-100) !important;
+    color: var(--ink-400) !important;
+    box-shadow: none !important;
+}
+html[data-theme="dark"] body #analyze .dropzone-icon {
+    background: var(--g-orange) !important;
+    color: #ffffff !important;
+    border: 0 !important;
+    box-shadow: 0 16px 26px -14px rgba(240, 86, 10, 0.9) !important;
+}
+html[data-theme="dark"] body #analyze .patient-selector select,
+html[data-theme="dark"] body #analyze .patient-selector input,
+html[data-theme="dark"] body #analyze .lesion-location-field input,
+html[data-theme="dark"] body #analyze .model-selector-field select,
+html[data-theme="dark"] body #analyze .doctor-review-field textarea,
+html[data-theme="dark"] body .hp-field input,
+html[data-theme="dark"] body .hp-field select,
+html[data-theme="dark"] body .profile-form-field input,
+html[data-theme="dark"] body .patient-form-field input,
+html[data-theme="dark"] body .patient-form-field textarea,
+html[data-theme="dark"] body .case-selector input,
+html[data-theme="dark"] body .history-filter-group input,
+html[data-theme="dark"] body .history-filter-group select {
+    background: var(--ink-50) !important;
+    border-color: var(--border-strong) !important;
+    color: var(--ink-800) !important;
+}
+html[data-theme="dark"] body #analyze .panel-upload .btn-primary:disabled,
+html[data-theme="dark"] body #analyze .patient-selector select:disabled {
+    background: var(--ink-100) !important;
+    color: var(--ink-400) !important;
+}
+html[data-theme="dark"] body .selected-file-row,
+html[data-theme="dark"] body .batch-item,
+html[data-theme="dark"] body .measurement-result,
+html[data-theme="dark"] body .patient-doctor-callout {
+    background: var(--ink-50) !important;
+    border-color: var(--border) !important;
+}
+html[data-theme="dark"] body #analyze .panel-head,
+html[data-theme="dark"] body .panel-head,
+html[data-theme="dark"] body .patient-modal-header,
+html[data-theme="dark"] body .profile-modal-header,
+html[data-theme="dark"] body .profile-form-actions {
+    border-color: var(--border) !important;
+}
