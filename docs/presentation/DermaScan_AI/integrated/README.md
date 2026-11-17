@@ -1,17 +1,17 @@
-# Bản lồng ghép đúng ba hình gốc — 35 trang
+# Sơ đồ vẽ lại bằng PowerPoint — 35 trang
 
-[PowerPoint cập nhật](DermaScan_AI_LongGhep_MoHinh.pptx) · [PDF](DermaScan_AI_LongGhep_MoHinh.pdf) · [Xem trước](Xem_truoc_3_trang_mo_hinh.jpg)
+**[PowerPoint chỉnh sửa được](DermaScan_AI_LongGhep_MoHinh.pptx)** · [PDF](DermaScan_AI_LongGhep_MoHinh.pdf) · [Xem trước](Xem_truoc_3_trang_mo_hinh.jpg)
 
-Dùng file người dùng gửi `DermaScan_AI_ThuyetTrinh_Moi (1).pptx` làm bản gốc. Giữ 32 trang nội dung gốc và chèn sau trang 14:
+Trang 15–17 đã được **vẽ lại bằng các đối tượng PowerPoint**, giữ bố cục và chi tiết của ba hình mẫu:
 
-15. EfficientNet-B0 — Tổng quan kiến trúc DermaScan AI.
-16. Bên trong MBConv — Expansion, depthwise và SE.
-17. Compound scaling — nguyên lý mở rộng EfficientNet.
+15. Tổng quan EfficientNet-B0: các tầng xếp chồng, kích thước tensor, các kết nối và head phân loại.
+16. MBConv và SE: các khối, nhánh residual, luồng SE và chú thích.
+17. Compound scaling: năm cột mô hình, các lớp xếp chồng và công thức.
 
-Ba trang trên dùng **đúng ảnh sơ đồ gốc 3600×2400**, giữ nguyên bố cục, màu, chữ và tỷ lệ; không dựng lại thành các ô chữ rút gọn. Ảnh 3:2 được đặt giữa trang 16:9 nên có nền trống hai bên. Không cắt nội dung hoặc kéo méo hình.
+**Không dùng ảnh chụp hay ảnh sơ đồ để thay nội dung ba trang này.** Mỗi dòng chữ, hình khối, gradient và mũi tên là đối tượng riêng, chỉnh sửa trực tiếp được. Ba trang lần lượt có 135, 68 và 120 đối tượng. Chữ dùng Montserrat; cài font từ [thư mục fonts](../fonts) để hiển thị ổn định.
 
-Chữ trong ba hình không sửa trực tiếp được; [SVG gốc để chỉnh sửa](../architecture) vẫn có trong kho. Các trang khác giữ khả năng chỉnh sửa của file người dùng gửi.
+Giữ bố cục 3:2 của mẫu trong khung 16:9, có khoảng nền hai bên. Các trang còn lại giữ nguyên so với bản lồng ghép trước. PDF để xem nhanh, PowerPoint là bản làm việc.
 
-Kiểm tra: 35 trang; XML của 32 trang ngoài phần thay thế giữ nguyên so với bản lồng ghép trước. Ba ảnh nhúng giống từng byte với ảnh nguồn, không crop, đúng tỷ lệ. Đã xem bản PDF xuất ra để kiểm tra hình thức; chưa chạy PowerPoint Windows.
+Đã kiểm tra: 35 trang; ba trang mô hình không có picture object; đầy đủ chữ từ sơ đồ nguồn; khối và chữ xuất PDF nằm trong trang; XML 32 trang khác không đổi. Đã xem bản xuất LibreOffice; chưa kiểm tra trực tiếp trên PowerPoint Windows.
 
-![Ba sơ đồ đúng mẫu](Xem_truoc_3_trang_mo_hinh.jpg)
+![Sơ đồ vẽ lại](Xem_truoc_3_trang_mo_hinh.jpg)
