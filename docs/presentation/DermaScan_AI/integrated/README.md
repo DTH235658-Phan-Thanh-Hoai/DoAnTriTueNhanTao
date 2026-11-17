@@ -1,19 +1,17 @@
-# Bản lồng ghép mô hình — 35 trang
+# Bản lồng ghép đúng ba hình gốc — 35 trang
 
-Dùng chính file người dùng gửi **DermaScan_AI_ThuyetTrinh_Moi (1).pptx** làm bản gốc (32 trang).
+[PowerPoint cập nhật](DermaScan_AI_LongGhep_MoHinh.pptx) · [PDF](DermaScan_AI_LongGhep_MoHinh.pdf) · [Xem trước](Xem_truoc_3_trang_mo_hinh.jpg)
 
-- **[PowerPoint đã lồng ghép](DermaScan_AI_LongGhep_MoHinh.pptx)** — các sơ đồ mới dùng khối, mũi tên và chữ PowerPoint chỉnh sửa được.
-- **[PDF xem nhanh](DermaScan_AI_LongGhep_MoHinh.pdf)**
-- **[Xem trước ba trang mới](Xem_truoc_3_trang_mo_hinh.jpg)**
+Dùng file người dùng gửi `DermaScan_AI_ThuyetTrinh_Moi (1).pptx` làm bản gốc. Giữ 32 trang nội dung gốc và chèn sau trang 14:
 
-Chèn sau trang 14 “Kiến trúc EfficientNet-B0”, trước “Cấu hình huấn luyện”:
+15. EfficientNet-B0 — Tổng quan kiến trúc DermaScan AI.
+16. Bên trong MBConv — Expansion, depthwise và SE.
+17. Compound scaling — nguyên lý mở rộng EfficientNet.
 
-15. Backbone EfficientNet-B0 chi tiết: stem, 7 stage, conv head; kích thước, kernel, số lần lặp và stride.
-16. Head phân loại và hai checkpoint: Dropout 0,3, Linear 1280→256, ReLU, Dropout, Linear cuối; Binary/8 lớp có trọng số riêng.
-17. MBConv & SE: expansion, depthwise, SE, projection, điều kiện residual và khác biệt MBConv1/6.
+Ba trang trên dùng **đúng ảnh sơ đồ gốc 3600×2400**, giữ nguyên bố cục, màu, chữ và tỷ lệ; không dựng lại thành các ô chữ rút gọn. Ảnh 3:2 được đặt giữa trang 16:9 nên có nền trống hai bên. Không cắt nội dung hoặc kéo méo hình.
 
-Dựng lại sơ đồ theo khổ 16:9 để dễ đọc, dùng nền/layout và kiểu chữ của file mới gửi. Giữ 32 trang gốc, chỉ cập nhật số trang sau điểm chèn. Compound scaling vẫn nằm trong [bộ sơ đồ chi tiết](../architecture); không thêm vào luồng trình bày chính.
+Chữ trong ba hình không sửa trực tiếp được; [SVG gốc để chỉnh sửa](../architecture) vẫn có trong kho. Các trang khác giữ khả năng chỉnh sửa của file người dùng gửi.
 
-Đã kiểm tra đủ 35 trang, đối chiếu chữ/bảng/biểu đồ/ảnh/ghi chú của 32 trang gốc. Bản xuất PDF của các trang cũ giống bản gốc ở phần nội dung (ngoài vùng chân trang đổi số); chữ của các trang mới xuất đủ và nằm trong trang. Chưa kiểm tra trực tiếp trên PowerPoint Windows.
+Kiểm tra: 35 trang; XML của 32 trang ngoài phần thay thế giữ nguyên so với bản lồng ghép trước. Ba ảnh nhúng giống từng byte với ảnh nguồn, không crop, đúng tỷ lệ. Đã xem bản PDF xuất ra để kiểm tra hình thức; chưa chạy PowerPoint Windows.
 
-![Ba trang mô hình](Xem_truoc_3_trang_mo_hinh.jpg)
+![Ba sơ đồ đúng mẫu](Xem_truoc_3_trang_mo_hinh.jpg)
