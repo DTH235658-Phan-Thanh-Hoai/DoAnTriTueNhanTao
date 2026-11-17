@@ -1,11 +1,11 @@
-DERMASCAN AI — V4 THEO SLIDE MẪU MỚI
+DERMASCAN AI — V5 THEO GIAO DIỆN DERMASCAN AI
 
 MỞ DermaScan_AI_ThuyetTrinh.pptx ĐỂ TRÌNH CHIẾU.
 Bản này dùng ảnh slide 1920×1080 nhúng trực tiếp, giữ nguyên hình thức mà không cần cài Montserrat; không sửa chữ trực tiếp được. Ghi chú thuyết trình vẫn có.
 
 DermaScan_AI_ChinhSua.pptx giữ chữ, bảng và biểu đồ chỉnh sửa được; cài Montserrat trước khi mở. Cả 28 trang có nền PNG nhúng trực tiếp. PDF dùng để xem nhanh.
 
-V4 giữ thông tin của V3, học cách chia bố cục từ slide mẫu kinh doanh do người dùng cung cấp: tiêu đề đậm, số liệu lớn, bố cục chữ/hình, khung trắng và mảng màu xanh. Không đưa nội dung kinh doanh từ mẫu vào đồ án. Nền dùng đúng hai radial-gradient người dùng yêu cầu; xem BACKGROUND_CSS.txt. Nen_radial_gradient.png có thể dùng làm nền cho trang mới.
+V5 giữ nguyên thông tin của V4. Thiết kế theo giao diện web: gradient xanh #14a859 → #0b6a39 → #063a24, gradient cam #ffb35e → #ff7a1f → #f0560a; thẻ trắng bo góc và bóng nhẹ. Nền trang nội dung có hai radial-gradient. Bìa, DEMO và trang kết có nền xanh gradient.
 
 Nội dung từ báo cáo: Binary Accuracy 86,26%, ROC-AUC 0,9366; Multi-class Accuracy 81,63%, Macro-F1 0,7547; tập Test nội bộ 3.800 ảnh. LR 10^-3 được viết là 0,001 để tránh vấn đề ký tự mũ. Colab / GPU T4 theo thông tin người dùng. Slide 25 chỉ có DEMO.
 
