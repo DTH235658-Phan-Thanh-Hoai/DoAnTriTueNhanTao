@@ -1,0 +1,14 @@
+DERMASCAN AI — BỘ SLIDE MÔN TRÍ TUỆ NHÂN TẠO
+
+28 slide, khổ 16:9. PowerPoint có chữ, bảng và biểu đồ chỉnh sửa được; hình/sơ đồ được chèn dạng ảnh.
+PDF để xem nhanh. Ghi_chu_thuyet_trinh.md có ghi chú và nguồn theo từng slide; PowerPoint cũng có speaker notes.
+
+Thiết kế: thanh điều hướng, vòng tròn đánh số và điểm nhấn cam theo PDF PPNCKH; gradient xanh #2CC56F → #0F7A42 → #07502D theo web.
+Nội dung và số liệu lấy từ báo cáo DOCX. Google Colab / GPU T4 theo thông tin người dùng, không tự gán thời gian huấn luyện hay VRAM.
+Mục 6 được đặt là Cảm ơn & hỏi đáp. Không gán phân công thành viên vì báo cáo chưa xác nhận. Slide 25 chỉ có DEMO.
+
+DermaScan_AI_WhiteStarUML.uml: dự án XML XPD phiên bản 1 theo cấu trúc file .uml người dùng cung cấp. Gồm Use Case và Class Diagram. Đã kiểm tra XML, ID duy nhất và tham chiếu hợp lệ. Chưa mở thử bằng WhiteStarUML do máy không cài ứng dụng. Hãy dùng File > Open trong WhiteStarUML/StarUML hỗ trợ định dạng cũ. Không dùng Import XMI vì đây không phải XMI.
+UseCase.svg/png và ClassDiagram.svg/png: xem sơ đồ ngay. Class diagram trên slide là bản rút gọn; file .uml có thêm liên kết trực tiếp với Case. Dấu ? chỉ thuộc tính tùy chọn.
+
+Số liệu chính: Binary Accuracy 86,26%, ROC-AUC 0,9366; Multi-class Accuracy 81,63%, Macro-F1 0,7547. Đây là Test nội bộ 3.800 ảnh, không phải Test chính thức ISIC 2019.
+Ảnh Grad-CAM là hiện vật thật từ dự án; ảnh giao diện được chụp ứng dụng hiện tại, không phải mockup.
