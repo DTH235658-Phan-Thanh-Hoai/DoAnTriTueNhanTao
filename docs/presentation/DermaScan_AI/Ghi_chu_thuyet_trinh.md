@@ -1,169 +1,169 @@
-# Ghi chú thuyết trình DermaScan AI
+# Ghi chú thuyết trình
 
-## Slide 01 — DERMASCAN AI
+## 01. Bìa / kết
 
-Giới thiệu đề tài: ứng dụng EfficientNet-B0 phân loại tổn thương da từ ảnh Dermoscopy. Đây là nguyên mẫu hỗ trợ phân tích, không thay thế chẩn đoán lâm sàng.
+Giới thiệu đề tài môn Trí tuệ nhân tạo. Nguyên mẫu hỗ trợ nghiên cứu, chưa phải công cụ chẩn đoán lâm sàng.
 
-Nguồn: Đồ án môn Trí tuệ nhân tạo · Đại học An Giang · Tháng 11/2026
+Nguồn: Báo cáo DOCX, trang bìa.
 
-## Slide 02 — Bốn thành viên. Một quy trình nghiên cứu.
+## 02. Nhóm thực hiện
 
-Giới thiệu bốn thành viên theo báo cáo; không tự gán phân công chưa được xác nhận.
+Không tự gán phân công thành viên chưa được xác nhận.
 
-Nguồn: Báo cáo DermaScan AI, tháng 11/2026.
+Nguồn: Báo cáo, trang bìa và Bảng E.1.
 
-## Slide 03 — BỐ CỤC TRÌNH BÀY
+## 03. Nội dung trình bày
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
 
-Nguồn: Báo cáo DermaScan AI, tháng 11/2026.
 
-## Slide 04 — Ảnh giống nhau. Quyết định không đơn giản.
+Nguồn: Bố cục theo yêu cầu người dùng.
 
-Đặc điểm hình thái có thể tương đồng giữa các nhóm tổn thương; AI được định vị là công cụ hỗ trợ.
+## 04. Tính cấp thiết của đề tài
 
-Nguồn: Báo cáo, §1.1–1.2; §2.1.
+Không thêm số liệu dịch tễ ngoài báo cáo.
 
-## Slide 05 — MỤC TIÊU VÀ PHẠM VI
+Nguồn: Báo cáo §1.1–1.2.
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+## 05. Mục tiêu và phạm vi
 
-Nguồn: Báo cáo, §1.2–1.3.
 
-## Slide 06 — Ba vai trò trong một hệ thống.
 
-Sơ đồ chức năng chính. Xác thực dùng chung; ADMIN có phạm vi quản lý rộng hơn. Các quyền gắn tài nguyên đều được kiểm tra theo ca.
+Nguồn: Báo cáo §1.2–1.3.
 
-Nguồn: Vẽ lại theo báo cáo §3.10, §3.14; đối chiếu mã nguồn phân quyền.
+## 06. Use case tổng quát
 
-## Slide 07 — Dữ liệu theo ca, kết quả theo lần phân tích.
+Ảnh được dựng từ mô hình UML với actor dạng người que, không phải ảnh chụp WhiteStarUML. Ẩn use case đăng nhập dùng chung để sơ đồ tổng quan dễ đọc.
 
-Sơ đồ rút gọn các lớp dữ liệu. File UML kèm theo có thêm các liên kết trực tiếp với Case. Quan hệ AnalysisResult giữ 1–n theo schema.
+Nguồn: Dữ liệu từ DermaScan_AI_WhiteStarUML.uml; báo cáo §3.10, §3.14.
 
-Nguồn: Báo cáo §3.12, Phụ lục F; models/*.py.
+## 07. Sơ đồ lớp dữ liệu cốt lõi
 
-## Slide 08 — QUY TRÌNH NGHIÊN CỨU
+Sơ đồ rút gọn thuộc tính, thể hiện các lớp dữ liệu ORM. File .uml có thêm liên kết trực tiếp với Case; đây không phải ảnh chụp ứng dụng WhiteStarUML.
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+Nguồn: Dữ liệu từ file .uml; báo cáo §3.12 và Phụ lục F.
+
+## 08. Quy trình nghiên cứu
+
+
 
 Nguồn: Báo cáo §3.1–3.9.
 
-## Slide 09 — DỮ LIỆU ISIC 2019: 25.331 ẢNH
+## 09. Dữ liệu ISIC 2019
 
-NV chiếm 50,83%; DF chỉ 239 ảnh. Không gọi tám nhãn là tám loại ung thư. Dữ liệu thuộc tập huấn luyện công khai của ISIC 2019.
+Tập dữ liệu công khai có 25.331 ảnh thuộc tám nhóm tổn thương; đây không phải tám loại ung thư.
 
 Nguồn: Báo cáo, Bảng 4.1.
 
-## Slide 10 — 70 / 15 / 15 — tách tập trước khi học.
+## 10. Chia tập và quy ước nhãn
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+Chia phân tầng theo tám nhãn, random_state=42. Không trùng image ID; chưa xác nhận độc lập theo bệnh nhân.
 
 Nguồn: Báo cáo §3.2; Bảng 3.1, 4.2–4.3.
 
-## Slide 11 — TIỀN XỬ LÝ VÀ TĂNG CƯỜNG DỮ LIỆU
+## 11. Tiền xử lý ảnh
 
-Augmentation không làm tăng số bản ghi trong bảng Train. Ảnh được chuyển RGB và chuẩn hóa theo ImageNet. Resize vuông có thể làm biến dạng tỷ lệ tổn thương.
+Augmentation chỉ áp dụng ở Train và không làm tăng số bản ghi metadata. Chuẩn hóa ImageNet.
 
 Nguồn: Báo cáo §3.3.
 
-## Slide 12 — Một kiến trúc. Hai nhiệm vụ phân loại.
+## 12. Kiến trúc EfficientNet-B0
 
-Binary có hai logit và Softmax, không dùng mô tả một logit với sigmoid. Head gồm Dropout, Linear 256, ReLU, Dropout, Linear cuối.
+Hai checkpoint riêng. Binary có 2 logit và Softmax; không dùng mô tả sigmoid một logit.
 
-Nguồn: Báo cáo §3.4–3.5; SkinCancerEfficientNet trong app.py.
+Nguồn: Báo cáo §3.4–3.5; app.py, SkinCancerEfficientNet.
 
-## Slide 13 — CẤU HÌNH HUẤN LUYỆN
+## 13. Cấu hình huấn luyện
 
-Batch size 32. Binary chọn checkpoint theo Validation ROC-AUC. Multi-class dùng early stopping; không dùng các siêu tham số LoRA của slide mẫu RAG.
+Binary dùng AdamW LR 10^-3, weight decay 10^-4, CosineAnnealingLR T_max15; Multi-class có label smoothing và LR tách backbone/head.
 
 Nguồn: Báo cáo §3.4–3.6.
 
-## Slide 14 — ĐÁNH GIÁ VÀ GIẢI THÍCH DỰ ĐOÁN
+## 14. Đánh giá mô hình
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+Đánh giá trên Test nội bộ. Grad-CAM chỉ hỗ trợ quan sát, không chứng minh suy luận lâm sàng đúng.
 
-Nguồn: Báo cáo §3.7–3.8; §2.7.
+Nguồn: Báo cáo §3.7–3.8.
 
-## Slide 15 — DERMASCAN AI: TỪ ẢNH ĐẾN BÁO CÁO
+## 15. Ứng dụng minh họa: DermaScan AI
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+
 
 Nguồn: Báo cáo §3.11, §3.13; §4.9–4.11.
 
-## Slide 16 — 3.1  MÔI TRƯỜNG THỰC NGHIỆM
+## 16. 3.1  Môi trường thực nghiệm
 
-Google Colab và GPU T4 do người dùng xác nhận trong yêu cầu. Báo cáo chưa kèm log GPU, VRAM, thời gian tổng hay phiên bản đầy đủ; không tự điền các con số này.
+Không tự gán VRAM, tổng thời gian hay phiên bản khi báo cáo chưa có log.
 
-Nguồn: Báo cáo §3.6; thông tin Google Colab / GPU T4 do nhóm cung cấp.
+Nguồn: Báo cáo §3.6; Google Colab/GPU T4 theo thông tin người dùng.
 
-## Slide 17 — Huấn luyện có theo dõi. Chọn bằng Validation.
+## 17. 3.2  Kết quả huấn luyện
 
-Đường biểu diễn nối các mốc epoch được trích trong báo cáo. Binary có 15 epoch; Multi-class có 19 dòng log và early stopping. Không kết luận hoàn toàn không overfit.
+Biểu đồ nối các mốc epoch thật trích từ báo cáo, không phải toàn bộ lịch sử. Không kết luận mô hình hoàn toàn không overfit.
 
 Nguồn: Báo cáo, Bảng 4.4 và 4.7.
 
-## Slide 18 — 86,26% Accuracy. Còn 242 mẫu bị bỏ sót.
+## 18. Kết quả Binary trên tập Test
 
-TN 2118, FP 280, FN 242, TP 1160. Nhãn 1 là nhóm nghiên cứu MEL, BCC, AK, SCC. Cần nhấn mạnh giới hạn bỏ sót.
+Test nội bộ 3800 ảnh, ngưỡng0.5. Nhãn1 quy ước gồm MEL,BCC,AK,SCC. TN2118 FP280 FN242 TP1160.
 
 Nguồn: Báo cáo, Bảng 4.5–4.6.
 
-## Slide 19 — KẾT QUẢ PHÂN LOẠI TÁM LỚP
+## 19. Kết quả phân loại tám lớp
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+Biểu đồ F1 theo lớp. Accuracy81.63%, BalancedAccuracy78.15%, MacroF1.7547, Kappa.7305.
 
-Nguồn: Báo cáo, §4.5; Bảng 4.9.
+Nguồn: Báo cáo §4.5; Bảng 4.9.
 
-## Slide 20 — PHÂN TÍCH LỖI: CÁC NHÓM CẦN CHÚ Ý
+## 20. Phân tích những lỗi đáng chú ý
 
-MEL bị nhầm sang NV 143 ảnh. SCC chỉ có 94 mẫu test, recall 55,3%. VASC recall cao nhưng support 38 nên cần thận trọng khi diễn giải.
+
 
 Nguồn: Báo cáo, Bảng 4.8–4.9.
 
-## Slide 21 — Đánh đổi giữa phân loại và xếp hạng nguy cơ.
+## 21. So sánh hai cách phân loại Binary
 
-Cách suy ra Binary có Accuracy, Recall và F1 cao hơn; Binary trực tiếp có ROC-AUC cao hơn. Không kết luận một phương án thắng mọi chỉ số.
+Cùng 3800 ảnh và quy ước gộp nhãn. Binary trực tiếp có AUC cao hơn, cách suy ra có Accuracy/Recall/F1 cao hơn; không có phương án thắng mọi chỉ số.
 
 Nguồn: Báo cáo, Bảng 4.10.
 
-## Slide 22 — Mô hình đang chú ý vào đâu?
+## 22. Minh họa Grad-CAM
 
-Ảnh Grad-CAM là hiện vật thật. Bản đồ nhiệt không phải phân đoạn tổn thương và không bảo đảm giải thích đúng về y khoa.
+Ảnh các trường hợp dự đoán đúng. Bản đồ nhiệt không phải phân đoạn và không bảo đảm giải thích y khoa đúng.
 
-Nguồn: Báo cáo §4.7; hiện vật Grad-CAM của dự án.
+Nguồn: Báo cáo §4.7; ảnh hiện vật thật trong dự án.
 
-## Slide 23 — INT8: gọn hơn khoảng 3,4 lần.
+## 23. Hiện vật triển khai mô hình
 
-Dung lượng theo báo cáo. Không suy ra thời gian tăng tốc từ tỷ lệ giảm kích thước.
+Dung lượng theo báo cáo; không suy ra thời gian tăng tốc từ tỷ lệ giảm kích thước.
 
 Nguồn: Báo cáo, Bảng 4.11; §4.8.
 
-## Slide 24 — Từ notebook đến giao diện sử dụng.
+## 24. Giao diện ứng dụng minh họa
 
-Ảnh chụp giao diện thật trong môi trường hiện tại; không tuyên bố toàn bộ test case đã nghiệm thu. SMTP và OpenAI phụ thuộc cấu hình.
+Ảnh giữ giao diện thật; không tuyên bố toàn bộ chức năng đã nghiệm thu. SMTP và OpenAI phụ thuộc cấu hình.
 
-Nguồn: Báo cáo §4.9–4.12; ảnh chụp ứng dụng hiện tại.
+Nguồn: Báo cáo §4.9–4.12; ảnh giao diện thực tế trong môi trường hiện tại.
 
-## Slide 25 — DEMO
+## 25. DEMO
 
-Mở ứng dụng để trình diễn trực tiếp.
+Trang chỉ có tiêu đề DEMO.
 
 Nguồn: Theo yêu cầu.
 
-## Slide 26 — KẾT LUẬN
+## 26. Kết luận
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+
 
 Nguồn: Báo cáo, Kết luận và kiến nghị.
 
-## Slide 27 — HẠN CHẾ VÀ HƯỚNG PHÁT TRIỂN
+## 27. Hạn chế và hướng phát triển
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+
 
 Nguồn: Báo cáo, Hạn chế và kiến nghị; §2.1.3; §4.12.
 
-## Slide 28 — Cảm ơn thầy và các bạn.
+## 28. Bìa / kết
 
-Cảm ơn và mời câu hỏi, góp ý về phương pháp, số liệu và ứng dụng.
+Cảm ơn và mời câu hỏi, góp ý.
 
-Nguồn: Nhóm 4 · Đồ án môn Trí tuệ nhân tạo · Đại học An Giang
+Nguồn: Nhóm 4 · Đại học An Giang.

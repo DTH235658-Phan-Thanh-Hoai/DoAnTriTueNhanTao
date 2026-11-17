@@ -1,8 +1,6 @@
-CÀI FONT ĐỂ GIỮ ĐÚNG BỐ CỤC POWERPOINT
+FONT MONTSERRAT — V3
 
-Windows: chọn 6 file .ttf Regular / SemiBold / Bold trong thư mục này, nhấn chuột phải > Install. Mở lại PowerPoint sau khi cài.
-macOS: mở từng .ttf bằng Font Book và chọn Install.
-
-Inter hỗ trợ đầy đủ tiếng Việt. Sora dùng cho các dòng phù hợp bảng ký tự; các dòng có ký tự ngoài bảng Sora được chuyển sang Inter để tránh lỗi dấu.
-
-PDF đã nhúng font, dùng để xem và trình chiếu nhất quán khi chưa cài font. Font sử dụng giấy phép SIL Open Font License; xem các tệp OFL đi kèm.
+Bản DermaScan_AI_ThuyetTrinh.pptx dùng ảnh slide đã kết xuất: không cần cài font để trình chiếu. Nội dung hình thức được cố định; không sửa chữ trực tiếp trong bản này.
+Bản DermaScan_AI_ChinhSua.pptx giữ chữ, bảng và biểu đồ chỉnh sửa được. Cài Montserrat Regular, SemiBold và Bold trước khi mở bản chỉnh sửa.
+Windows: chọn ba file .ttf rồi nhấn chuột phải > Install. macOS: mở từng file bằng Font Book > Install.
+Font hỗ trợ đầy đủ tiếng Việt, giấy phép SIL OFL đi kèm. PDF giữ đúng hình thức và có thể trình chiếu trực tiếp.

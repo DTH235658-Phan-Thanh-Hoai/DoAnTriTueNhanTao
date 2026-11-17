@@ -1,10 +1,13 @@
-DERMASCAN AI — THIẾT KẾ V2 THEO CSS WEBSITE
+DERMASCAN AI — V3 CLEAN / MONTSERRAT
 
-28 slide 16:9; phối nền sáng và xanh đậm, gradient xanh #2CC56F → #0F7A42 → #07502D và cam #FFB35E → #FF7A1F → #F0560A.
-Dùng Sora / Inter theo CSS; Inter cho tiếng Việt đầy đủ dấu. Cài font trong thư mục fonts trước khi mở PowerPoint. PDF đã nhúng font.
+MỞ DermaScan_AI_ThuyetTrinh.pptx ĐỂ TRÌNH CHIẾU.
+Bản này gồm 28 ảnh slide 1920×1080 được nhúng trực tiếp: không phụ thuộc Montserrat trên máy xem, không dùng gradient XML để hiển thị nền. Có ghi chú thuyết trình. Không chỉnh sửa chữ trực tiếp trong bản trình chiếu cố định.
 
-PowerPoint: chữ, bảng, biểu đồ, use case và class diagram trên slide chỉnh sửa được. Hình Grad-CAM và giao diện là hình ảnh thật từ dự án. Đồ thị loss dùng các mốc lịch sử có trong báo cáo, không tạo số liệu giả.
-Nội dung bám báo cáo DOCX: Binary Accuracy 86,26%, AUC 0,9366; Multi-class Accuracy 81,63%, Macro-F1 0,7547. Tập Test nội bộ 3.800 ảnh. Google Colab / GPU T4 theo thông tin người dùng.
-Slide 25 chỉ có DEMO; slide 28 Cảm ơn & hỏi đáp. Ghi chú và nguồn theo slide nằm trong PowerPoint và Ghi_chu_thuyet_trinh.md.
+Dùng DermaScan_AI_ChinhSua.pptx nếu muốn sửa chữ/bảng/biểu đồ; cài ba font Montserrat đi kèm trước khi mở. Nền bìa của bản chỉnh sửa cũng là PNG nhúng trực tiếp trong phần nền PowerPoint.
+PDF tương ứng dùng để xem nhanh. Bản V3 bỏ các nhãn thương hiệu, số mục và nguồn chữ nhỏ; nguồn chuyển vào ghi chú. Bố cục nền trắng, tiêu đề xanh, điểm nhấn cam, không dùng thẻ trang trí / shadow / avatar.
 
-File DermaScan_AI_WhiteStarUML.uml giữ dự án XPD phiên bản 1, có Use Case và Class Diagram. Đã kiểm tra XML và tham chiếu, chưa mở trực tiếp trên WhiteStarUML do máy không cài phần mềm. Dùng File > Open với phiên bản hỗ trợ .uml cũ. PNG/SVG để xem sơ đồ độc lập. Class diagram trong slide là bản rút gọn; .uml có thêm liên kết Case.
+Nội dung từ báo cáo DOCX: Accuracy Binary 86,26%, ROC-AUC 0,9366; Accuracy tám lớp 81,63%, Macro-F1 0,7547; tập Test nội bộ 3.800 ảnh. Colab / GPU T4 theo thông tin người dùng.
+Slide 25 chỉ có DEMO.
+
+UseCase.png và ClassDiagram.png là ảnh sơ đồ dựng từ dữ liệu file .uml, actor người que và nét đen trắng. KHÔNG phải ảnh chụp WhiteStarUML. Máy thực hiện không có WhiteStarUML để mở và chụp trực tiếp. Sơ đồ tổng quan rút gọn một số thuộc tính và use case dùng chung; file .uml giữ đầy đủ các thành phần đã tạo.
+File .uml là XPD phiên bản 1 theo mẫu người dùng, đã kiểm tra cấu trúc và tham chiếu, chưa mở bằng WhiteStarUML.
