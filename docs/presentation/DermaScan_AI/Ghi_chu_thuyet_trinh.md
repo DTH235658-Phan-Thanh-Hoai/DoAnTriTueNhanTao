@@ -1,14 +1,14 @@
 # Ghi chú thuyết trình DermaScan AI
 
-## Slide 01 — ỨNG DỤNG EFFICIENTNET-B0
+## Slide 01 — DERMASCAN AI
 
-Giới thiệu đề tài môn Trí tuệ nhân tạo. DermaScan AI là nguyên mẫu hỗ trợ phân tích, không thay thế chẩn đoán lâm sàng.
+Giới thiệu đề tài: ứng dụng EfficientNet-B0 phân loại tổn thương da từ ảnh Dermoscopy. Đây là nguyên mẫu hỗ trợ phân tích, không thay thế chẩn đoán lâm sàng.
 
-Nguồn: Báo cáo DermaScan AI, tháng 11/2026.
+Nguồn: Đồ án môn Trí tuệ nhân tạo · Đại học An Giang · Tháng 11/2026
 
-## Slide 02 — NHÓM SINH VIÊN THỰC HIỆN
+## Slide 02 — Bốn thành viên. Một quy trình nghiên cứu.
 
-Giới thiệu bốn thành viên. Không dùng phân công của đề tài RAG vì khác đề tài và báo cáo hiện chưa xác nhận phân công.
+Giới thiệu bốn thành viên theo báo cáo; không tự gán phân công chưa được xác nhận.
 
 Nguồn: Báo cáo DermaScan AI, tháng 11/2026.
 
@@ -18,9 +18,9 @@ Trình bày nội dung trên slide, không đọc nguyên văn.
 
 Nguồn: Báo cáo DermaScan AI, tháng 11/2026.
 
-## Slide 04 — VÌ SAO CẦN NGHIÊN CỨU ĐỀ TÀI?
+## Slide 04 — Ảnh giống nhau. Quyết định không đơn giản.
 
-Nêu khó khăn về hình thái tổn thương, biến thiên ảnh và nhu cầu hỗ trợ bác sĩ. Không đưa số liệu dịch tễ ngoài báo cáo.
+Đặc điểm hình thái có thể tương đồng giữa các nhóm tổn thương; AI được định vị là công cụ hỗ trợ.
 
 Nguồn: Báo cáo, §1.1–1.2; §2.1.
 
@@ -30,17 +30,17 @@ Trình bày nội dung trên slide, không đọc nguyên văn.
 
 Nguồn: Báo cáo, §1.2–1.3.
 
-## Slide 06 — USE CASE TỔNG QUÁT
+## Slide 06 — Ba vai trò trong một hệ thống.
 
-Sơ đồ khái quát, không liệt kê toàn bộ API. ADMIN có quyền rộng hơn; các tác vụ gắn ca đều cần kiểm tra quyền sở hữu.
+Sơ đồ chức năng chính. Xác thực dùng chung; ADMIN có phạm vi quản lý rộng hơn. Các quyền gắn tài nguyên đều được kiểm tra theo ca.
 
-Nguồn: Vẽ lại theo báo cáo §3.10, §3.14 và mã nguồn phân quyền.
+Nguồn: Vẽ lại theo báo cáo §3.10, §3.14; đối chiếu mã nguồn phân quyền.
 
-## Slide 07 — SƠ ĐỒ LỚP DỮ LIỆU CỐT LÕI
+## Slide 07 — Dữ liệu theo ca, kết quả theo lần phân tích.
 
-Đây là class diagram các lớp dữ liệu ORM, không phải sơ đồ đầy đủ toàn hệ thống. Dấu ? chỉ thuộc tính tùy chọn. Multiplicity giữ theo cấu trúc dữ liệu, không giả định AnalysisResult là quan hệ 1–1.
+Sơ đồ rút gọn các lớp dữ liệu. File UML kèm theo có thêm các liên kết trực tiếp với Case. Quan hệ AnalysisResult giữ 1–n theo schema.
 
-Nguồn: Báo cáo §3.12, Phụ lục F; đối chiếu models/*.py.
+Nguồn: Báo cáo §3.12, Phụ lục F; models/*.py.
 
 ## Slide 08 — QUY TRÌNH NGHIÊN CỨU
 
@@ -54,7 +54,7 @@ NV chiếm 50,83%; DF chỉ 239 ảnh. Không gọi tám nhãn là tám loại u
 
 Nguồn: Báo cáo, Bảng 4.1.
 
-## Slide 10 — CHIA TẬP VÀ QUY ƯỚC NHÃN
+## Slide 10 — 70 / 15 / 15 — tách tập trước khi học.
 
 Trình bày nội dung trên slide, không đọc nguyên văn.
 
@@ -66,11 +66,11 @@ Augmentation không làm tăng số bản ghi trong bảng Train. Ảnh được
 
 Nguồn: Báo cáo §3.3.
 
-## Slide 12 — KIẾN TRÚC EFFICIENTNET-B0
+## Slide 12 — Một kiến trúc. Hai nhiệm vụ phân loại.
 
-Không mô tả Binary là sigmoid một logit. Hai checkpoint riêng cho hai nhiệm vụ. Backbone tạo vector 1.280 chiều; head 256 chiều, ReLU, Dropout, Linear.
+Binary có hai logit và Softmax, không dùng mô tả một logit với sigmoid. Head gồm Dropout, Linear 256, ReLU, Dropout, Linear cuối.
 
-Nguồn: Báo cáo §3.4–3.5; app.py: SkinCancerEfficientNet.
+Nguồn: Báo cáo §3.4–3.5; SkinCancerEfficientNet trong app.py.
 
 ## Slide 13 — CẤU HÌNH HUẤN LUYỆN
 
@@ -96,15 +96,15 @@ Google Colab và GPU T4 do người dùng xác nhận trong yêu cầu. Báo cá
 
 Nguồn: Báo cáo §3.6; thông tin Google Colab / GPU T4 do nhóm cung cấp.
 
-## Slide 17 — 3.2  KẾT QUẢ HUẤN LUYỆN
+## Slide 17 — Huấn luyện có theo dõi. Chọn bằng Validation.
 
-Các điểm là trích lịch sử thật trong báo cáo, không phải toàn bộ epoch. Val AUC Binary cao nhất được nêu là 0,9419; Test AUC là 0,9366, cần phân biệt.
+Đường biểu diễn nối các mốc epoch được trích trong báo cáo. Binary có 15 epoch; Multi-class có 19 dòng log và early stopping. Không kết luận hoàn toàn không overfit.
 
 Nguồn: Báo cáo, Bảng 4.4 và 4.7.
 
-## Slide 18 — KẾT QUẢ BINARY TRÊN 3.800 ẢNH TEST
+## Slide 18 — 86,26% Accuracy. Còn 242 mẫu bị bỏ sót.
 
-TN=2118, FP=280, FN=242, TP=1160. Recall 82,74%, F1 0,8163, ROC-AUC 0,9366. FN vẫn là hạn chế quan trọng.
+TN 2118, FP 280, FN 242, TP 1160. Nhãn 1 là nhóm nghiên cứu MEL, BCC, AK, SCC. Cần nhấn mạnh giới hạn bỏ sót.
 
 Nguồn: Báo cáo, Bảng 4.5–4.6.
 
@@ -120,33 +120,33 @@ MEL bị nhầm sang NV 143 ảnh. SCC chỉ có 94 mẫu test, recall 55,3%. VA
 
 Nguồn: Báo cáo, Bảng 4.8–4.9.
 
-## Slide 21 — BINARY TRỰC TIẾP HAY SUY RA TỪ TÁM LỚP?
+## Slide 21 — Đánh đổi giữa phân loại và xếp hạng nguy cơ.
 
-Multi-class suy ra Binary có Accuracy, Recall, F1 cao hơn ở thí nghiệm này; Binary trực tiếp có AUC cao hơn. Không kết luận một cách thắng mọi chỉ số.
+Cách suy ra Binary có Accuracy, Recall và F1 cao hơn; Binary trực tiếp có ROC-AUC cao hơn. Không kết luận một phương án thắng mọi chỉ số.
 
 Nguồn: Báo cáo, Bảng 4.10.
 
-## Slide 22 — GRAD-CAM: QUAN SÁT VÙNG MÔ HÌNH CHÚ Ý
+## Slide 22 — Mô hình đang chú ý vào đâu?
 
-Hình có sẵn trong dự án; không tạo bản đồ nhiệt giả. Vùng sáng không phải phân đoạn tổn thương hay chứng minh lý giải lâm sàng.
+Ảnh Grad-CAM là hiện vật thật. Bản đồ nhiệt không phải phân đoạn tổn thương và không bảo đảm giải thích đúng về y khoa.
 
-Nguồn: Báo cáo §4.7; hình Grad-CAM từ hiện vật của dự án.
+Nguồn: Báo cáo §4.7; hiện vật Grad-CAM của dự án.
 
-## Slide 23 — HIỆN VẬT TRIỂN KHAI: PYTORCH / ONNX / INT8
+## Slide 23 — INT8: gọn hơn khoảng 3,4 lần.
 
-Kích thước theo số liệu báo cáo, không suy ra tốc độ. Cần benchmark cùng phần cứng và cùng tập ảnh trước khi khẳng định tăng tốc hay bảo toàn chất lượng.
+Dung lượng theo báo cáo. Không suy ra thời gian tăng tốc từ tỷ lệ giảm kích thước.
 
 Nguồn: Báo cáo, Bảng 4.11; §4.8.
 
-## Slide 24 — ỨNG DỤNG MINH HỌA: GIAO DIỆN VÀ CHỨC NĂNG
+## Slide 24 — Từ notebook đến giao diện sử dụng.
 
-Ảnh chụp trang chủ thực tế. Các chức năng dưới đây được mô tả theo báo cáo và mã nguồn; không tuyên bố toàn bộ test case đã nghiệm thu. SMTP/OpenAI phụ thuộc cấu hình.
+Ảnh chụp giao diện thật trong môi trường hiện tại; không tuyên bố toàn bộ test case đã nghiệm thu. SMTP và OpenAI phụ thuộc cấu hình.
 
-Nguồn: Báo cáo §4.9–4.12; ảnh chụp ứng dụng trong môi trường hiện tại.
+Nguồn: Báo cáo §4.9–4.12; ảnh chụp ứng dụng hiện tại.
 
 ## Slide 25 — DEMO
 
-Mở ứng dụng và trình diễn trực tiếp; không thêm nội dung trên slide.
+Mở ứng dụng để trình diễn trực tiếp.
 
 Nguồn: Theo yêu cầu.
 
@@ -162,8 +162,8 @@ Trình bày nội dung trên slide, không đọc nguyên văn.
 
 Nguồn: Báo cáo, Hạn chế và kiến nghị; §2.1.3; §4.12.
 
-## Slide 28 — CẢM ƠN THẦY VÀ CÁC BẠN
+## Slide 28 — Cảm ơn thầy và các bạn.
 
-Trình bày nội dung trên slide, không đọc nguyên văn.
+Cảm ơn và mời câu hỏi, góp ý về phương pháp, số liệu và ứng dụng.
 
 Nguồn: Nhóm 4 · Đồ án môn Trí tuệ nhân tạo · Đại học An Giang

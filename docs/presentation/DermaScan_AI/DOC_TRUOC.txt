@@ -1,14 +1,10 @@
-DERMASCAN AI — BỘ SLIDE MÔN TRÍ TUỆ NHÂN TẠO
+DERMASCAN AI — THIẾT KẾ V2 THEO CSS WEBSITE
 
-28 slide, khổ 16:9. PowerPoint có chữ, bảng và biểu đồ chỉnh sửa được; hình/sơ đồ được chèn dạng ảnh.
-PDF để xem nhanh. Ghi_chu_thuyet_trinh.md có ghi chú và nguồn theo từng slide; PowerPoint cũng có speaker notes.
+28 slide 16:9; phối nền sáng và xanh đậm, gradient xanh #2CC56F → #0F7A42 → #07502D và cam #FFB35E → #FF7A1F → #F0560A.
+Dùng Sora / Inter theo CSS; Inter cho tiếng Việt đầy đủ dấu. Cài font trong thư mục fonts trước khi mở PowerPoint. PDF đã nhúng font.
 
-Thiết kế: thanh điều hướng, vòng tròn đánh số và điểm nhấn cam theo PDF PPNCKH; gradient xanh #2CC56F → #0F7A42 → #07502D theo web.
-Nội dung và số liệu lấy từ báo cáo DOCX. Google Colab / GPU T4 theo thông tin người dùng, không tự gán thời gian huấn luyện hay VRAM.
-Mục 6 được đặt là Cảm ơn & hỏi đáp. Không gán phân công thành viên vì báo cáo chưa xác nhận. Slide 25 chỉ có DEMO.
+PowerPoint: chữ, bảng, biểu đồ, use case và class diagram trên slide chỉnh sửa được. Hình Grad-CAM và giao diện là hình ảnh thật từ dự án. Đồ thị loss dùng các mốc lịch sử có trong báo cáo, không tạo số liệu giả.
+Nội dung bám báo cáo DOCX: Binary Accuracy 86,26%, AUC 0,9366; Multi-class Accuracy 81,63%, Macro-F1 0,7547. Tập Test nội bộ 3.800 ảnh. Google Colab / GPU T4 theo thông tin người dùng.
+Slide 25 chỉ có DEMO; slide 28 Cảm ơn & hỏi đáp. Ghi chú và nguồn theo slide nằm trong PowerPoint và Ghi_chu_thuyet_trinh.md.
 
-DermaScan_AI_WhiteStarUML.uml: dự án XML XPD phiên bản 1 theo cấu trúc file .uml người dùng cung cấp. Gồm Use Case và Class Diagram. Đã kiểm tra XML, ID duy nhất và tham chiếu hợp lệ. Chưa mở thử bằng WhiteStarUML do máy không cài ứng dụng. Hãy dùng File > Open trong WhiteStarUML/StarUML hỗ trợ định dạng cũ. Không dùng Import XMI vì đây không phải XMI.
-UseCase.svg/png và ClassDiagram.svg/png: xem sơ đồ ngay. Class diagram trên slide là bản rút gọn; file .uml có thêm liên kết trực tiếp với Case. Dấu ? chỉ thuộc tính tùy chọn.
-
-Số liệu chính: Binary Accuracy 86,26%, ROC-AUC 0,9366; Multi-class Accuracy 81,63%, Macro-F1 0,7547. Đây là Test nội bộ 3.800 ảnh, không phải Test chính thức ISIC 2019.
-Ảnh Grad-CAM là hiện vật thật từ dự án; ảnh giao diện được chụp ứng dụng hiện tại, không phải mockup.
+File DermaScan_AI_WhiteStarUML.uml giữ dự án XPD phiên bản 1, có Use Case và Class Diagram. Đã kiểm tra XML và tham chiếu, chưa mở trực tiếp trên WhiteStarUML do máy không cài phần mềm. Dùng File > Open với phiên bản hỗ trợ .uml cũ. PNG/SVG để xem sơ đồ độc lập. Class diagram trong slide là bản rút gọn; .uml có thêm liên kết Case.
