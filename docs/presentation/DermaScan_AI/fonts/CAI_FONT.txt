@@ -1,4 +1,4 @@
-FONT MONTSERRAT — V3
+FONT MONTSERRAT — V4
 
 Bản DermaScan_AI_ThuyetTrinh.pptx dùng ảnh slide đã kết xuất: không cần cài font để trình chiếu. Nội dung hình thức được cố định; không sửa chữ trực tiếp trong bản này.
 Bản DermaScan_AI_ChinhSua.pptx giữ chữ, bảng và biểu đồ chỉnh sửa được. Cài Montserrat Regular, SemiBold và Bold trước khi mở bản chỉnh sửa.

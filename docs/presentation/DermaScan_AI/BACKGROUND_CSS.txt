@@ -1,0 +1,1 @@
+background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.28), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.22), transparent 70%) !important;

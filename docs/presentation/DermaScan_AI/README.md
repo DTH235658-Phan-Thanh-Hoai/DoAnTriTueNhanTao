@@ -1,28 +1,34 @@
-# DermaScan AI — V3 · Montserrat
+# DermaScan AI — V4
 
-Bộ 28 slide môn Trí tuệ nhân tạo. Bố cục học thuật, nền trắng, tiêu đề xanh và điểm nhấn cam. Đã bỏ các nhãn trang trí và chữ nguồn nhỏ; nguồn và giải thích được chuyển vào ghi chú.
+28 slide, font Montserrat. Giữ nội dung V3; chỉnh màu và bố cục theo slide mẫu mới: tiêu đề đậm, số liệu lớn, mảng xanh và các vùng trắng cho biểu đồ.
 
-![Xem trước V3](XEM_TRUOC_V3.jpg)
+![Xem trước V4](XEM_TRUOC_V4.jpg)
 
-## Chọn đúng file
+## File trình bày
 
-- **[DermaScan_AI_ThuyetTrinh.pptx](DermaScan_AI_ThuyetTrinh.pptx)** — mở để trình chiếu. Mỗi trang là ảnh slide 1920×1080 được nhúng trực tiếp, giữ nguyên nền và chữ mà không cần cài font. Không chỉnh sửa chữ trực tiếp trong bản này.
-- **[DermaScan_AI_ChinhSua.pptx](DermaScan_AI_ChinhSua.pptx)** — bản chỉnh sửa chữ, bảng và biểu đồ. Cài [Montserrat](fonts) trước khi mở. Nền bìa là PNG nhúng trực tiếp.
-- **[PDF](DermaScan_AI_ThuyetTrinh.pdf)** — xem và trình chiếu nhanh.
-- **[ZIP trọn bộ](DermaScan_AI_TronBo.zip)** — cả hai PowerPoint, PDF, font, ghi chú và sơ đồ.
+- **[PowerPoint trình chiếu](DermaScan_AI_ThuyetTrinh.pptx)** — giữ cố định hình thức bằng ảnh 1920×1080 nhúng trực tiếp, không cần cài font. Không sửa chữ trực tiếp trong bản này.
+- **[PowerPoint chỉnh sửa](DermaScan_AI_ChinhSua.pptx)** — sửa được chữ, bảng và biểu đồ. Cài [Montserrat](fonts) trước khi mở.
+- **[PDF](DermaScan_AI_ThuyetTrinh.pdf)** — xem nhanh.
+- **[ZIP trọn bộ](DermaScan_AI_TronBo.zip)** — cả hai PowerPoint, PDF, font, nền và sơ đồ.
 
-## Sơ đồ
+## Nền theo CSS được yêu cầu
 
-- [Use case](UseCase.png)
-- [Class diagram](ClassDiagram.png)
-- [File UML](DermaScan_AI_WhiteStarUML.uml)
+Cam ở góc trên phải, xanh ở góc dưới trái. CSS được render thành PNG 1920×1080 rồi nhúng làm nền trên cả 28 trang.
 
-Actor người que, ellipse và lớp dữ liệu được dựng thành ảnh từ dữ liệu file `.uml`. **Đây không phải ảnh chụp trực tiếp WhiteStarUML**; máy thực hiện không có phần mềm đó. Sơ đồ trên slide là bản tổng quan rút gọn, file UML có thêm chi tiết. File UML đã kiểm tra cấu trúc và tham chiếu, chưa mở trực tiếp trong WhiteStarUML.
+```css
+background-image:
+  radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.28), transparent 70%),
+  radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.22), transparent 70%) !important;
+```
+
+[Nền PNG để tái sử dụng](Nen_radial_gradient.png) · [CSS gốc](BACKGROUND_CSS.txt)
 
 ## Nội dung và kiểm tra
 
-Số liệu theo báo cáo: Binary Accuracy **86,26%**, ROC-AUC **0,9366**; Multi-class Accuracy **81,63%**, Macro-F1 **0,7547**. Test nội bộ 3.800 ảnh. Colab/T4 theo thông tin người dùng. Slide 25 chỉ có **DEMO**.
+Giữ các số liệu V3 từ báo cáo: Binary Accuracy **86,26%**, ROC-AUC **0,9366**; Multi-class Accuracy **81,63%**, Macro-F1 **0,7547**. Test nội bộ 3.800 ảnh. Colab/T4 theo thông tin người dùng. Slide 25 chỉ có **DEMO**. Learning rate `10^-3` được viết tương đương `0,001` để tránh lỗi ký tự mũ.
 
-Đã kiểm tra: 28 trang; toàn bộ chữ trong bản chỉnh sửa xuất đủ sang PDF; font Montserrat hỗ trợ tiếng Việt; nền PNG và các quan hệ ảnh nhúng hợp lệ; ảnh của cả 28 trang trong bản trình chiếu khớp từng byte với ảnh đã xuất. Bản trình chiếu được mở lại và xuất thử trong LibreOffice mà không nạp Montserrat, nền bìa vẫn giữ được. Chưa chạy PowerPoint trên Windows trong môi trường này.
+Đã đối chiếu nội dung và bảng với V3, kiểm tra 28 trang, font, ảnh nền nhúng, file ZIP và bản trình chiếu xuất lại khi không nạp Montserrat. Hai vùng màu góc vẫn giữ được. Chưa chạy PowerPoint trên Windows trong môi trường này.
 
-[Ghi chú thuyết trình và nguồn](Ghi_chu_thuyet_trinh.md) · [Lưu ý sử dụng](DOC_TRUOC.txt)
+[Sơ đồ use case](UseCase.png) · [Sơ đồ lớp](ClassDiagram.png) · [File UML](DermaScan_AI_WhiteStarUML.uml) · [Ghi chú và nguồn theo slide](Ghi_chu_thuyet_trinh.md)
+
+Ảnh UML giữ từ V3, dựng từ dữ liệu file `.uml`, không phải ảnh chụp trực tiếp WhiteStarUML. Xem [lưu ý](DOC_TRUOC.txt).

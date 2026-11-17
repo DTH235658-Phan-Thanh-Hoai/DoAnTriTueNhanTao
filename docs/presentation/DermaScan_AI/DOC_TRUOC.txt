@@ -1,13 +1,12 @@
-DERMASCAN AI — V3 CLEAN / MONTSERRAT
+DERMASCAN AI — V4 THEO SLIDE MẪU MỚI
 
 MỞ DermaScan_AI_ThuyetTrinh.pptx ĐỂ TRÌNH CHIẾU.
-Bản này gồm 28 ảnh slide 1920×1080 được nhúng trực tiếp: không phụ thuộc Montserrat trên máy xem, không dùng gradient XML để hiển thị nền. Có ghi chú thuyết trình. Không chỉnh sửa chữ trực tiếp trong bản trình chiếu cố định.
+Bản này dùng ảnh slide 1920×1080 nhúng trực tiếp, giữ nguyên hình thức mà không cần cài Montserrat; không sửa chữ trực tiếp được. Ghi chú thuyết trình vẫn có.
 
-Dùng DermaScan_AI_ChinhSua.pptx nếu muốn sửa chữ/bảng/biểu đồ; cài ba font Montserrat đi kèm trước khi mở. Nền bìa của bản chỉnh sửa cũng là PNG nhúng trực tiếp trong phần nền PowerPoint.
-PDF tương ứng dùng để xem nhanh. Bản V3 bỏ các nhãn thương hiệu, số mục và nguồn chữ nhỏ; nguồn chuyển vào ghi chú. Bố cục nền trắng, tiêu đề xanh, điểm nhấn cam, không dùng thẻ trang trí / shadow / avatar.
+DermaScan_AI_ChinhSua.pptx giữ chữ, bảng và biểu đồ chỉnh sửa được; cài Montserrat trước khi mở. Cả 28 trang có nền PNG nhúng trực tiếp. PDF dùng để xem nhanh.
 
-Nội dung từ báo cáo DOCX: Accuracy Binary 86,26%, ROC-AUC 0,9366; Accuracy tám lớp 81,63%, Macro-F1 0,7547; tập Test nội bộ 3.800 ảnh. Colab / GPU T4 theo thông tin người dùng.
-Slide 25 chỉ có DEMO.
+V4 giữ thông tin của V3, học cách chia bố cục từ slide mẫu kinh doanh do người dùng cung cấp: tiêu đề đậm, số liệu lớn, bố cục chữ/hình, khung trắng và mảng màu xanh. Không đưa nội dung kinh doanh từ mẫu vào đồ án. Nền dùng đúng hai radial-gradient người dùng yêu cầu; xem BACKGROUND_CSS.txt. Nen_radial_gradient.png có thể dùng làm nền cho trang mới.
 
-UseCase.png và ClassDiagram.png là ảnh sơ đồ dựng từ dữ liệu file .uml, actor người que và nét đen trắng. KHÔNG phải ảnh chụp WhiteStarUML. Máy thực hiện không có WhiteStarUML để mở và chụp trực tiếp. Sơ đồ tổng quan rút gọn một số thuộc tính và use case dùng chung; file .uml giữ đầy đủ các thành phần đã tạo.
-File .uml là XPD phiên bản 1 theo mẫu người dùng, đã kiểm tra cấu trúc và tham chiếu, chưa mở bằng WhiteStarUML.
+Nội dung từ báo cáo: Binary Accuracy 86,26%, ROC-AUC 0,9366; Multi-class Accuracy 81,63%, Macro-F1 0,7547; tập Test nội bộ 3.800 ảnh. LR 10^-3 được viết là 0,001 để tránh vấn đề ký tự mũ. Colab / GPU T4 theo thông tin người dùng. Slide 25 chỉ có DEMO.
+
+Ảnh sơ đồ UML giữ từ V3, dựng từ file .uml; không phải ảnh chụp WhiteStarUML. Máy không có WhiteStarUML. File .uml kiểm tra cấu trúc/tham chiếu, chưa mở thử bằng phần mềm đó.
