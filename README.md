@@ -1,3 +1,13 @@
+---
+title: DermaScan AI - Skin Cancer Diagnostic System
+emoji: 🩺
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 <div align="center">
 
 # 🩺 Skin Cancer Classification
