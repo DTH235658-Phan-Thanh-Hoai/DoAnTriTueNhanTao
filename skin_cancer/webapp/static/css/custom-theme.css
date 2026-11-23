@@ -1,0 +1,1363 @@
+/* ============================================================
+   DERMASCAN AI · ADMIN THEME v3
+   Xanh lá + Cam, ưu tiên gradient. Hỗ trợ Light / Dark.
+   File này nạp CUỐI CÙNG nên thay thế toàn bộ custom-theme.css cũ.
+   Font dùng lại Sora + Inter (đã có trong <head>), không cần Montserrat.
+   ============================================================ */
+
+/* ---------- 0. TOKENS ---------- */
+:root {
+    --dx-g1: #2cc56f;
+    --dx-g2: #0f7a42;
+    --dx-g3: #07452a;
+    --dx-o1: #ffb35e;
+    --dx-o2: #ff7a1f;
+    --dx-o3: #f0560a;
+
+    --dx-grad-green: linear-gradient(135deg, var(--dx-g1) 0%, var(--dx-g2) 58%, var(--dx-g3) 100%);
+    --dx-grad-orange: linear-gradient(135deg, var(--dx-o1) 0%, var(--dx-o2) 55%, var(--dx-o3) 100%);
+    --dx-grad-brand: linear-gradient(120deg, var(--dx-g1) 0%, var(--dx-o2) 100%);
+    --dx-tint: linear-gradient(100deg, rgba(44, 197, 111, 0.12), rgba(255, 138, 43, 0.12));
+
+    --dx-bg: #f2f7f3;
+    --dx-surface: #ffffff;
+    --dx-row: #f6faf7;
+    --dx-line: #e1eae4;
+    --dx-ink: #10281c;
+    --dx-muted: #5d7266;
+    --dx-accent: #0f7a42; /* màu xanh dùng cho chữ */
+    --dx-topbar: rgba(255, 255, 255, 0.82);
+    --dx-shadow: 0 20px 40px -28px rgba(9, 74, 42, 0.45), 0 1px 2px rgba(9, 74, 42, 0.05);
+
+    --dx-display: "Sora", "Inter", system-ui, sans-serif;
+    --dx-body: "Inter", system-ui, sans-serif;
+}
+
+html[data-theme="dark"] {
+    --dx-bg: #0a130f;
+    --dx-surface: #101d17;
+    --dx-row: #15261d;
+    --dx-line: rgba(255, 255, 255, 0.08);
+    --dx-ink: #eaf5ee;
+    --dx-muted: #93a79b;
+    --dx-accent: #7ee2a8;
+    --dx-topbar: rgba(16, 29, 23, 0.82);
+    --dx-shadow: 0 20px 40px -28px rgba(0, 0, 0, 0.8), 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- 1. NỀN TRANG ---------- */
+html body {
+    font-family: var(--dx-body);
+    color: var(--dx-ink);
+    background-color: var(--dx-bg);
+    background-image: radial-gradient(760px 420px at 100% -8%, rgba(255, 138, 43, 0.13), transparent 62%), radial-gradient(720px 420px at 18% -10%, rgba(44, 197, 111, 0.13), transparent 60%);
+    background-attachment: fixed;
+}
+
+/* ============================================================
+   2. SIDEBAR
+   ============================================================ */
+html body .sidebar {
+    display: flex !important;
+    flex-direction: column;
+    padding: 24px 14px 18px !important;
+    border-right: 0 !important;
+    background:
+        radial-gradient(420px 280px at 115% 102%, rgba(255, 138, 43, 0.42), transparent 66%), radial-gradient(360px 240px at -25% -6%, rgba(130, 255, 190, 0.26), transparent 62%),
+        linear-gradient(175deg, #14a859 0%, #0b6a39 48%, #063a24 100%) !important;
+    box-shadow: 10px 0 40px -14px rgba(6, 58, 36, 0.5);
+}
+html[data-theme="dark"] body .sidebar,
+html[data-theme="dark"] .sidebar {
+    background:
+        radial-gradient(420px 280px at 115% 102%, rgba(255, 138, 43, 0.3), transparent 66%), radial-gradient(360px 240px at -25% -6%, rgba(130, 255, 190, 0.16), transparent 62%),
+        linear-gradient(175deg, #0f8a48 0%, #08522c 48%, #04271a 100%) !important;
+}
+
+/* Thương hiệu */
+html body .sidebar .brand {
+    gap: 12px;
+    padding: 0 8px 22px !important;
+    margin-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+html body .sidebar .brand-mark {
+    position: relative;
+    width: 42px !important;
+    height: 42px !important;
+    flex: 0 0 42px !important;
+    border-radius: 14px !important;
+    background: linear-gradient(145deg, #ffffff 0%, #d6f6e3 100%) !important;
+    box-shadow:
+        0 10px 20px -8px rgba(0, 0, 0, 0.45),
+        inset 0 -2px 0 rgba(15, 122, 66, 0.12) !important;
+}
+html body .sidebar .brand-mark::after {
+    content: "";
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--dx-grad-orange);
+    border: 2px solid #0e8a4a;
+}
+html body .sidebar .brand-mark svg,
+html body .sidebar .brand-mark .hp-brand-icon {
+    width: 23px !important;
+    height: 23px !important;
+    color: var(--dx-accent) !important;
+}
+html body .sidebar .brand,
+html body .sidebar .brand:hover {
+    text-decoration: none;
+}
+html body .sidebar .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0;
+}
+html body .sidebar .brand-name {
+    color: #ffffff !important;
+    font-family: var(--dx-display) !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em;
+}
+html body .sidebar .brand-sub {
+    color: rgba(255, 255, 255, 0.66) !important;
+    font-size: 10px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+    line-height: 1.35 !important;
+    white-space: normal !important;
+}
+
+/* Nút thu gọn */
+html body .collapse-btn {
+    z-index: 3;
+    background: #ffffff !important;
+    color: var(--dx-accent) !important;
+    border: 0 !important;
+    box-shadow: 0 6px 14px -4px rgba(0, 0, 0, 0.35) !important;
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+html body .collapse-btn:hover {
+    background: var(--dx-grad-orange) !important;
+    color: #ffffff !important;
+}
+
+/* Menu */
+html body .sidebar .nav {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 8px 2px 8px 0;
+    scrollbar-width: none;
+}
+html body .sidebar .nav::-webkit-scrollbar {
+    display: none;
+}
+html body .sidebar .nav-label {
+    padding: 8px 10px 12px !important;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.55) !important;
+}
+html body .sidebar .nav .nav-item {
+    gap: 12px;
+    padding: 8px 10px !important;
+    margin: 3px 0;
+    border-radius: 14px !important;
+    color: rgba(255, 255, 255, 0.84) !important;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.25;
+    box-shadow: none !important;
+    background: transparent !important;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        box-shadow 0.2s;
+}
+html body .sidebar .nav .nav-item .nav-icon {
+    flex: 0 0 34px;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 11px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff !important;
+    transition: background 0.2s;
+}
+html body .sidebar .nav .nav-item .nav-icon svg {
+    stroke: currentColor !important;
+}
+html body .sidebar .nav .nav-item:hover,
+html body .sidebar .nav .nav-item:focus-visible {
+    background: rgba(255, 255, 255, 0.11) !important;
+    color: #ffffff !important;
+}
+html body .sidebar .nav .nav-item:hover .nav-icon,
+html body .sidebar .nav .nav-item:focus-visible .nav-icon {
+    background: rgba(255, 255, 255, 0.2);
+}
+html body .sidebar .nav .nav-item:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.8);
+    outline-offset: 2px;
+}
+
+/* Mục đang chọn: gradient cam */
+html body .sidebar .nav .nav-item.active,
+html body .sidebar .nav .nav-item.active:hover {
+    background: linear-gradient(115deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    box-shadow:
+        0 14px 24px -10px rgba(255, 107, 20, 0.75),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4) !important;
+}
+html body .sidebar .nav .nav-item.active .nav-icon {
+    background: rgba(255, 255, 255, 0.26);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* Chân sidebar */
+html body .sidebar .sidebar-foot {
+    position: relative !important;
+    inset: auto !important;
+    margin-top: 10px;
+    padding: 12px !important;
+    align-items: center;
+    gap: 11px;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(6px);
+    color: #ffffff !important;
+}
+html body .sidebar .sidebar-foot b {
+    color: #ffffff !important;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+html body .sidebar .sidebar-foot small {
+    color: rgba(255, 255, 255, 0.64) !important;
+    font-size: 10.5px;
+}
+html body .sidebar .shield {
+    flex: 0 0 32px;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: var(--dx-grad-orange) !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 14px -6px rgba(255, 107, 20, 0.8) !important;
+}
+
+/* ============================================================
+   3. TOPBAR
+   ============================================================ */
+html body .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    height: 80px;
+    background: var(--dx-topbar);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--dx-line);
+}
+html body .topbar h1 {
+    font-family: var(--dx-display);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--dx-ink);
+}
+html body .topbar .eyebrow {
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    color: var(--dx-muted);
+}
+html body .topbar .eyebrow span {
+    color: var(--dx-accent);
+}
+
+/* Khung tiêu đề: cùng nền với banner "welcome" */
+html body header.topbar,
+html body .topbar {
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 10px 24px 11px !important;
+    border-radius: 18px !important;
+    border: 1px solid var(--dx-line) !important;
+    background-color: var(--dx-surface) !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.28), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.22), transparent 70%) !important;
+    box-shadow: var(--dx-shadow) !important;
+}
+html body .topbar .eyebrow {
+    color: var(--dx-accent) !important;
+    font-weight: 700;
+}
+html body .topbar h1 {
+    margin-top: 2px;
+}
+
+/* ============================================================
+   4. DASHBOARD · BANNER CHÀO
+   ============================================================ */
+html body #module-dashboard .welcome {
+    position: relative;
+    overflow: hidden;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    border-radius: 24px;
+    border: 1px solid var(--dx-line);
+    color: var(--dx-accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background:
+        radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.28), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.22), transparent 70%), var(--dx-surface);
+    box-shadow: var(--dx-shadow);
+}
+html body #module-dashboard .welcome p {
+    margin: 8px 0 0;
+    max-width: 640px;
+    color: var(--dx-ink);
+    font-family: var(--dx-display);
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.015em;
+}
+html body #module-dashboard .welcome .live-dot {
+    margin-right: 6px;
+    background: var(--dx-g1);
+    animation: dx-pulse 2s ease-out infinite;
+}
+html body #module-dashboard .welcome .date {
+    position: relative;
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-surface);
+    color: var(--dx-ink);
+    font-size: 12.5px;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+@keyframes dx-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(44, 197, 111, 0.55);
+    }
+    100% {
+        box-shadow: 0 0 0 10px rgba(44, 197, 111, 0);
+    }
+}
+
+/* ============================================================
+   5. DASHBOARD · THẺ THỐNG KÊ
+   ============================================================ */
+html body .stat-grid {
+    gap: 18px;
+}
+html body .stat-grid .stat-card,
+html body .stat-grid .stat-card.panel {
+    position: relative !important;
+    isolation: isolate;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    min-height: 164px !important;
+    padding: 22px !important;
+    border: 0 !important;
+    border-radius: 22px !important;
+    color: #ffffff;
+    font-family: var(--dx-body) !important;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+html body .stat-grid .stat-card.green {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+    box-shadow:
+        0 24px 36px -22px rgba(11, 106, 57, 0.85),
+        inset 0 1px 0 rgba(255, 255, 255, 0.28) !important;
+}
+html body .stat-grid .stat-card.orange {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+    box-shadow:
+        0 24px 36px -22px rgba(240, 86, 10, 0.85),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35) !important;
+}
+html body .stat-grid .stat-card:hover {
+    transform: translateY(-4px) !important;
+}
+
+/* Vòng tròn trang trí */
+html body .stat-grid .stat-card::before,
+html body .stat-grid .stat-card::after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    border-radius: 50%;
+    pointer-events: none;
+}
+html body .stat-grid .stat-card::before {
+    width: 170px;
+    height: 170px;
+    right: -60px;
+    bottom: -84px;
+    background: rgba(255, 255, 255, 0.11);
+}
+html body .stat-grid .stat-card::after {
+    width: 250px;
+    height: 250px;
+    right: -100px;
+    bottom: -140px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Đầu thẻ: nhãn + icon */
+html body .stat-grid .stat-card .stat-head {
+    display: flex !important;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+html body .stat-grid .stat-card .stat-head span {
+    display: block;
+    max-width: 72%;
+    color: rgba(255, 255, 255, 0.94) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.45;
+    letter-spacing: 0.07em !important;
+}
+html body .stat-grid .stat-card .stat-head i {
+    position: static !important;
+    transform: none !important;
+    opacity: 1 !important;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    border-radius: 14px;
+    font-style: normal;
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+}
+html body .stat-grid .stat-card .stat-head i svg {
+    width: 22px !important;
+    height: 22px !important;
+    stroke-width: 1.9 !important;
+}
+
+/* Số liệu */
+html body .stat-grid .stat-card strong {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 18px 0 10px !important;
+    color: #ffffff !important;
+    font-family: var(--dx-display) !important;
+    font-size: 40px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.03em;
+}
+html body .stat-grid .stat-card small {
+    position: relative;
+    z-index: 1;
+    width: fit-content;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+}
+html body .stat-grid .stat-card .sparkline {
+    display: none !important;
+}
+
+/* ============================================================
+   6. DASHBOARD · PANEL CHUNG
+   ============================================================ */
+html body .panel {
+    border-radius: 22px !important;
+    border: 1px solid var(--dx-line) !important;
+    background: var(--dx-surface) !important;
+    box-shadow: var(--dx-shadow) !important;
+}
+html body #module-dashboard .panel {
+    padding: 24px;
+}
+html body #module-dashboard .panel h2 {
+    font-family: var(--dx-display);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--dx-ink);
+}
+html body #module-dashboard .panel-title p {
+    margin-top: 6px;
+    font-size: 12.5px;
+    color: var(--dx-muted);
+}
+html body #module-dashboard .model-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 122, 66, 0.2);
+    background: var(--dx-tint);
+    color: var(--dx-accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+html[data-theme="dark"] body #module-dashboard .model-badge {
+    color: #7ee2a8;
+    border-color: rgba(126, 226, 168, 0.25);
+}
+
+/* ============================================================
+   7. DASHBOARD · BIỂU ĐỒ ĐƯỜNG
+   ============================================================ */
+html body #module-dashboard .chart .grid-lines {
+    background: repeating-linear-gradient(to bottom, transparent 0, transparent 47px, var(--dx-line) 48px);
+}
+html body #module-dashboard .chart .y-axis,
+html body #module-dashboard .chart .x-axis {
+    color: var(--dx-muted);
+    font-size: 10.5px;
+}
+html body #module-dashboard .chart .line {
+    fill: none;
+    stroke: #2cc56f;
+    stroke: url(#dxLineGreen) #2cc56f;
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter: drop-shadow(0 6px 8px rgba(15, 122, 66, 0.3));
+}
+html body #module-dashboard .chart .line.orange-line {
+    stroke: #ff7a1f;
+    stroke: url(#dxLineOrange) #ff7a1f;
+    filter: drop-shadow(0 6px 8px rgba(240, 86, 10, 0.3));
+}
+
+html body #module-dashboard .legend {
+    gap: 10px;
+    margin-top: 14px;
+}
+html body #module-dashboard .legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 13px 6px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-row);
+    color: var(--dx-muted);
+    font-size: 12px;
+    font-weight: 600;
+}
+html body #module-dashboard .legend .dot {
+    width: 10px;
+    height: 10px;
+    margin: 0;
+}
+html body #module-dashboard .legend .green-dot {
+    background: var(--dx-grad-green);
+}
+html body #module-dashboard .legend .orange-dot {
+    background: var(--dx-grad-orange);
+}
+
+/* ============================================================
+   8. DASHBOARD · BIỂU ĐỒ TRÒN + HIỆU SUẤT MÔ HÌNH
+   ============================================================ */
+html body #module-dashboard .donut {
+    box-shadow:
+        0 0 0 6px var(--dx-row),
+        0 18px 28px -16px rgba(9, 74, 42, 0.55) !important;
+}
+html body #module-dashboard .donut:after {
+    background: var(--dx-surface);
+}
+html body #module-dashboard .donut b {
+    font-family: var(--dx-display);
+    font-size: 21px;
+    color: var(--dx-ink);
+}
+html body #module-dashboard .donut small {
+    color: var(--dx-muted);
+}
+html body #module-dashboard .donut-legend {
+    gap: 4px;
+}
+html body #module-dashboard .donut-legend span {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 7px 10px;
+    border-radius: 10px;
+    color: var(--dx-muted);
+    font-size: 12px;
+    transition: background 0.2s;
+}
+html body #module-dashboard .donut-legend span:hover {
+    background: var(--dx-row);
+}
+html body #module-dashboard .donut-legend b {
+    float: none;
+    padding: 2px 9px;
+    border-radius: 7px;
+    background: var(--dx-row);
+    color: var(--dx-ink);
+    font-size: 12px;
+}
+
+html body #module-dashboard .notice {
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(15, 122, 66, 0.16) !important;
+    background: var(--dx-tint) !important;
+    box-shadow: none !important;
+}
+html body #module-dashboard .notice > span:first-child {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: var(--dx-grad-orange);
+    color: #ffffff;
+    box-shadow: 0 10px 16px -8px rgba(240, 86, 10, 0.8);
+}
+html body #module-dashboard .notice b {
+    color: var(--dx-ink) !important;
+    font-size: 12.5px;
+    font-weight: 700;
+}
+html body #module-dashboard .notice small {
+    margin-top: 2px;
+    color: var(--dx-muted) !important;
+    font-size: 11.5px;
+}
+html body #module-dashboard .notice small strong {
+    color: var(--dx-accent) !important;
+    font-size: 13px;
+    font-weight: 800;
+}
+html[data-theme="dark"] body #module-dashboard .notice small strong {
+    color: #7ee2a8 !important;
+}
+
+/* ============================================================
+   9. DASHBOARD · BẢNG CA KHÁM GẦN ĐÂY (chỉ trong dashboard)
+   ============================================================ */
+html body #module-dashboard .text-btn {
+    padding: 7px 13px;
+    border-radius: 999px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-row);
+    color: var(--dx-accent);
+    font-size: 11.5px;
+    font-weight: 700;
+    transition:
+        background 0.2s,
+        color 0.2s,
+        border-color 0.2s;
+}
+html body #module-dashboard .text-btn:hover {
+    background: var(--dx-grad-brand);
+    border-color: transparent;
+    color: #ffffff;
+}
+
+html body #module-dashboard .table-wrap table {
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    margin-top: 8px;
+}
+html body #module-dashboard .table-wrap th {
+    padding: 8px 14px;
+    border: 0;
+    background: transparent;
+    color: var(--dx-muted);
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+html body #module-dashboard .table-wrap td {
+    padding: 14px;
+    border: 0;
+    background: var(--dx-row);
+    color: var(--dx-ink);
+    font-size: 12.5px;
+    vertical-align: middle;
+    transition: background 0.2s;
+}
+html body #module-dashboard .table-wrap td:first-child {
+    border-radius: 12px 0 0 12px;
+    color: var(--dx-accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+html body #module-dashboard .table-wrap td:last-child {
+    border-radius: 0 12px 12px 0;
+}
+html body #module-dashboard .table-wrap tbody tr:hover td {
+    background: var(--dx-tint);
+}
+html body #module-dashboard .table-wrap td.loading {
+    border-radius: 12px;
+    color: var(--dx-muted);
+}
+
+/* Nhãn trạng thái */
+html body #module-dashboard .status-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid transparent;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+}
+html body #module-dashboard .status-chip::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+}
+html body #module-dashboard .status-chip.success {
+    color: var(--dx-accent);
+    background: linear-gradient(135deg, rgba(44, 197, 111, 0.16), rgba(44, 197, 111, 0.06));
+    border-color: rgba(44, 197, 111, 0.28);
+}
+html body #module-dashboard .status-chip.warning {
+    color: #c2570a;
+    background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 138, 43, 0.07));
+    border-color: rgba(255, 138, 43, 0.32);
+}
+html body #module-dashboard .status-chip.danger {
+    color: #c24157;
+    background: linear-gradient(135deg, rgba(220, 60, 90, 0.14), rgba(220, 60, 90, 0.05));
+    border-color: rgba(220, 60, 90, 0.26);
+}
+html[data-theme="dark"] body #module-dashboard .status-chip.success {
+    color: #7ee2a8;
+}
+html[data-theme="dark"] body #module-dashboard .status-chip.warning {
+    color: #ffb070;
+}
+
+/* ============================================================
+   10. DASHBOARD · TRUY CẬP NHANH
+   ============================================================ */
+html body #module-dashboard .quick {
+    padding-bottom: 14px;
+}
+html body #module-dashboard .quick button {
+    width: 100%;
+    gap: 14px;
+    padding: 12px 14px !important;
+    margin: 0 0 10px !important;
+    border: 1px solid var(--dx-line) !important;
+    border-radius: 16px !important;
+    background: var(--dx-row) !important;
+    color: var(--dx-accent) !important;
+    text-align: left;
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        transform 0.2s;
+}
+html body #module-dashboard .quick button:hover {
+    background: var(--dx-tint) !important;
+    border-color: rgba(15, 122, 66, 0.3) !important;
+}
+html body #module-dashboard .quick button:focus-visible {
+    outline: 2px solid var(--dx-g1);
+    outline-offset: 2px;
+}
+html body #module-dashboard .quick button > svg {
+    flex: 0 0 42px;
+    width: 42px;
+    height: 42px;
+    padding: 11px;
+    border-radius: 13px;
+    color: #ffffff;
+    background: var(--dx-grad-green);
+    box-shadow: 0 10px 16px -10px rgba(15, 122, 66, 0.9);
+}
+html body #module-dashboard .quick button:nth-of-type(2n) > svg {
+    background: var(--dx-grad-orange);
+    box-shadow: 0 10px 16px -10px rgba(240, 86, 10, 0.9);
+}
+html body #module-dashboard .quick button > span b {
+    margin: 0;
+    color: var(--dx-ink) !important;
+    font-family: var(--dx-body);
+    font-size: 13.5px;
+    font-weight: 600;
+}
+html body #module-dashboard .quick button > span small {
+    margin-top: 3px;
+    color: var(--dx-muted);
+    font-size: 11.5px;
+}
+html body #module-dashboard .quick button > b {
+    flex: 0 0 30px;
+    width: 30px;
+    height: 30px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-surface);
+    color: var(--dx-accent);
+    font-size: 14px;
+    transition:
+        transform 0.2s,
+        background 0.2s,
+        color 0.2s;
+}
+html body #module-dashboard .quick button:hover > b {
+    transform: translateX(3px);
+    border-color: transparent;
+    background: var(--dx-grad-orange);
+    color: #ffffff;
+}
+
+/* ============================================================
+   11. RESPONSIVE + TRUY CẬP
+   ============================================================ */
+@media (max-width: 720px) {
+    html body .topbar {
+        height: auto;
+    }
+    html body #module-dashboard .welcome {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 20px;
+    }
+    html body #module-dashboard .welcome p {
+        font-size: 17px;
+    }
+    html body .stat-grid .stat-card strong {
+        font-size: 34px !important;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html body #module-dashboard .welcome .live-dot {
+        animation: none;
+    }
+    html body .stat-grid .stat-card,
+    html body .sidebar .nav .nav-item,
+    html body #module-dashboard .quick button,
+    html body #module-dashboard .quick button > b {
+        transition: none !important;
+    }
+    html body .stat-grid .stat-card:hover {
+        transform: none !important;
+    }
+}
+
+/* ============================================================
+   12. ÁNH XẠ BIẾN MÀU CŨ → THEME MỚI
+   Mọi module (tài khoản, bảo mật, bác sĩ, báo cáo, trang chủ...)
+   đang đọc các biến này nên tự đổi màu theo.
+   Phải khai báo lại trong html[data-theme="dark"] vì admin.css
+   cũng khai báo ở đó với độ ưu tiên cao hơn :root.
+   ============================================================ */
+:root,
+html[data-theme="dark"] {
+    --green: #1fa85a;
+    --orange: #ff7a1f;
+    --bg: var(--dx-bg);
+    --surface: var(--dx-surface);
+    --text: var(--dx-ink);
+    --muted: var(--dx-muted);
+    --line: var(--dx-line);
+    --sidebar: var(--dx-surface);
+    --shadow: var(--dx-shadow);
+
+    --admin-green: #1fa85a;
+    --admin-green-dark: #0f7a42;
+    --admin-green-soft: var(--dx-row);
+    --admin-green-border: rgba(15, 122, 66, 0.28);
+    --admin-orange: #ff7a1f;
+    --admin-orange-dark: #f0560a;
+    --admin-orange-soft: rgba(255, 138, 43, 0.12);
+    --admin-ink: var(--dx-ink);
+    --admin-muted: var(--dx-muted);
+    --admin-border: var(--dx-line);
+    --admin-border-strong: var(--dx-line-strong);
+    --admin-surface: var(--dx-surface);
+    --admin-bg: var(--dx-bg);
+    --admin-radius: 14px;
+    --admin-radius-card: 22px;
+    --admin-shadow: var(--dx-shadow);
+    --admin-shadow-green: 0 14px 24px -12px rgba(15, 122, 66, 0.7);
+    --select-option-active-bg: var(--dx-row);
+    --select-option-active-color: var(--dx-accent);
+}
+:root {
+    --dx-line-strong: #cfdcd3;
+}
+html[data-theme="dark"] {
+    --dx-line-strong: rgba(255, 255, 255, 0.16);
+    --admin-orange-soft: rgba(255, 138, 43, 0.16);
+}
+
+/* ============================================================
+   13. THANH TRÊN CÙNG: nút ngôn ngữ, theme, tài khoản
+   ============================================================ */
+html body .topbar .hp-icon-btn,
+html body .topbar .theme-button,
+html body .topbar .admin-icon-button {
+    border-radius: 12px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-row);
+    color: var(--dx-ink);
+    transition:
+        background 0.2s,
+        border-color 0.2s,
+        color 0.2s;
+}
+html body .topbar .hp-icon-btn:hover,
+html body .topbar .theme-button:hover,
+html body .topbar .admin-icon-button:hover,
+html body .topbar .hp-icon-btn[aria-expanded="true"] {
+    background: var(--dx-tint);
+    border-color: rgba(15, 122, 66, 0.3);
+    color: var(--dx-accent);
+}
+html body .topbar .hp-user-pill {
+    border-radius: 999px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-row);
+}
+html body .topbar .hp-user-avatar {
+    background: var(--dx-grad-brand) !important;
+    color: #fff !important;
+}
+html body .topbar .hp-user-meta strong {
+    color: var(--dx-ink);
+}
+html body .topbar .hp-auth-logout {
+    border-radius: 12px;
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+html body .topbar .hp-auth-logout:hover {
+    background: var(--dx-grad-orange);
+    border-color: transparent;
+    color: #fff;
+}
+html body .admin-lang-menu {
+    border-radius: 16px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-surface);
+    box-shadow: var(--dx-shadow);
+}
+html body .admin-lang-item.is-active {
+    background: var(--dx-tint);
+    color: var(--dx-accent);
+}
+
+/* ============================================================
+   14. NÚT BẤM CHUNG
+   ============================================================ */
+html body .primary,
+html body .modal button[type="submit"],
+html body #module-profile button.primary {
+    border: 0 !important;
+    border-radius: 12px;
+    color: #ffffff !important;
+    font-weight: 700;
+    background: var(--dx-grad-green) !important;
+    box-shadow:
+        0 14px 24px -12px rgba(15, 122, 66, 0.75),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25) !important;
+    transition:
+        transform 0.2s,
+        filter 0.2s,
+        box-shadow 0.2s;
+}
+html body .primary:hover,
+html body .modal button[type="submit"]:hover,
+html body #module-profile button.primary:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+}
+html body .primary:disabled {
+    filter: grayscale(0.5);
+    opacity: 0.6;
+    transform: none;
+}
+html body .outline {
+    border-radius: 12px;
+    border: 1px solid var(--dx-line) !important;
+    background: var(--dx-row) !important;
+    color: var(--dx-accent) !important;
+    font-weight: 700;
+    transition:
+        background 0.2s,
+        border-color 0.2s;
+}
+html body .outline:hover {
+    background: var(--dx-tint) !important;
+    border-color: rgba(15, 122, 66, 0.3) !important;
+}
+html body .action-icon-btn {
+    border-radius: 10px;
+}
+
+/* ============================================================
+   15. Ô NHẬP LIỆU
+   ============================================================ */
+html body input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):not([type="range"]),
+html body select,
+html body textarea {
+    border-radius: 12px;
+}
+html body input:not([type="checkbox"]):not([type="radio"]):not([type="file"]):focus,
+html body select:focus,
+html body textarea:focus {
+    outline: none !important;
+    border-color: var(--dx-g1) !important;
+    box-shadow: 0 0 0 4px rgba(44, 197, 111, 0.18) !important;
+}
+html body .toolbar .search {
+    border-radius: 14px;
+}
+
+/* ============================================================
+   16. BẢNG Ở CÁC MODULE KHÁC DASHBOARD
+   ============================================================ */
+
+html body .module:not(#module-dashboard) .table-wrap td,
+html body .admin-data-table td {
+    color: var(--dx-ink);
+    border-bottom: 1px solid var(--dx-line) !important;
+}
+
+html body .role-badge {
+    border: 1px solid rgba(15, 122, 66, 0.22);
+    background: var(--dx-tint);
+    color: var(--dx-accent);
+}
+html body .status.active,
+html body .status.pending {
+    border-radius: 999px;
+    font-weight: 700;
+}
+html body .status.active {
+    color: var(--dx-accent);
+    background: linear-gradient(135deg, rgba(44, 197, 111, 0.18), rgba(44, 197, 111, 0.06));
+}
+html body .status.pending {
+    color: #c2570a;
+    background: linear-gradient(135deg, rgba(255, 138, 43, 0.22), rgba(255, 138, 43, 0.07));
+}
+html body .table-user .avatar,
+html body .avatar {
+    background: var(--dx-grad-green);
+    color: #fff;
+}
+html body .avatar.doctor,
+html body .orange-avatar,
+html body .table-user .avatar.doctor {
+    background: var(--dx-grad-orange);
+}
+
+/* ============================================================
+   17. TIÊU ĐỀ MODULE + TAB
+   ============================================================ */
+html body .module-heading h2 {
+    font-family: var(--dx-display);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--dx-ink);
+}
+html body .admin-tabs {
+    border-bottom: 1px solid var(--dx-line);
+}
+html body .admin-tab {
+    border-radius: 12px 12px 0 0;
+    transition:
+        color 0.2s,
+        background 0.2s;
+}
+html body .admin-tab:hover {
+    background: var(--dx-tint);
+    color: var(--dx-accent);
+}
+html body .admin-tab.active {
+    color: var(--dx-accent);
+    border-image: var(--dx-grad-brand) 1;
+    border-image-slice: 1;
+    border-bottom-width: 3px;
+}
+html body .doctor-review-tabs button.active {
+    background: var(--dx-grad-green) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+
+/* ============================================================
+   18. HỒ SƠ · BẢO MẬT · DUYỆT BÁC SĨ
+   ============================================================ */
+html body .profile-cover {
+    height: 104px;
+    background: radial-gradient(220px 140px at 90% 0%, rgba(255, 255, 255, 0.35), transparent 70%), linear-gradient(120deg, #1fa85a 0%, #0f7a42 45%, #ff7a1f 120%) !important;
+}
+html body .profile-avatar {
+    border: 4px solid var(--dx-surface);
+    box-shadow: 0 12px 22px -12px rgba(9, 74, 42, 0.6);
+}
+html body .avatar-edit {
+    background: var(--dx-grad-orange) !important;
+    color: #fff !important;
+}
+html body #module-profile .profile-card-icon,
+html body .security-icon {
+    background: var(--dx-grad-green) !important;
+    color: #fff !important;
+    border: 0 !important;
+    border-radius: 14px;
+    box-shadow: 0 10px 18px -10px rgba(15, 122, 66, 0.8);
+}
+html body #module-profile .profile-card-icon-orange {
+    background: var(--dx-grad-orange) !important;
+    box-shadow: 0 10px 18px -10px rgba(240, 86, 10, 0.8);
+}
+html body .switch input:checked + span,
+html body #module-profile .switch input:checked + span {
+    background: var(--dx-grad-green) !important;
+}
+html body .security-hero {
+    border-color: var(--dx-line) !important;
+    background:
+        radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.22), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.2), transparent 70%), var(--dx-surface) !important;
+}
+html body .security-score b {
+    font-family: var(--dx-display);
+    color: var(--dx-accent);
+}
+html body .approval-row,
+html body .session-card,
+html body .audit-row,
+html body .doctor-history-row {
+    border-radius: 16px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-row);
+}
+html body .approval-approve {
+    background: var(--dx-grad-green) !important;
+    color: #fff !important;
+    border-color: transparent !important;
+}
+html body .approval-reject {
+    border-radius: 12px;
+}
+html body .audit-dot {
+    background: var(--dx-grad-green);
+}
+html body .audit-dot.danger {
+    background: var(--dx-grad-orange);
+}
+html body .certificate-upload .certificate-upload-button {
+    background: var(--dx-grad-green) !important;
+    border-color: transparent !important;
+    color: #fff !important;
+}
+html body .progress-bar {
+    background: var(--dx-row);
+    border-radius: 999px;
+}
+html body .progress-fill {
+    background: var(--dx-grad-green) !important;
+    border-radius: 999px;
+}
+html body .progress-bar.accent .progress-fill {
+    background: var(--dx-grad-orange) !important;
+}
+html body .mini-stat {
+    border-radius: 16px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-row);
+}
+html body .mini-stat:hover {
+    background: var(--dx-tint);
+}
+html body .report-number {
+    border-radius: 22px !important;
+}
+
+/* ============================================================
+   19. HỘP THOẠI (MODAL)
+   ============================================================ */
+html body .modal-backdrop {
+    background: rgba(5, 36, 22, 0.55);
+    backdrop-filter: blur(6px);
+}
+html body .modal {
+    position: relative;
+    overflow: hidden;
+    border-radius: 26px;
+    border: 1px solid var(--dx-line);
+    background: var(--dx-surface);
+    box-shadow: 0 40px 80px -30px rgba(5, 36, 22, 0.65);
+}
+html body .modal::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--dx-grad-brand);
+}
+html body .modal-close {
+    border-radius: 50%;
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+html body .modal-close:hover {
+    background: var(--dx-grad-orange);
+    color: #fff;
+}
+html body .delete-account-confirm {
+    background: linear-gradient(135deg, #ff6a5a, #d92d20) !important;
+    border: 0 !important;
+    color: #fff !important;
+}
+
+/* ============================================================
+   20. QUẢN LÝ TRANG CHỦ (CMS)
+   ============================================================ */
+html body #module-homepage .hm-editor,
+html body #module-homepage .hm-preview-column {
+    border-radius: 24px;
+    border-color: var(--dx-line);
+    background: var(--dx-surface);
+    box-shadow: var(--dx-shadow);
+}
+html body #module-homepage .hm-heading h2 {
+    font-family: var(--dx-display);
+    color: var(--dx-ink);
+}
+html body #module-homepage .hm-sections {
+    border-bottom-color: var(--dx-line);
+}
+html body #module-homepage .hm-sections button,
+html body #module-homepage .hm-preview-toolbar button {
+    border-radius: 12px;
+    color: var(--dx-muted);
+}
+html body #module-homepage .hm-sections button.active,
+html body #module-homepage .hm-preview-toolbar button.active {
+    background: var(--dx-tint);
+    border-color: rgba(15, 122, 66, 0.25);
+    color: var(--dx-accent);
+}
+html body #module-homepage .hm-upload-button,
+html body #module-homepage .hm-add-banner,
+html body #module-homepage .hm-calendar-actions .hm-calendar-confirm,
+html body #module-homepage .hm-day.is-selected {
+    background: var(--dx-grad-green);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 12px 20px -12px rgba(15, 122, 66, 0.8);
+}
+html body #module-homepage .hm-field input,
+html body #module-homepage .hm-field textarea,
+html body #module-homepage .hm-field select,
+html body #module-homepage .hm-date-trigger {
+    border-color: var(--dx-line);
+    background: var(--dx-surface);
+    color: var(--dx-ink);
+}
+html body #module-homepage .hm-image-tools {
+    border-color: rgba(15, 122, 66, 0.35);
+    background: var(--dx-row);
+}
+html body #module-homepage .hm-image-tools button,
+html body #module-homepage .hm-banner-actions button {
+    border-color: var(--dx-line);
+    background: var(--dx-row);
+    color: var(--dx-accent);
+}
+html body #module-homepage .hm-banner-item {
+    border-color: var(--dx-line);
+    background: var(--dx-row);
+    border-radius: 16px;
+}
+html body #module-homepage .hm-preview-screen {
+    background: var(--dx-row);
+}
+html body #module-homepage .hm-site-hero {
+    background: linear-gradient(135deg, #0f7a42 0%, #1fa85a 55%, #ff7a1f 130%);
+}
+html body #module-homepage .hm-site-footer {
+    background: linear-gradient(160deg, #0a3d24, #052a1b);
+}
+html[data-theme="dark"] body #module-homepage .hm-editor,
+html[data-theme="dark"] body #module-homepage .hm-preview-column,
+html[data-theme="dark"] body #module-homepage .hm-date-trigger,
+html[data-theme="dark"] body #module-homepage .hm-calendar-popover {
+    background: var(--dx-surface);
+    border-color: var(--dx-line);
+}
+html[data-theme="dark"] body #module-homepage .hm-field input,
+html[data-theme="dark"] body #module-homepage .hm-field textarea {
+    background: var(--dx-row);
+    border-color: var(--dx-line);
+}
+
+/* ============================================================
+   21. DROPDOWN TUỲ CHỈNH + LỊCH
+   ============================================================ */
+html body .custom-select-trigger,
+html body .custom-date-trigger.custom-date-trigger {
+    border-radius: 12px;
+}
+html body .custom-select-menu,
+html body .custom-date-calendar {
+    border-radius: 18px;
+    border-color: var(--dx-line);
+    background: var(--dx-surface);
+    box-shadow: var(--dx-shadow);
+}
+html body .custom-date-day[aria-pressed="true"] {
+    background: var(--dx-grad-green);
+}
+html body .custom-select-check {
+    color: var(--dx-accent);
+}

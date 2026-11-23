@@ -10,7 +10,7 @@ set PYTHONUTF8=1
 echo.
 echo ===============================================================================
 echo      DERMASCAN AI - HE THONG CHAN DOAN UNG THU DA THONG MINH
-echo      Web App + AI Background Worker + Disk Cache (No Docker / No Redis)
+echo      Web App + AI Background Worker + Disk Cache 
 echo ===============================================================================
 echo.
 
@@ -48,8 +48,8 @@ echo.
 echo -------------------------------------------------------------------------------
 echo   - Dia chi Web   : http://localhost:5000
 echo   - Tai khoan    : admin@dermascan.local, doctor@dermascan.local, patient@dermascan.local
-echo   - Cache du lieu : SQLite Disk Cache (instance\cache.db - Khong can Docker)
-echo   - Background AI : Tu dong chay ngam (Khong can mo them terminal khac)
+echo   - Cache du lieu : SQLite Disk Cache 
+echo   - Background AI : Tu dong chay ngam 
 echo   - Dung server   : Nhan to hop phim Ctrl + C
 echo -------------------------------------------------------------------------------
 echo.

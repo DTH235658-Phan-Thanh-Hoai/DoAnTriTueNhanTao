@@ -1,0 +1,4121 @@
+/* ============================================================
+   DERMASCAN AI · PREMIUM THEME (BẢN HOÀN CHỈNH - FIX TOÀN BỘ)
+   ============================================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+
+/* ============================================================
+   1. ÉP FONT CHỮ TOÀN CỤC (MONTSERRAT)
+   ============================================================ */
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video,
+button,
+input,
+select,
+textarea {
+    font-family: "Montserrat", sans-serif !important;
+}
+
+/* ============================================================
+   2. TOPBAR ADMIN: GRADIENT XANH ĐẬM + NÚT CAM
+   ============================================================ */
+html body .topbar {
+    background: linear-gradient(135deg, #18914e 0%, #0b491e 100%) !important;
+    border: none !important;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15) !important;
+    border-radius: 16px !important;
+    margin: 16px 24px 0 !important;
+    padding: 12px 24px !important;
+}
+html body .topbar-heading {
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+html body .topbar h1,
+html body .topbar .eyebrow,
+html body .topbar .eyebrow span {
+    color: #ffffff !important;
+}
+html body .topbar .hp-icon-btn {
+    background: #fd8624 !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 10px rgba(253, 134, 36, 0.3) !important;
+}
+html body .topbar .hp-icon-btn:hover {
+    background: #e06a09 !important;
+}
+html body .topbar .hp-user-pill {
+    background: rgba(253, 134, 36, 0.15) !important;
+    border: 1px solid #fd8624 !important;
+}
+html body .topbar .hp-user-avatar {
+    background: #fd8624 !important;
+    color: #ffffff !important;
+}
+html body .topbar .hp-user-meta strong,
+html body .topbar .hp-user-meta small {
+    color: #ffffff !important;
+}
+html body .topbar .hp-auth-logout {
+    background: #ffffff !important;
+    color: #fd8624 !important;
+    border: none !important;
+    font-weight: 700 !important;
+}
+html body .topbar .hp-auth-logout:hover {
+    background: #fff3e8 !important;
+}
+html body .topbar .hp-auth-divider {
+    background: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ============================================================
+   3. NAVBAR BÁC SĨ/BỆNH NHÂN: NỀN XANH TỐI + TAB CAM + LIQUID GLASS
+   ============================================================ */
+html body header.hp-nav.nav {
+    background:
+        radial-gradient(520px 320px at 100% 0%, rgba(255, 122, 31, 0.26), transparent 65%), radial-gradient(560px 340px at 0% 100%, rgba(44, 197, 111, 0.18), transparent 60%),
+        linear-gradient(160deg, #0a3d24 0%, #07422a 45%, #052a1b 100%) !important;
+    border-bottom: none !important;
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5) !important;
+}
+html body header.hp-nav.nav::after {
+    display: none !important;
+}
+html body header.hp-nav .brand-name {
+    color: #ffffff !important;
+}
+html body header.hp-nav .brand-sub {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+html body header.hp-nav .doctor-nav {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+}
+html body header.hp-nav .doctor-nav-tab {
+    color: rgba(255, 255, 255, 0.7) !important;
+    transition: all 0.3s ease !important;
+}
+html body header.hp-nav .doctor-nav-tab:hover:not(.is-active) {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #ffffff !important;
+}
+html body header.hp-nav .doctor-nav-tab.is-active {
+    background: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 15px rgba(255, 118, 32, 0.4) !important;
+    border: none !important;
+}
+/* Liquid Glass Buttons */
+html body header.hp-nav .hp-icon-btn,
+html body header.hp-nav .hp-user-pill {
+    background: rgba(255, 255, 255, 0.08) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.2),
+        0 4px 10px rgba(0, 0, 0, 0.15) !important;
+    transition: all 0.3s ease !important;
+}
+html body header.hp-nav .hp-icon-btn:hover,
+html body header.hp-nav .hp-user-pill:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-1px) !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        0 6px 15px rgba(0, 0, 0, 0.2) !important;
+}
+html body header.hp-nav .hp-user-meta strong {
+    color: #ffffff !important;
+}
+html body header.hp-nav .hp-user-meta small {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+html body header.hp-nav .hp-user-avatar {
+    background: linear-gradient(135deg, #2ba149, #18914e) !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3) !important;
+}
+html body header.hp-nav .hp-auth-logout {
+    background: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    font-weight: 700 !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        0 4px 15px rgba(255, 118, 32, 0.4) !important;
+    transition: all 0.3s ease !important;
+}
+html body header.hp-nav .hp-auth-logout:hover {
+    transform: translateY(-1px) !important;
+    box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.4),
+        0 6px 20px rgba(255, 118, 32, 0.6) !important;
+}
+html body header.hp-nav .hp-auth-login {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(12px) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+html body header.hp-nav .hp-auth-register {
+    background: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(255, 118, 32, 0.4) !important;
+}
+
+/* ============================================================
+   4. 4 THẺ THỐNG KÊ BÁC SĨ (CHUẨN ADMIN: XANH CAM XEN KẼ, CĂN TRÁI)
+   ============================================================ */
+html body .doctor-stats-cards {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 18px !important;
+    margin: 24px 0 !important;
+}
+html body .doctor-stat-card {
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important; /* Căn trái */
+    text-align: left !important;
+    min-height: 164px !important;
+    padding: 22px !important;
+    border: none !important;
+    border-radius: 22px !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+html body .doctor-stat-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25) !important;
+}
+html body .doctor-stat-card.green {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+html body .doctor-stat-card.orange {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+html body .doctor-stat-card .stat-head {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    z-index: 2 !important;
+}
+html body .doctor-stat-card .stat-head span {
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+    max-width: 75% !important;
+}
+html body .doctor-stat-card .stat-head i {
+    position: absolute !important;
+    right: -15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #ffffff !important;
+    opacity: 0.15 !important;
+    z-index: 1 !important;
+}
+html body .doctor-stat-card .stat-head i svg {
+    width: 100px !important;
+    height: 100px !important;
+    stroke-width: 1.5 !important;
+}
+html body .doctor-stat-card strong {
+    color: #ffffff !important;
+    font-size: 40px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    margin: 15px 0 10px !important;
+    z-index: 2 !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+}
+html body .doctor-stat-card small {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.2) !important;
+    padding: 4px 11px !important;
+    border-radius: 999px !important;
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    width: fit-content !important;
+    z-index: 2 !important;
+}
+
+/* ============================================================
+   5. TRANG LỊCH SỬ: BỘ LỌC & BẢNG
+   ============================================================ */
+
+/* --- BỘ LỌC: Nền Xanh-Cam nhạt --- */
+html body .history-filters {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+    gap: 16px !important;
+    background-color: #ffffff !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.15), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.12), transparent 70%) !important;
+    padding: 24px !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 24px !important;
+}
+html body .history-filter-group label {
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    white-space: nowrap !important;
+}
+html body .history-filter-group input,
+html body .history-filter-group select,
+html body .history-search-group input {
+    height: 42px !important;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 0 14px !important;
+    font-size: 13.5px !important;
+    color: #1e293b !important;
+    background: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+    transition: all 0.2s ease !important;
+    width: 100% !important;
+}
+html body .history-filter-group input:focus,
+html body .history-filter-group select:focus,
+html body .history-search-group input:focus {
+    border-color: #18914e !important;
+    box-shadow: 0 0 0 3px rgba(24, 145, 78, 0.15) !important;
+    outline: none !important;
+}
+html body .history-search-group {
+    flex: 1 1 100% !important;
+    margin-top: 4px !important;
+}
+html body .history-export-btn {
+    height: 42px !important;
+    padding: 0 20px !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(255, 118, 32, 0.3) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-left: auto !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+html body .history-export-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(255, 118, 32, 0.5) !important;
+}
+
+/* --- BẢNG DỮ LIỆU --- */
+html body .history-timeline {
+    border-radius: 16px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+    background: #ffffff !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+}
+html body .history-table {
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+}
+/* Tiêu đề bảng: Gradient liền mạch + Căn giữa */
+html body .history-table thead tr {
+    background: linear-gradient(135deg, #0b491e 0%, #18914e 100%) !important;
+}
+html body .history-table th {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    padding: 18px 16px !important;
+    border: none !important;
+    text-align: center !important;
+    box-shadow: none !important;
+}
+/* Nội dung bảng */
+html body .history-table td {
+    background: #ffffff !important;
+    background-image: none !important;
+    padding: 16px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    font-size: 14px !important;
+    color: #1e293b !important;
+    vertical-align: middle !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-align: center !important;
+}
+/* Cột Chẩn đoán AI (Cột 4) căn trái cho dễ đọc */
+html body .history-table td:nth-child(4) {
+    font-size: 13.5px !important;
+    line-height: 1.6 !important;
+    color: #475569 !important;
+    max-width: 350px !important;
+    text-align: left !important;
+}
+/* Hover dòng: Xanh lá nhạt */
+html body .history-table tbody tr:hover td {
+    background: #e6f5eb !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-color: #d1fae5 !important;
+}
+/* Nút con mắt: Nền xanh đậm, icon trắng */
+html body .history-action-btn.action-icon-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    background: #18914e !important;
+    border: 1px solid #18914e !important;
+    color: #ffffff !important;
+    padding: 0 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(24, 145, 78, 0.2) !important;
+}
+html body .history-action-btn.action-icon-btn:hover {
+    background: #0b491e !important;
+    border-color: #0b491e !important;
+    box-shadow: 0 4px 12px rgba(24, 145, 78, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+/* ============================================================
+   LÀM ĐẸP KHU VỰC "CÔNG CỤ SAU PHÂN TÍCH" & "KẾT QUẢ ĐO LƯỜNG"
+   ============================================================ */
+
+/* 1. Khung chứa chung */
+html body #analyze .workflow-tools,
+html body #analyze .measurement-result {
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
+    padding: 24px !important;
+}
+
+html body #analyze .measurement-result h5 {
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    color: #1e293b !important;
+    margin-bottom: 16px !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 2. 3 Thẻ Kết quả đo lường (Siêu xịn - Giống Dashboard) */
+html body #analyze .measurement-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+}
+
+html body #analyze .measurement-grid > div {
+    position: relative !important;
+    overflow: hidden !important;
+    padding: 20px 16px !important;
+    border-radius: 18px !important;
+    border: none !important;
+    text-align: center !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.15) !important;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+
+html body #analyze .measurement-grid > div:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 25px -5px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Ô 1 (Diện tích) & Ô 3 (Tỷ lệ): Gradient Xanh Lá */
+html body #analyze .measurement-grid > div:nth-child(1),
+html body #analyze .measurement-grid > div:nth-child(3) {
+    background: radial-gradient(150px 100px at 100% 0%, rgba(255, 255, 255, 0.2), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+
+/* Ô 2 (Chu vi): Gradient Cam */
+html body #analyze .measurement-grid > div:nth-child(2) {
+    background: radial-gradient(150px 100px at 100% 0%, rgba(255, 255, 255, 0.25), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+
+/* Chữ bên trong thẻ đo lường */
+html body #analyze .measurement-grid > div span {
+    display: block !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 8px !important;
+}
+html body #analyze .measurement-grid > div strong {
+    display: block !important;
+    color: #ffffff !important;
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    line-height: 1 !important;
+    margin: 8px 0 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+html body #analyze .measurement-grid > div small {
+    display: block !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 12px !important;
+    font-weight: 500 !important;
+}
+
+/* 3. Các nút Công cụ (Premium Glassmorphism Hover) */
+html body #analyze .workflow-action-btn {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 14px !important;
+    color: #475569 !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    padding: 14px 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Hiệu ứng Hover: Nền xanh nhạt, chữ xanh đậm, nhấc lên */
+html body #analyze .workflow-action-btn:hover:not(:disabled) {
+    background: #ffffff !important;
+    border-color: #18914e !important;
+    color: #18914e !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px -6px rgba(24, 145, 78, 0.3) !important;
+}
+
+/* Nút "Xem Timeline" đặc biệt một chút (vì có icon) */
+html body #analyze #viewTimelineBtn {
+    background: rgba(24, 145, 78, 0.08) !important;
+    border-color: #18914e !important;
+    color: #18914e !important;
+    font-weight: 700 !important;
+}
+html body #analyze #viewTimelineBtn:hover {
+    background: #18914e !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 20px -6px rgba(24, 145, 78, 0.5) !important;
+}
+
+/* Nút đang bị Disabled (chưa phân tích xong) */
+html body #analyze .workflow-action-btn:disabled {
+    background: #f1f5f9 !important;
+    color: #94a3b8 !important;
+    border-color: #e2e8f0 !important;
+    cursor: not-allowed !important;
+    opacity: 0.7 !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+/* ============================================================
+   LÀM ĐẬM NÚT CÔNG CỤ & TỰ ĐỘNG CHÈN ICON
+   ============================================================ */
+
+/* 1. Nền tảng chung: Xanh Lá Đậm Gradient, Chữ Trắng */
+html body #analyze .workflow-action-btn {
+    background: linear-gradient(135deg, #07422a 0%, #0f7a42 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    padding: 14px 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    transition: all 0.25s ease !important;
+    box-shadow: 0 4px 12px rgba(11, 73, 30, 0.3) !important;
+}
+
+/* 2. Hiệu ứng Hover: Sáng lên và nhấc lên */
+html body #analyze .workflow-action-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #0f7a42 0%, #18914e 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px rgba(24, 145, 78, 0.5) !important;
+}
+
+/* 3. Trạng thái Disabled: Xám Đậm, không có bóng */
+html body #analyze .workflow-action-btn:disabled {
+    background: #334155 !important; /* Xám xanh đậm */
+    color: #94a3b8 !important;
+    box-shadow: none !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+/* Đè lại màu cho nút Xem Timeline để nó đồng bộ với các nút khác */
+html body #analyze #viewTimelineBtn {
+    background: linear-gradient(135deg, #07422a 0%, #0f7a42 100%) !important;
+    color: #ffffff !important;
+}
+html body #analyze #viewTimelineBtn:hover {
+    background: linear-gradient(135deg, #0f7a42 0%, #18914e 100%) !important;
+}
+
+/* ============================================================
+   4. TỰ ĐỘNG CHÈN ICON (Dùng SVG Mask)
+   ============================================================ */
+
+/* Icon Đo tổn thương (Thước kẻ) */
+html body #analyze #measureBtn::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 8.7l-6-6a1 1 0 0 0-1.4 0l-12 12a1 1 0 0 0 0 1.4l6 6a1 1 0 0 0 1.4 0l12-12a1 1 0 0 0 0-1.4z"/><path d="M14.5 12.5l-2-2"/><path d="M11.5 15.5l-2-2"/><path d="M8.5 18.5l-2-2"/><path d="M17.5 9.5l-2-2"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 8.7l-6-6a1 1 0 0 0-1.4 0l-12 12a1 1 0 0 0 0 1.4l6 6a1 1 0 0 0 1.4 0l12-12a1 1 0 0 0 0-1.4z"/><path d="M14.5 12.5l-2-2"/><path d="M11.5 15.5l-2-2"/><path d="M8.5 18.5l-2-2"/><path d="M17.5 9.5l-2-2"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* Icon Xuất PDF (File) */
+html body #analyze #exportPdfBtn::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* Icon Xuất Excel (Bảng tính) */
+html body #analyze #exportExcelBtn::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* Icon Tải PDF (Mũi tên tải xuống) */
+html body #analyze #downloadPdfBtn::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* Icon Gửi Email (Phong bì) */
+html body #analyze #sendEmailBtn::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>')
+        no-repeat center / contain !important;
+}
+/* HIỆU ỨNG HOVER MỚI: Nền xanh đậm, chữ trắng */
+html body #analyze .workflow-action-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important; /* Nền xanh lá gradient */
+    color: #ffffff !important; /* Ép chữ sang màu trắng */
+    border-color: #2ba149 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 20px -6px rgba(43, 161, 73, 0.5) !important; /* Đổ bóng xanh cho nổi khối */
+}
+
+/* Nếu bạn muốn icon SVG bên trong cũng chuyển sang màu trắng theo */
+html body #analyze .workflow-action-btn:hover:not(:disabled) svg {
+    stroke: #ffffff !important;
+    color: #ffffff !important;
+}
+/* ========================================================
+   OVERRIDE: THANH CÔNG CỤ THỐNG KÊ (STATS TOOLBAR)
+   ======================================================== */
+
+/* 1. Nền thẻ div giống Topbar (Radial Gradient Xanh - Cam) */
+html body .doctor-stats-toolbar {
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 16px !important;
+    padding: 20px 24px !important;
+    margin-bottom: 24px !important;
+
+    /* Copy CSS nền từ Topbar của bạn */
+    border-radius: 18px !important;
+    border: 1px solid var(--dx-line, #e2e8f0) !important;
+    background-color: var(--dx-surface, #ffffff) !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.28), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.22), transparent 70%) !important;
+    box-shadow: var(--dx-shadow, 0 8px 28px rgba(15, 23, 42, 0.05)) !important;
+}
+
+/* Ô input ngày tháng */
+html body .doctor-stats-toolbar > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+html body .doctor-stats-toolbar label {
+    color: var(--ink-700, #334155) !important;
+    font-weight: 600 !important;
+    font-size: 12.5px !important;
+}
+html body .doctor-stats-toolbar input {
+    background: rgba(255, 255, 255, 0.8) !important; /* Hơi trong suốt để lộ nền gradient nhẹ */
+    backdrop-filter: blur(4px) !important;
+    border-color: var(--dx-line, #dce8e3) !important;
+}
+
+/* 2. Nút Cập nhật: Thu gọn, có Icon, nền Xanh lá như cũ */
+html body #statsApplyBtn.btn-primary {
+    width: auto !important;
+    flex: 0 0 auto !important;
+    margin-left: auto !important;
+    min-height: 44px !important;
+    padding: 0 24px !important;
+    border-radius: 12px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+
+    /* Trả lại nền Xanh lá Gradient */
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: 0 8px 20px -6px rgba(43, 161, 73, 0.4) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html body #statsApplyBtn.btn-primary:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 24px -6px rgba(43, 161, 73, 0.6) !important;
+    color: #ffffff !important;
+}
+
+/* 3. Tự động chèn Icon (Vòng tròn tải lại) */
+html body #statsApplyBtn.btn-primary::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21v-5h5"/></svg>')
+        no-repeat center / contain !important;
+    flex-shrink: 0 !important;
+}
+/* ========================================================
+   OVERRIDE: TRANG SO SÁNH (COMPARE PAGE)
+   ======================================================== */
+
+/* 1. Nút "So sánh hai ảnh": Thu gọn, căn phải, có icon, nền cam gradient */
+html body #compareBtn.compare-compare-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: max-content !important; /* Không kéo dài full chiều ngang */
+    margin-left: auto !important; /* Căn lề phải */
+    margin-top: 24px !important;
+    padding: 12px 28px !important;
+    border-radius: 12px !important;
+
+    /* Màu nền Cam Gradient */
+    background: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    border: none !important;
+    box-shadow: 0 8px 20px -6px rgba(255, 118, 32, 0.5) !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html body #compareBtn.compare-compare-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, #e0711c 0%, #d4601b 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 12px 24px -6px rgba(255, 118, 32, 0.7) !important;
+}
+
+/* Chèn Icon đối chiếu/so sánh vào nút */
+html body #compareBtn.compare-compare-btn::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>')
+        no-repeat center / contain !important;
+    flex-shrink: 0 !important;
+}
+
+/* 2. Các thẻ card Kết quả so sánh: Nền Gradient Xanh - Cam đậm xen kẽ */
+html body .compare-result-content .compare-result-item {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 16px !important;
+    padding: 20px 16px !important;
+    border: none !important;
+    text-align: center !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+
+html body .compare-result-content .compare-result-item:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Thẻ lẻ (1, 3): Gradient Xanh Lá đậm */
+html body .compare-result-content .compare-result-item:nth-child(odd) {
+    background: radial-gradient(150px 100px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+
+/* Thẻ chẵn (2, 4): Gradient Cam đậm */
+html body .compare-result-content .compare-result-item:nth-child(even) {
+    background: radial-gradient(150px 100px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+
+/* Chữ bên trong thẻ (Label & Value) */
+html body .compare-result-content .compare-result-label {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    margin-bottom: 8px !important;
+}
+
+html body .compare-result-content .compare-result-value {
+    color: #ffffff !important;
+    font-family: "Montserrat", "Sora", sans-serif !important;
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    line-height: 1.2 !important;
+}
+/* ========================================================
+   OVERRIDE: GIAO DIỆN BỆNH NHÂN (PATIENT PORTAL)
+   ======================================================== */
+
+/* ========================================================
+   GIAO DIỆN BỆNH NHÂN (PATIENT PORTAL) - BẢN CHỐT
+   ======================================================== */
+
+/* 1. THẺ THỐNG KÊ (STAT CARDS) - Căn trái, gọn gàng như Admin */
+html body .patient-stat-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important; /* Khoảng cách vừa vặn */
+    margin-bottom: 24px !important;
+}
+
+html body .patient-stat-card {
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important; /* Ép nội dung sang trái */
+    text-align: left !important;
+    min-height: 145px !important;
+    padding: 22px !important;
+    border: none !important;
+    border-radius: 18px !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+
+html body .patient-stat-card:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Màu nền Xanh cho thẻ 1 & 3 */
+html body .patient-stat-card:nth-child(1),
+html body .patient-stat-card:nth-child(3) {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+
+/* Màu nền Cam cho thẻ 2 */
+html body .patient-stat-card:nth-child(2) {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+
+/* Khối chứa chữ: Căn trái */
+html body .patient-stat-card .patient-stat-info {
+    position: relative !important;
+    z-index: 2 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+}
+
+html body .patient-stat-card .patient-stat-info small {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 11.5px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    margin-bottom: 10px !important;
+}
+
+html body .patient-stat-card .patient-stat-info strong {
+    color: #ffffff !important;
+    font-size: 38px !important;
+    font-weight: 800 !important;
+    font-family: "Montserrat", "Sora", sans-serif !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    line-height: 1 !important;
+}
+
+/* Icon mờ khổng lồ nép ở góc phải */
+html body .patient-stat-card .patient-stat-icon {
+    position: absolute !important;
+    right: -10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 110px !important;
+    height: 110px !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    opacity: 0.15 !important;
+    z-index: 1 !important;
+    display: grid !important;
+    place-items: center !important;
+}
+
+html body .patient-stat-card .patient-stat-icon svg {
+    width: 100px !important;
+    height: 100px !important;
+    stroke-width: 1.2 !important;
+}
+
+/* 2. FORM HỒ SƠ CÁ NHÂN - Dàn đều 2 hàng (3 ô trên, 2 ô dưới) */
+html body .patient-form-grid {
+    display: grid !important;
+    grid-template-columns: repeat(6, 1fr) !important;
+    gap: 20px !important;
+}
+
+/* 3 ô đầu tiên chiếm 2 cột (Hàng 1) */
+html body .patient-form-grid > .patient-form-field:nth-child(1),
+html body .patient-form-grid > .patient-form-field:nth-child(2),
+html body .patient-form-grid > .patient-form-field:nth-child(3) {
+    grid-column: span 2 !important;
+}
+
+/* 2 ô tiếp theo chiếm 3 cột (Hàng 2) */
+html body .patient-form-grid > .patient-form-field:nth-child(4),
+html body .patient-form-grid > .patient-form-field:nth-child(5) {
+    grid-column: span 3 !important;
+}
+
+/* 3. NỀN THẺ HỒ SƠ - Copy Gradient Xanh Cam của Topbar */
+html body #patientProfilePage .patient-glass-card {
+    background-color: var(--dx-surface, #ffffff) !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.18), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.15), transparent 70%) !important;
+    border: 1px solid var(--dx-line, #e2e8f0) !important;
+    box-shadow: var(--dx-shadow, 0 8px 28px rgba(15, 23, 42, 0.05)) !important;
+    padding: 30px !important;
+    border-radius: 20px !important;
+}
+
+/* Ô input bên trong thẻ hồ sơ */
+html body #patientProfilePage .patient-form-field input,
+html body #patientProfilePage .patient-form-field select {
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+}
+
+html body #patientProfilePage .patient-form-field input:focus,
+html body #patientProfilePage .patient-form-field select:focus {
+    background: #ffffff !important;
+    border-color: #2ba149 !important;
+    box-shadow: 0 0 0 3px rgba(43, 161, 73, 0.15) !important;
+}
+
+/* 4. Responsive cho điện thoại */
+@media (max-width: 900px) {
+    html body .patient-form-grid {
+        grid-template-columns: 1fr !important;
+    }
+    html body .patient-form-grid > .patient-form-field {
+        grid-column: span 1 !important;
+    }
+    html body .patient-stat-grid {
+        grid-template-columns: 1fr !important;
+    }
+} /* ========================================================
+   KHÔI PHỤC CSS TIÊU ĐỀ TOPBAR (ADMIN)
+   ======================================================== */
+
+/* Khung chứa tiêu đề */
+html body .topbar .topbar-heading {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+/* Dòng chữ nhỏ: DERMASCAN AI / DASHBOARD */
+html body .topbar .eyebrow {
+    font-family: "Sora", "Inter", sans-serif !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.12em !important;
+    color: #64748b !important; /* Màu xám xanh dịu mắt */
+    margin: 0 0 4px 0 !important;
+}
+
+/* Nổi bật chữ DASHBOARD (nằm trong thẻ span) */
+html body .topbar .eyebrow span#breadcrumb {
+    color: #2ba149 !important; /* Màu xanh lá thương hiệu */
+}
+
+/* Dòng chữ lớn: Dashboard Tổng Quan */
+html body .topbar h1#page-title {
+    font-family: "Sora", "Inter", sans-serif !important;
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important; /* Màu đen xanh đậm, cực kỳ nổi bật trên nền sáng */
+    margin: 0 !important;
+    letter-spacing: -0.02em !important;
+}
+/* ========================================================
+   FIX MÀU CHỮ THÔNG TIN ADMIN TRÊN TOPBAR
+   ======================================================== */
+
+/* Đổi màu chữ "Quản trị viên" thành màu xám đậm để nổi bật trên nền sáng */
+html body .topbar .hp-user-meta small {
+    color: #64748b !important; /* Màu xám xanh */
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+}
+
+/* Đảm bảo tên Admin (ví dụ: Quản trị viên) có màu tối, rõ nét */
+html body .topbar .hp-user-meta strong {
+    color: #0f172a !important; /* Màu đen xanh đậm */
+    font-weight: 800 !important;
+}
+
+/* Chỉnh lại nền của cục User (viên thuốc) cho nó nổi bật trên nền topbar */
+html body .topbar .hp-user-pill {
+    background: #ffffff !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Đảm bảo Avatar vẫn giữ màu xanh lá hoặc màu cam cho đẹp */
+html body .topbar .hp-user-avatar {
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+}
+/* ========================================================
+   OVERRIDE TOÀN DIỆN: BẢNG QUẢN LÝ TÀI KHOẢN (ADMIN)
+   ======================================================== */
+
+/* 1. THANH BỘ LỌC (TOOLBAR) - Sắp xếp khoa học */
+html body #module-accounts .toolbar {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    flex-wrap: wrap !important;
+    padding: 16px 20px !important;
+    background: #f8fafc !important;
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    margin-bottom: 20px !important;
+}
+
+/* Nút Xóa bộ lọc - Màu xanh + Icon */
+html body #user-reset-filters {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 9px 16px !important;
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 10px -4px rgba(43, 161, 73, 0.4) !important;
+}
+
+html body #user-reset-filters:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 14px -4px rgba(43, 161, 73, 0.6) !important;
+}
+
+/* Chèn Icon cái chổi/xóa vào nút */
+html body #user-reset-filters::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 2. HEADER BẢNG (TH) - Nền xanh gradient, căn giữa */
+html body #module-accounts table thead th {
+    background: linear-gradient(135deg, #0b491e 0%, #18914e 100%) !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    padding: 16px 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    border: none !important;
+}
+
+/* 3. HOVER DÒNG - Chỉ màu xanh nhạt, không đổi màu khác */
+html body #module-accounts table tbody tr {
+    transition: background-color 0.2s ease !important;
+}
+html body #module-accounts table tbody tr:hover td {
+    background-color: #f0fdf4 !important; /* Xanh lá siêu nhạt */
+    box-shadow: none !important;
+    border-color: #e2e8f0 !important;
+}
+/* Căn giữa nội dung các ô (trừ cột Người dùng và Email) */
+html body #module-accounts table tbody td:nth-child(3),
+html body #module-accounts table tbody td:nth-child(4),
+html body #module-accounts table tbody td:nth-child(5) {
+    text-align: center !important;
+}
+
+/* 4. SELECT VAI TRÒ - Mở rộng, tăng cỡ chữ */
+html body .role-select {
+    min-width: 130px !important; /* Kéo rộng ra */
+    padding: 8px 32px 8px 14px !important;
+    font-size: 13.5px !important; /* Tăng cỡ chữ */
+    font-weight: 600 !important;
+    color: #18914e !important;
+    background-color: #ecfdf5 !important;
+    border: 1px solid #a7f3d0 !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    outline: none !important;
+    appearance: none !important;
+    /* Mũi tên custom */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2318914e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: right 10px center !important;
+}
+html body .role-select:focus {
+    border-color: #2ba149 !important;
+    box-shadow: 0 0 0 3px rgba(43, 161, 73, 0.15) !important;
+}
+
+/* 5. NÚT THAO TÁC (Khóa & Xóa) */
+html body .action-icon-btn {
+    width: 34px !important;
+    height: 34px !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Nút Khóa/Mở khóa - Nền xanh nhạt, hover Xanh đậm */
+html body .action-icon-btn.btn-lock,
+html body .action-icon-btn.btn-unlock {
+    background: rgba(43, 161, 73, 0.12) !important;
+    border: 1px solid rgba(43, 161, 73, 0.3) !important;
+    color: #18914e !important;
+}
+html body .action-icon-btn.btn-lock:hover,
+html body .action-icon-btn.btn-unlock:hover {
+    background: #18914e !important; /* Xanh đậm */
+    border-color: #18914e !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px -2px rgba(24, 145, 78, 0.4) !important;
+}
+
+/* Nút Xóa - Nền cam nhạt, hover Cam đậm */
+html body .action-icon-btn.btn-delete {
+    background: rgba(253, 134, 36, 0.12) !important;
+    border: 1px solid rgba(253, 134, 36, 0.3) !important;
+    color: #e0711c !important; /* Cam đậm */
+}
+html body .action-icon-btn.btn-delete:hover {
+    background: #fd8624 !important; /* Cam đậm */
+    border-color: #fd8624 !important;
+    color: #ffffff !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 10px -2px rgba(253, 134, 36, 0.4) !important;
+}
+/* ========================================================
+   OVERRIDE LẦN CUỐI: BẢNG QUẢN LÝ TÀI KHOẢN (ADMIN)
+   ======================================================== */
+
+/* 1. NÚT "XÓA BỘ LỌC" - Đồng bộ với nút "Thêm tài khoản" */
+html body #user-reset-filters {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 16px !important;
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+}
+
+html body #user-reset-filters:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 16px -4px rgba(43, 161, 73, 0.7) !important;
+}
+
+/* Icon nút Xóa bộ lọc */
+html body #user-reset-filters::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 2. HEADER BẢNG (TH) - Gradient Xanh giống hệt bên Doctor */
+html body #module-accounts table thead th {
+    background: linear-gradient(135deg, #0b491e 0%, #18914e 100%) !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    padding: 16px 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Căn giữa nội dung các cột trong bảng cho thẳng hàng với header */
+html body #module-accounts table tbody td {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+/* Riêng cột Người dùng và Email thì căn trái cho dễ đọc */
+html body #module-accounts table tbody td:nth-child(1),
+html body #module-accounts table tbody td:nth-child(2) {
+    text-align: left !important;
+}
+
+/* Hover dòng: Chỉ đổi nền xanh siêu nhạt */
+html body #module-accounts table tbody tr:hover td {
+    background-color: #f0fdf4 !important;
+}
+
+/* 3. NÚT THAO TÁC - Nền đặc (Solid), Icon Trắng, giống bên Doctor */
+html body #module-accounts .action-icon-btn {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+}
+
+/* Nút Khóa / Mở khóa: Nền Xanh Đậm */
+html body #module-accounts .action-icon-btn.btn-lock,
+html body #module-accounts .action-icon-btn.btn-unlock {
+    background: #18914e !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(24, 145, 78, 0.2) !important;
+}
+
+html body #module-accounts .action-icon-btn.btn-lock:hover,
+html body #module-accounts .action-icon-btn.btn-unlock:hover {
+    background: #0b491e !important; /* Đậm hơn khi hover */
+    box-shadow: 0 4px 12px rgba(24, 145, 78, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Nút Xóa: Nền Cam Đậm */
+html body #module-accounts .action-icon-btn.btn-delete {
+    background: #fd8624 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(253, 134, 36, 0.2) !important;
+}
+
+html body #module-accounts .action-icon-btn.btn-delete:hover {
+    background: #e0711c !important; /* Đậm hơn khi hover */
+    box-shadow: 0 4px 12px rgba(253, 134, 36, 0.4) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* Chỉnh lại tooltip (nếu có) để không bị lỗi khi nút đổi màu đậm */
+html body .has-tooltip::before {
+    background: #1e293b !important;
+    color: #ffffff !important;
+}
+/* ========================================================
+   ĐỘI ĐẶC NHIỆM: GRADIENT TOÀN HÀNG, BO GÓC BẢNG, HOVER XANH
+   ======================================================== */
+
+/* 1. BO GÓC TOÀN BỘ KHUNG BẢNG */
+html body section#module-accounts.module .table-wrap {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+
+/* Cần thuộc tính này để bo góc có tác dụng */
+html body section#module-accounts.module .table-wrap table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+}
+
+/* 2. HEADER BẢNG (TH) - GRADIENT LIỀN MẠCH TOÀN HÀNG */
+/* Gắn nền Gradient vào thẻ TR (hàng) thay vì từng ô */
+html body section#module-accounts.module .table-wrap table thead tr {
+    background: linear-gradient(135deg, #0b491e 0%, #18914e 100%) !important;
+}
+
+/* Ép các ô TH thành trong suốt để lộ nền Gradient của hàng */
+html body section#module-accounts.module .table-wrap table thead tr th {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    padding: 16px 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border: none !important; /* Xóa viền đen giữa các ô */
+    border-bottom: 1px solid #0b491e !important;
+    box-shadow: none !important;
+}
+
+/* 3. NỘI DUNG BẢNG (TD) - XÓA NỀN LẠ */
+html body section#module-accounts.module .table-wrap table tbody tr td {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Căn trái cho 2 cột Người dùng và Email */
+html body section#module-accounts.module .table-wrap table tbody tr td:nth-child(1),
+html body section#module-accounts.module .table-wrap table tbody tr td:nth-child(2) {
+    text-align: left !important;
+}
+
+/* 4. HOVER DÒNG - XANH SIÊU NHẠT, XÓA GRADIENT LOANG LỔ */
+html body section#module-accounts.module .table-wrap table tbody tr:hover td {
+    background: #e6f5eb !important;
+    background-color: #e6f5eb !important;
+    background-image: none !important; /* Triệt tiêu var(--dx-tint) gây loang lổ */
+    box-shadow: none !important;
+    border-bottom: 1px solid #d1fae5 !important;
+    color: #0f172a !important;
+}
+
+/* 5. NÚT XÓA BỘ LỌC (Màu xanh đậm + Icon) */
+html body section#module-accounts.module #user-reset-filters {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-weight: 700 !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+}
+html body section#module-accounts.module #user-reset-filters:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+}
+html body section#module-accounts.module #user-reset-filters::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 15px !important;
+    height: 15px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 6. NÚT THAO TÁC (Khóa & Xóa) - Nền đặc, Icon trắng */
+html body #module-accounts .action-icon-btn {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 10px !important;
+    border: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+/* Nút Khóa (Xanh đậm) */
+html body #module-accounts .action-icon-btn.btn-lock,
+html body #module-accounts .action-icon-btn.btn-unlock {
+    background: #18914e !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(24, 145, 78, 0.2) !important;
+}
+html body #module-accounts .action-icon-btn.btn-lock:hover,
+html body #module-accounts .action-icon-btn.btn-unlock:hover {
+    background: #0b491e !important;
+    transform: translateY(-2px) !important;
+}
+/* Nút Xóa (Cam đậm) */
+html body #module-accounts .action-icon-btn.btn-delete {
+    background: #fd8624 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(253, 134, 36, 0.2) !important;
+}
+html body #module-accounts .action-icon-btn.btn-delete:hover {
+    background: #e0711c !important;
+    transform: translateY(-2px) !important;
+}
+/* ========================================================
+   FIX TRIỆT ĐỂ LẦN CUỐI: HEADER BẢNG LIỀN MẠCH & BO GÓC
+   ======================================================== */
+
+/* 1. KHUNG BẢNG - BO GÓC VÀ CẮT GỌN */
+html body section#module-accounts.module .table-wrap {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+}
+
+html body section#module-accounts.module .table-wrap table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+}
+
+/* 2. HEADER - GRADIENT LIỀN MẠCH TRÊN CẢ HÀNG (TR) */
+html body section#module-accounts.module .table-wrap table thead tr {
+    background: linear-gradient(90deg, #0b491e 0%, #18914e 100%) !important;
+}
+
+/* 3. ÉP CÁC Ô THÀNH TRONG SUỐT, XÓA MỌI MÀU NỀN CŨ */
+html body section#module-accounts.module .table-wrap table thead th {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    padding: 16px 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: none !important;
+}
+
+/* 4. BO GÓC TRÊN CỦA HEADER */
+html body section#module-accounts.module .table-wrap table thead th:first-child {
+    border-top-left-radius: 12px !important;
+}
+html body section#module-accounts.module .table-wrap table thead th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+/* 5. NỘI DUNG BẢNG (TD) - XÓA NỀN LẠ, CHỈ GIỮ VIỀN DƯỚI */
+html body section#module-accounts.module .table-wrap table tbody td {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+/* Căn trái 2 cột đầu cho dễ đọc */
+html body section#module-accounts.module .table-wrap table tbody td:nth-child(1),
+html body section#module-accounts.module .table-wrap table tbody td:nth-child(2) {
+    text-align: left !important;
+}
+
+/* 6. HOVER DÒNG - XANH SIÊU NHẠT (Đã xóa mọi gradient loang lổ) */
+html body section#module-accounts.module .table-wrap table tbody tr:hover td {
+    background: #e6f5eb !important;
+    background-color: #e6f5eb !important;
+    background-image: none !important; /* Triệt tiêu var(--dx-tint) */
+    box-shadow: none !important;
+}
+
+/* 7. BO GÓC DƯỚI CỦA DÒNG CUỐI CÙNG */
+html body section#module-accounts.module .table-wrap table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px !important;
+}
+html body section#module-accounts.module .table-wrap table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px !important;
+}
+/* ========================================================
+   OVERRIDE: TRANG QUẢN LÝ CA KHÁM (ADMIN)
+   ======================================================== */
+
+/* 1. 3 THẺ THỐNG KÊ (STAT CARDS) - Nền Xanh/Cam Gradient, Căn trái */
+html body section#module-ai .case-stats {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 16px !important;
+    margin-bottom: 24px !important;
+}
+
+html body section#module-ai .case-stats .panel {
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    min-height: 130px !important;
+    padding: 24px !important;
+    border: none !important;
+    border-radius: 18px !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Thẻ 1 & 3: Xanh lá */
+html body section#module-ai .case-stats .panel:nth-child(1),
+html body section#module-ai .case-stats .panel:nth-child(3) {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+/* Thẻ 2: Cam */
+html body section#module-ai .case-stats .panel:nth-child(2) {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+
+html body section#module-ai .case-stats small {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+html body section#module-ai .case-stats b {
+    color: #ffffff !important;
+    font-size: 38px !important;
+    font-weight: 800 !important;
+    margin-top: 8px !important;
+    font-family: "Montserrat", "Sora", sans-serif !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
+    position: relative !important;
+    z-index: 2 !important;
+}
+
+/* 2. THANH BỘ LỌC (FILTERS) */
+html body section#module-ai .case-list-panel {
+    border-radius: 20px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05) !important;
+    background: #ffffff !important;
+    padding: 24px !important;
+}
+
+html body section#module-ai .case-filters {
+    display: grid !important;
+    grid-template-columns: minmax(200px, 2fr) repeat(4, minmax(120px, 1fr)) auto !important;
+    gap: 12px !important;
+    align-items: end !important;
+    padding-bottom: 20px !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    margin-bottom: 20px !important;
+}
+
+html body section#module-ai .case-filters label {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+html body section#module-ai .case-filters input,
+html body section#module-ai .case-filters select {
+    height: 42px !important;
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #f8fafc !important;
+    padding: 0 12px !important;
+    font-size: 13px !important;
+    color: #0f172a !important;
+    outline: none !important;
+}
+
+html body section#module-ai .case-filters input:focus,
+html body section#module-ai .case-filters select:focus {
+    border-color: #2ba149 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(43, 161, 73, 0.15) !important;
+}
+
+/* Nút Xóa bộ lọc */
+html body section#module-ai #case-reset {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    height: 42px !important;
+    padding: 0 18px !important;
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+}
+
+html body section#module-ai #case-reset:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+}
+
+html body section#module-ai #case-reset::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 15px !important;
+    height: 15px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 3. BẢNG DỮ LIỆU (TABLE) - Gradient, Bo góc, Hover xanh */
+html body section#module-ai .table-wrap {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+
+html body section#module-ai .table-wrap table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+}
+
+/* Header Gradient liền mạch */
+html body section#module-ai .table-wrap table thead tr {
+    background: linear-gradient(90deg, #0b491e 0%, #18914e 100%) !important;
+}
+
+html body section#module-ai .table-wrap table thead th {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    padding: 16px 14px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+html body section#module-ai .table-wrap table thead th:first-child {
+    border-top-left-radius: 12px !important;
+}
+html body section#module-ai .table-wrap table thead th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+/* Nội dung các ô */
+html body section#module-ai .table-wrap table tbody td {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 14px !important;
+}
+
+/* Căn trái 3 cột đầu (Mã ca, Bệnh nhân, Bác sĩ) */
+html body section#module-ai .table-wrap table tbody td:nth-child(1),
+html body section#module-ai .table-wrap table tbody td:nth-child(2),
+html body section#module-ai .table-wrap table tbody td:nth-child(3) {
+    text-align: left !important;
+}
+
+/* Hover dòng: Phẳng màu xanh nhạt */
+html body section#module-ai .table-wrap table tbody tr:hover td {
+    background: #e6f5eb !important;
+    background-color: #e6f5eb !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #d1fae5 !important;
+}
+
+html body section#module-ai .table-wrap table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px !important;
+}
+html body section#module-ai .table-wrap table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px !important;
+}
+
+/* 4. NÚT "XEM CHI TIẾT" */
+html body section#module-ai .table-wrap table tbody .text-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 6px 14px !important;
+    background: rgba(43, 161, 73, 0.1) !important;
+    color: #18914e !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    border: 1px solid rgba(43, 161, 73, 0.3) !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+}
+
+html body section#module-ai .table-wrap table tbody .text-btn:hover {
+    background: #18914e !important;
+    color: #ffffff !important;
+    border-color: #18914e !important;
+    box-shadow: 0 4px 10px -2px rgba(24, 145, 78, 0.4) !important;
+}
+
+/* 5. NHÃN TRẠNG THÁI (STATUS CHIP) */
+html body section#module-ai .table-wrap .status-chip.warning {
+    background: #fff7ee !important;
+    color: #e0711c !important;
+    border: 1px solid #ffd09c !important;
+}
+html body section#module-ai .table-wrap .status-chip.success {
+    background: #eaf7ed !important;
+    color: #18914e !important;
+    border: 1px solid #aee6c3 !important;
+}
+/* ========================================================
+   FIX TỔNG THỂ: THẺ CARD ICON + BẢNG PREMIUM (CA KHÁM & TÀI KHOẢN)
+   ======================================================== */
+
+/* 1. THẺ THỐNG KÊ CA KHÁM - Thêm Icon mờ ở góc phải */
+html body section#module-ai .case-stats .panel {
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+html body section#module-ai .case-stats .panel::after {
+    content: "" !important;
+    position: absolute !important;
+    right: -15px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 100px !important;
+    height: 100px !important;
+    background-color: #ffffff !important;
+    opacity: 0.15 !important;
+    z-index: 1 !important;
+    -webkit-mask: no-repeat center / contain !important;
+    mask: no-repeat center / contain !important;
+}
+
+/* Icon cho thẻ 1: Tổng ca khám (File) */
+html body section#module-ai .case-stats .panel:nth-child(1)::after {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>') !important;
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>') !important;
+}
+
+/* Icon cho thẻ 2: Chưa hoàn thành (Đồng hồ) */
+html body section#module-ai .case-stats .panel:nth-child(2)::after {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>') !important;
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>') !important;
+}
+
+/* Icon cho thẻ 3: Hoàn thành (Check) */
+html body section#module-ai .case-stats .panel:nth-child(3)::after {
+    -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>') !important;
+    mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>') !important;
+}
+
+/* 2. SỬA LỖI BẢNG (Áp dụng chung cho CẢ 2 BẢNG) */
+html body :is(#module-ai, #module-accounts) .table-wrap {
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+
+html body :is(#module-ai, #module-accounts) .table-wrap table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+}
+
+/* Nền Gradient liền mạch cho Header */
+html body :is(#module-ai, #module-accounts) .table-wrap table thead tr {
+    background: linear-gradient(90deg, #0b491e 0%, #18914e 100%) !important;
+}
+
+/* Header TH: Tăng cỡ chữ, xóa nền lạ, căn giữa */
+html body :is(#module-ai, #module-accounts) .table-wrap table thead th {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    text-align: center !important;
+    padding: 16px 14px !important;
+    font-size: 13px !important; /* Tăng cỡ chữ */
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: none !important;
+}
+
+/* Bo góc trên */
+html body :is(#module-ai, #module-accounts) .table-wrap table thead th:first-child {
+    border-top-left-radius: 12px !important;
+}
+html body :is(#module-ai, #module-accounts) .table-wrap table thead th:last-child {
+    border-top-right-radius: 12px !important;
+}
+
+/* Nội dung TD: Tăng cỡ chữ, xóa nền lạ */
+html body :is(#module-ai, #module-accounts) .table-wrap table tbody td {
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    color: #0f172a !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    padding: 14px !important;
+    font-size: 14px !important; /* Tăng cỡ chữ */
+}
+
+/* Căn trái nội dung cho dễ đọc (Ca khám: cột 1,2,3 | Tài khoản: cột 1,2) */
+html body section#module-ai .table-wrap table tbody td:nth-child(1),
+html body section#module-ai .table-wrap table tbody td:nth-child(2),
+html body section#module-ai .table-wrap table tbody td:nth-child(3),
+html body section#module-accounts .table-wrap table tbody td:nth-child(1),
+html body section#module-accounts .table-wrap table tbody td:nth-child(2) {
+    text-align: left !important;
+}
+
+/* Hover dòng: Đồng màu xanh phẳng, diệt gradient loang lổ */
+html body :is(#module-ai, #module-accounts) .table-wrap table tbody tr:hover td {
+    background: #e6f5eb !important;
+    background-color: #e6f5eb !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #d1fae5 !important;
+}
+
+/* Bo góc dưới */
+html body :is(#module-ai, #module-accounts) .table-wrap table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px !important;
+}
+html body :is(#module-ai, #module-accounts) .table-wrap table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px !important;
+}
+/* ========================================================
+   BIẾN NÚT "XEM CHI TIẾT" THÀNH ICON CON MẮT (QUẢN LÝ CA KHÁM)
+   ======================================================== */
+
+/* 1. Định hình lại nút */
+html body section#module-ai .table-wrap table tbody .text-btn {
+    font-size: 0 !important; /* Ẩn chữ "Xem chi tiết" */
+    color: transparent !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 34px !important;
+    height: 34px !important;
+    padding: 0 !important;
+    background: #18914e !important; /* Nền xanh đậm */
+    border-radius: 8px !important;
+    border: 1px solid #18914e !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    box-shadow: 0 2px 8px rgba(24, 145, 78, 0.2) !important;
+    margin: 0 auto !important;
+}
+
+/* 2. Chèn Icon Con Mắt màu trắng */
+html body section#module-ai .table-wrap table tbody .text-btn::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: #ffffff !important; /* Màu trắng */
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 3. Hiệu ứng Hover: Đậm hơn và nhấc lên */
+html body section#module-ai .table-wrap table tbody .text-btn:hover {
+    background: #0b491e !important; /* Xanh đậm hơn */
+    border-color: #0b491e !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(24, 145, 78, 0.4) !important;
+}
+/* ========================================================
+   OVERRIDE: TRANG BẢO MẬT & PHIÊN ĐĂNG NHẬP (ADMIN)
+   ======================================================== */
+
+/* 1. KHUNG BAO NGOÀI - Nền Gradient như Topbar */
+html body #module-security .admin-security-live {
+    background-color: var(--dx-surface, #ffffff) !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.15), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.15), transparent 70%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
+    padding: 30px !important;
+}
+
+html body #module-security .admin-security-live h2 {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-bottom: 20px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 2. FORM CẤU HÌNH BẢO MẬT */
+html body #module-security .security-live-form {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 20px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 40px !important;
+}
+
+html body #module-security .security-live-form label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+/* Checkbox 2FA */
+html body #module-security .security-live-form label:has(input[type="checkbox"]) {
+    flex-direction: row !important;
+    align-items: center !important;
+    height: 42px !important;
+    padding: 0 16px !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+}
+html body #module-security .security-live-form input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: #2ba149 !important;
+    cursor: pointer !important;
+}
+
+/* Nút Lưu cấu hình */
+html body #module-security #save-security {
+    height: 42px !important;
+    padding: 0 24px !important;
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    margin-left: auto !important; /* Đẩy nút sang phải */
+}
+
+html body #module-security #save-security:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Icon cho nút Lưu */
+html body #module-security #save-security::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 3. BỘ LỌC AUDIT LOG */
+html body #module-security .audit-filters {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 12px !important;
+    background: rgba(255, 255, 255, 0.6) !important;
+    padding: 16px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 20px !important;
+}
+
+html body #module-security .audit-filters label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+html body #module-security .audit-filters input {
+    height: 40px !important;
+    border-radius: 8px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0 12px !important;
+    background: #ffffff !important;
+}
+
+/* Nút Lọc và Xuất CSV */
+html body #module-security #audit-filter,
+html body #module-security #audit-export {
+    height: 40px !important;
+    padding: 0 16px !important;
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+
+html body #module-security #audit-filter {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #475569 !important;
+}
+html body #module-security #audit-filter:hover {
+    background: #f8fafc !important;
+    border-color: #94a3b8 !important;
+}
+
+html body #module-security #audit-export {
+    background: #fff7ee !important;
+    border: 1px solid #ffd09c !important;
+    color: #e0711c !important;
+}
+html body #module-security #audit-export:hover {
+    background: #ffe8d0 !important;
+}
+
+/* 4. DANH SÁCH AUDIT LOG (Làm gọn và dễ đọc) */
+html body #module-security .audit-live {
+    border-top: none !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+}
+
+html body #module-security .audit-live-row {
+    display: grid !important;
+    grid-template-columns: 180px 1fr auto !important; /* 3 cột rõ ràng */
+    align-items: center !important;
+    gap: 16px !important;
+    padding: 14px 20px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+    transition: all 0.2s ease !important;
+}
+
+html body #module-security .audit-live-row:hover {
+    border-color: #2ba149 !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.15) !important;
+    transform: translateX(4px) !important;
+}
+
+/* Cột 1: Tên sự kiện */
+html body #module-security .audit-live-row b {
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    display: block !important;
+}
+
+/* Cột 2: Email & IP */
+html body #module-security .audit-live-row span {
+    color: #64748b !important;
+    font-size: 12px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* Cột 3: Trạng thái & Thời gian (Căn phải, không rớt dòng) */
+html body #module-security .audit-live-row em {
+    font-style: normal !important;
+    color: #18914e !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-align: right !important;
+    white-space: nowrap !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 2px !important;
+}
+
+/* Nếu thất bại thì đổi màu đỏ/cam */
+html body #module-security .audit-live-row em:contains("Thất bại") {
+    color: #e0711c !important;
+}
+
+/* 5. PHÂN TRANG */
+html body #module-security .audit-pagination {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-top: 20px !important;
+}
+
+html body #module-security .audit-pagination button {
+    height: 36px !important;
+    padding: 0 16px !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+html body #module-security .audit-pagination button:hover:not(:disabled) {
+    background: #f0fdf4 !important;
+    border-color: #2ba149 !important;
+    color: #18914e !important;
+}
+html body #module-security .audit-pagination button:disabled {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+}
+html body #module-security .audit-pagination span {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #64748b !important;
+}
+/* ========================================================
+   FIX DỨT ĐIỂM: TRANG BẢO MẬT (CỠ CHỮ, BỘ LỌC, ICON)
+   ======================================================== */
+
+/* 1. TỔNG THỂ KHUNG NỀN */
+html body #module-security .admin-security-live {
+    background-color: #ffffff !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.12), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.12), transparent 70%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
+    padding: 30px !important;
+}
+
+html body #module-security .admin-security-live h2 {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 2. FORM CẤU HÌNH BẢO MẬT (Session, Password, 2FA) */
+html body #module-security .security-live-form {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 24px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 40px !important;
+}
+
+html body #module-security .security-live-form label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+html body #module-security .security-live-form select {
+    height: 44px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 0 36px 0 16px !important;
+    background-color: #ffffff !important;
+    appearance: none !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    min-width: 160px !important;
+}
+
+/* Checkbox 2FA */
+html body #module-security .security-live-form label:has(input[type="checkbox"]) {
+    flex-direction: row !important;
+    align-items: center !important;
+    height: 44px !important;
+    padding: 0 16px !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+}
+html body #module-security .security-live-form input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: #2ba149 !important;
+    cursor: pointer !important;
+}
+
+/* Nút Lưu cấu hình */
+html body #module-security #save-security {
+    height: 44px !important;
+    padding: 0 24px !important;
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    margin-left: auto !important;
+}
+html body #module-security #save-security:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+}
+html body #module-security #save-security::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21" 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 3. BỘ LỌC AUDIT LOG (Từ ngày, Đến ngày, Nút) */
+html body #module-security .audit-filters {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 16px !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 24px !important;
+}
+
+html body #module-security .audit-filters label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+html body #module-security .audit-filters input[type="date"] {
+    height: 44px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0 16px !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+}
+
+/* Nút Lọc */
+html body #module-security #audit-filter {
+    height: 44px !important;
+    padding: 0 20px !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    color: #475569 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+html body #module-security #audit-filter:hover {
+    background: #f8fafc !important;
+    border-color: #2ba149 !important;
+    color: #18914e !important;
+}
+html body #module-security #audit-filter::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* Nút Xuất CSV */
+html body #module-security #audit-export {
+    height: 44px !important;
+    padding: 0 20px !important;
+    background: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px -4px rgba(255, 118, 32, 0.4) !important;
+    transition: all 0.2s ease !important;
+}
+html body #module-security #audit-export:hover {
+    background: linear-gradient(135deg, #e0711c 0%, #d4601b 100%) !important;
+    transform: translateY(-1px) !important;
+}
+html body #module-security #audit-export::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 4. DANH SÁCH AUDIT LOG (Chia cột rõ ràng, cỡ chữ to) */
+html body #module-security .audit-live {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+}
+
+html body #module-security .audit-live-row {
+    display: grid !important;
+    grid-template-columns: 200px 1fr auto !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 16px 24px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease !important;
+}
+
+html body #module-security .audit-live-row:hover {
+    border-color: #2ba149 !important;
+    box-shadow: 0 4px 15px -4px rgba(43, 161, 73, 0.15) !important;
+    transform: translateX(4px) !important;
+}
+
+/* Cột 1: Tên sự kiện */
+html body #module-security .audit-live-row b {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    font-size: 14.5px !important;
+    display: block !important;
+}
+
+/* Cột 2: Email & IP */
+html body #module-security .audit-live-row span {
+    color: #64748b !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+/* Cột 3: Trạng thái & Thời gian */
+html body #module-security .audit-live-row em {
+    font-style: normal !important;
+    color: #18914e !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    text-align: right !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+}
+
+/* 5. PHÂN TRANG */
+html body #module-security .audit-pagination {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    gap: 16px !important;
+    margin-top: 24px !important;
+}
+html body #module-security .audit-pagination span {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+html body #module-security .audit-pagination button {
+    height: 40px !important;
+    padding: 0 20px !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 13.5px !important;
+    color: #475569 !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+}
+html body #module-security .audit-pagination button:hover:not(:disabled) {
+    background: #f0fdf4 !important;
+    border-color: #2ba149 !important;
+    color: #18914e !important;
+}
+html body #module-security .audit-pagination button:disabled {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+}
+/* ========================================================
+   FIX ICON NÚT LƯU CẤU HÌNH & TĂNG CỠ CHỮ AUDIT LOG
+   ======================================================== */
+
+/* 1. FIX ICON NÚT "LƯU CẤU HÌNH" */
+html body #module-security #save-security {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important; /* Khoảng cách giữa icon và chữ */
+    color: #ffffff !important;
+}
+
+html body #module-security #save-security::before {
+    content: "" !important;
+    display: block !important; /* Ép hiển thị dạng block để không bị ẩn */
+    width: 18px !important;
+    height: 18px !important;
+    background-color: #ffffff !important; /* Icon màu trắng */
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21" 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 2. TĂNG CỠ CHỮ BẢNG AUDIT LOG */
+html body #module-security .audit-live-row {
+    padding: 20px 24px !important; /* Tăng khoảng cách cho thoáng mắt */
+}
+
+/* Chữ cột 1: Tên sự kiện (VD: 2FA_LOGIN) */
+html body #module-security .audit-live-row b {
+    font-size: 16px !important; /* Tăng lên 16px */
+    font-weight: 800 !important;
+    color: #0f172a !important;
+}
+
+/* Chữ cột 2: Email & IP */
+html body #module-security .audit-live-row span {
+    font-size: 14.5px !important; /* Tăng lên 14.5px */
+    color: #475569 !important;
+    font-weight: 500 !important;
+}
+
+/* Chữ cột 3: Trạng thái & Thời gian */
+html body #module-security .audit-live-row em {
+    font-size: 14px !important; /* Tăng lên 14px */
+    font-weight: 700 !important;
+}
+/* ========================================================
+   GOM TOÀN BỘ: GIAO DIỆN BẢO MẬT (FIX ICON & NÚT BỘ LỌC)
+   ======================================================== */
+
+/* 1. KHUNG BAO NGOÀI */
+html body #module-security .admin-security-live {
+    background-color: #ffffff !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.12), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.12), transparent 70%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
+    padding: 30px !important;
+}
+
+html body #module-security .admin-security-live h2 {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 2. FORM CẤU HÌNH BẢO MẬT */
+html body #module-security .security-live-form {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 24px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 40px !important;
+}
+
+html body #module-security .security-live-form label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+html body #module-security .security-live-form select {
+    height: 44px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 0 36px 0 16px !important;
+    background-color: #ffffff !important;
+    appearance: none !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    min-width: 160px !important;
+}
+
+/* Checkbox 2FA */
+html body #module-security .security-live-form label:has(input[type="checkbox"]) {
+    flex-direction: row !important;
+    align-items: center !important;
+    height: 44px !important;
+    padding: 0 16px !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+}
+html body #module-security .security-live-form input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: #2ba149 !important;
+    cursor: pointer !important;
+}
+
+/* Nút Lưu cấu hình - Dùng Background Image để không bao giờ mất icon */
+html body #module-security #save-security {
+    height: 44px !important;
+    padding: 0 24px 0 46px !important; /* Chừa chỗ bên trái cho icon */
+    background-color: #2ba149 !important;
+    background-image:
+        linear-gradient(135deg, #2ba149 0%, #23853c 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position:
+        center center,
+        16px center !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    margin-left: auto !important;
+}
+html body #module-security #save-security:hover {
+    background-image:
+        linear-gradient(135deg, #23853c 0%, #1c6730 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>') !important;
+    transform: translateY(-1px) !important;
+}
+
+/* 3. BỘ LỌC AUDIT LOG (Đưa các nút về sát bên trái) */
+html body #module-security .audit-filters {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important; /* Căn trái */
+    gap: 16px !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 24px !important;
+}
+
+html body #module-security .audit-filters label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+html body #module-security .audit-filters input[type="date"] {
+    height: 44px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0 16px !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    width: 170px !important;
+}
+
+/* Nút Lọc và Xuất CSV */
+html body #module-security #audit-filter,
+html body #module-security #audit-export {
+    height: 44px !important;
+    padding: 0 20px 0 44px !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background-repeat: no-repeat !important;
+    background-position: 14px center !important;
+    margin: 0 !important; /* Xóa bỏ mọi margin đẩy ra xa */
+}
+
+/* Nút Lọc */
+html body #module-security #audit-filter {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #475569 !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23475569" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>') !important;
+}
+html body #module-security #audit-filter:hover {
+    background-color: #f8fafc !important;
+    border-color: #2ba149 !important;
+    color: #18914e !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2318914e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>') !important;
+}
+
+/* Nút Xuất CSV */
+html body #module-security #audit-export {
+    background-color: #ff7620 !important;
+    background-image:
+        linear-gradient(135deg, #ff943e 0%, #ff7620 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>') !important;
+    background-position:
+        center center,
+        14px center !important;
+    border: none !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px -4px rgba(255, 118, 32, 0.4) !important;
+}
+html body #module-security #audit-export:hover {
+    background-image:
+        linear-gradient(135deg, #e0711c 0%, #d4601b 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>') !important;
+    transform: translateY(-1px) !important;
+}
+
+/* 4. DANH SÁCH AUDIT LOG (Cỡ chữ lớn) */
+html body #module-security .audit-live {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+}
+
+html body #module-security .audit-live-row {
+    display: grid !important;
+    grid-template-columns: 200px 1fr auto !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 18px 24px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease !important;
+}
+
+html body #module-security .audit-live-row:hover {
+    border-color: #2ba149 !important;
+    box-shadow: 0 4px 15px -4px rgba(43, 161, 73, 0.15) !important;
+    transform: translateX(4px) !important;
+}
+
+html body #module-security .audit-live-row b {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+    font-size: 16px !important;
+    display: block !important;
+}
+
+html body #module-security .audit-live-row span {
+    color: #475569 !important;
+    font-size: 14.5px !important;
+    font-weight: 500 !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+}
+
+html body #module-security .audit-live-row em {
+    font-style: normal !important;
+    color: #18914e !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    text-align: right !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-end !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+}
+/* ========================================================
+   FIX TRIỆT ĐỂ: TRANG BẢO MẬT (ICON CHUẨN, BỘ LỌC GỌN, CHỮ 16PX)
+   ======================================================== */
+
+/* 1. KHUNG NỀN */
+html body #module-security .admin-security-live {
+    background-color: #ffffff !important;
+    background-image: radial-gradient(300px 180px at 100% 0%, rgba(255, 138, 43, 0.12), transparent 70%), radial-gradient(320px 200px at 0% 100%, rgba(44, 197, 111, 0.12), transparent 70%) !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 20px !important;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05) !important;
+    padding: 30px !important;
+}
+
+html body #module-security .admin-security-live h2 {
+    font-size: 18px !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    margin-bottom: 24px !important;
+    padding-bottom: 12px !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 2. FORM CẤU HÌNH */
+html body #module-security .security-live-form {
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 24px !important;
+    flex-wrap: wrap !important;
+    margin-bottom: 40px !important;
+}
+
+html body #module-security .security-live-form label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+html body #module-security .security-live-form select {
+    height: 44px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    padding: 0 36px 0 16px !important;
+    background-color: #ffffff !important;
+    appearance: none !important;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2364748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position: right 12px center !important;
+    min-width: 160px !important;
+}
+
+html body #module-security .security-live-form label:has(input[type="checkbox"]) {
+    flex-direction: row !important;
+    align-items: center !important;
+    height: 44px !important;
+    padding: 0 16px !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #1e293b !important;
+}
+html body #module-security .security-live-form input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: #2ba149 !important;
+    cursor: pointer !important;
+}
+
+/* Nút Lưu cấu hình - Định vị tuyệt đối Icon */
+html body #module-security #save-security {
+    position: relative !important;
+    height: 44px !important;
+    padding: 0 24px 0 46px !important; /* Chừa chỗ bên trái cho icon */
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    margin-left: auto !important;
+}
+html body #module-security #save-security:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+}
+html body #module-security #save-security::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: #ffffff !important; /* Icon màu trắng */
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21" 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 3. BỘ LỌC AUDIT LOG */
+html body #module-security .audit-filters {
+    display: flex !important;
+    align-items: flex-end !important;
+    justify-content: flex-start !important;
+    gap: 16px !important;
+    background: rgba(255, 255, 255, 0.7) !important;
+    padding: 16px 20px !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 24px !important;
+}
+
+html body #module-security .audit-filters label {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+}
+
+html body #module-security .audit-filters input[type="date"] {
+    height: 44px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0 16px !important;
+    background: #ffffff !important;
+    color: #0f172a !important;
+    width: 170px !important;
+}
+
+/* Fix nút "Lọc" bị lỗi icon to đùng */
+html body #module-security #audit-filter {
+    position: relative !important;
+    height: 44px !important;
+    padding: 0 20px 0 44px !important;
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    color: #475569 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    background-image: none !important; /* Xóa mọi background lỗi cũ */
+}
+html body #module-security #audit-filter:hover {
+    background: #f8fafc !important;
+    border-color: #2ba149 !important;
+    color: #18914e !important;
+}
+html body #module-security #audit-filter::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 14px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* Nút Xuất CSV */
+html body #module-security #audit-export {
+    position: relative !important;
+    height: 44px !important;
+    padding: 0 20px 0 44px !important;
+    background: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    color: #ffffff !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px -4px rgba(255, 118, 32, 0.4) !important;
+    transition: all 0.2s ease !important;
+    margin-left: auto !important;
+    background-image: linear-gradient(135deg, #ff943e 0%, #ff7620 100%) !important;
+}
+html body #module-security #audit-export:hover {
+    background: linear-gradient(135deg, #e0711c 0%, #d4601b 100%) !important;
+    transform: translateY(-1px) !important;
+}
+html body #module-security #audit-export::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 14px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: #ffffff !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 4. DANH SÁCH AUDIT LOG (Ép cỡ chữ 16px, Căn trái 3 cột) */
+html body #module-security .audit-live {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+}
+
+html body #module-security .audit-live-row {
+    display: grid !important;
+    grid-template-columns: 200px 1fr 1fr !important;
+    align-items: center !important;
+    gap: 20px !important;
+    padding: 18px 24px !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 12px !important;
+    transition: all 0.2s ease !important;
+}
+
+html body #module-security .audit-live-row:hover {
+    border-color: #2ba149 !important;
+    box-shadow: 0 4px 15px -4px rgba(43, 161, 73, 0.15) !important;
+    transform: translateX(4px) !important;
+}
+
+/* Đồng bộ cỡ chữ 16px cho cả 3 cột */
+html body #module-security .audit-live-row b,
+html body #module-security .audit-live-row span,
+html body #module-security .audit-live-row em {
+    font-size: 16px !important;
+    text-align: left !important; /* Căn trái toàn bộ */
+    font-style: normal !important;
+}
+
+/* Định dạng riêng màu sắc từng cột */
+html body #module-security .audit-live-row b {
+    color: #0f172a !important;
+    font-weight: 800 !important;
+}
+html body #module-security .audit-live-row span {
+    color: #475569 !important;
+    font-weight: 500 !important;
+}
+html body #module-security .audit-live-row em {
+    color: #18914e !important;
+    font-weight: 700 !important;
+}
+/* ========================================================
+   THAY ICON NÚT "LƯU CẤU HÌNH" BẰNG DẤU TÍCH (CHẮC CHẮN HIỆN)
+   ======================================================== */
+
+/* Xóa bỏ hoàn toàn thẻ giả cũ để tránh xung đột */
+html body #module-security #save-security::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Áp dụng Background Image trực tiếp chứa icon Dấu tích (Màu trắng) */
+html body #module-security #save-security {
+    background-color: #2ba149 !important;
+    background-image:
+        linear-gradient(135deg, #2ba149 0%, #23853c 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') !important;
+    background-repeat: no-repeat !important;
+    background-position:
+        center center,
+        16px center !important;
+    padding-left: 46px !important; /* Chừa chỗ cho icon */
+    color: #ffffff !important;
+}
+
+/* Hiệu ứng Hover (Giữ nguyên icon) */
+html body #module-security #save-security:hover {
+    background-color: #23853c !important;
+    background-image:
+        linear-gradient(135deg, #23853c 0%, #1c6730 100%),
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>') !important;
+    background-position:
+        center center,
+        16px center !important;
+}
+/* ========================================================
+   ICON ĐĨA MỀM BASE64 (SIÊU NÉT, KHÔNG THỂ LỖI)
+   ======================================================== */
+
+html body #module-security #save-security {
+    position: relative !important;
+    height: 44px !important;
+    padding: 0 24px 0 48px !important; /* Chừa 48px bên trái cho icon */
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    transition: all 0.2s ease !important;
+    cursor: pointer !important;
+    margin-left: auto !important;
+}
+
+html body #module-security #save-security:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Xóa sạch mọi thẻ giả cũ */
+html body #module-security #save-security::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Chèn icon Đĩa mềm Base64 màu trắng */
+html body #module-security #save-security::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 16px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 20px !important;
+    height: 20px !important;
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iI2ZmZmZmZiI+PHBhdGggZD0iTTE3IDNINWMtMS4xMSAwLTIgLjktMiAydjE0YzAgMS4xLjg5IDIgMiAyaDE0YzEuMSAwIDItLjkgMi0yVjdsLTQtNHptLTUgMTZjLTEuNjYgMC0zLTEuMzQtMy0zczEuMzQtMyAzLTMgMyAxLjM0IDMgMy0xLjM0IDMtMyAzem0zLTEwSDVWNWgxMHY0eiIvPjwvc3ZnPg==") !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+/* Xóa khoảng trắng dư thừa của nút Lưu cấu hình */
+html body #module-security #save-security {
+    padding: 0 20px !important; /* Ép đều 2 bên */
+    gap: 6px !important; /* Khoảng cách icon và chữ */
+}
+
+/* Đảm bảo thẻ svg bên trong không có margin lạ */
+html body #module-security #save-security svg {
+    margin: 0 !important;
+}
+/* ========================================================
+   FIX TRANG THỐNG KÊ & BÁO CÁO
+   ======================================================== */
+
+/* 1. LÀM LẠI 2 THẺ CARD THỐNG KÊ (Đè style inline cũ) */
+html body #module-reports .report-number {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    border: none !important;
+    padding: 24px !important;
+    min-height: 140px !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease !important;
+}
+
+html body #module-reports .report-number:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Nền Cam cho thẻ 1 */
+html body #module-reports .report-number.orange {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+/* Nền Xanh cho thẻ 2 */
+html body #module-reports .report-number.green {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+
+/* Chữ bên trong thẻ */
+html body #module-reports .report-number small {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em !important;
+    text-transform: uppercase !important;
+    z-index: 2 !important;
+    position: relative !important;
+}
+
+html body #module-reports .report-number b {
+    color: #ffffff !important;
+    font-family: "Montserrat", "Sora", sans-serif !important;
+    font-size: 40px !important;
+    font-weight: 800 !important;
+    margin: 8px 0 !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    z-index: 2 !important;
+    position: relative !important;
+}
+
+html body #module-reports .report-number span {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    z-index: 2 !important;
+    position: relative !important;
+}
+
+/* Icon mờ khổng lồ ở góc phải */
+html body #module-reports .report-number i {
+    position: absolute !important;
+    right: -10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    opacity: 0.15 !important;
+    color: #ffffff !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+}
+
+html body #module-reports .report-number i svg {
+    width: 100px !important;
+    height: 100px !important;
+    stroke-width: 1.2 !important;
+}
+
+/* 2. LÀM ĐẸP KHUNG "BÁO CÁO THEO THỜI GIAN" & NÚT BẤM MỚI */
+html body #module-reports .empty-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 40px 20px !important;
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 8px 28px rgba(15, 23, 42, 0.05) !important;
+}
+
+html body #module-reports .date-range {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin-top: 20px !important;
+    width: 100% !important;
+}
+
+html body #module-reports .date-range input {
+    height: 42px !important;
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0 16px !important;
+    background: #f8fafc !important;
+    font-size: 14px !important;
+    color: #0f172a !important;
+    outline: none !important;
+}
+
+html body #module-reports .date-range input:focus {
+    border-color: #2ba149 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(43, 161, 73, 0.15) !important;
+}
+
+html body #module-reports .date-range span {
+    font-size: 18px !important;
+    color: #64748b !important;
+    font-weight: 700 !important;
+}
+
+/* Nút Tạo báo cáo */
+html body #module-reports .date-range button.primary {
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    transition: all 0.2s ease !important;
+    height: 42px !important; /* Cho bằng chiều cao ô input */
+    padding: 0 20px !important;
+    cursor: pointer !important;
+}
+
+html body #module-reports .date-range button.primary:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+}
+/* ========================================================
+   FIX DỨT ĐIỂM: THẺ THỐNG KÊ & NÚT TẠO BÁO CÁO
+   ======================================================== */
+
+/* 1. LÀM LẠI 2 THẺ CARD THỐNG KÊ (Ép đè mọi style inline cũ) */
+html body #module-reports .report-number {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    border: none !important;
+    padding: 24px !important;
+    min-height: 140px !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+}
+
+html body #module-reports .report-number:hover {
+    transform: translateY(-4px) !important;
+}
+
+/* Nền Cam */
+html body #module-reports .report-number.orange {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+/* Nền Xanh */
+html body #module-reports .report-number.green {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+
+html body #module-reports .report-number small {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    z-index: 2 !important;
+}
+
+html body #module-reports .report-number b {
+    color: #ffffff !important;
+    font-size: 40px !important;
+    font-weight: 800 !important;
+    margin: 8px 0 !important;
+    z-index: 2 !important;
+}
+
+/* Icon to mờ ở góc */
+html body #module-reports .report-number i {
+    position: absolute !important;
+    right: -10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    opacity: 0.15 !important;
+    color: #ffffff !important;
+    z-index: 1 !important;
+}
+html body #module-reports .report-number i svg {
+    width: 100px !important;
+    height: 100px !important;
+}
+
+/* 2. NÚT TẠO BÁO CÁO KHÔNG BỊ BÓP MÉO */
+html body #module-reports .date-range {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin-top: 20px !important;
+}
+
+html body #module-reports .date-range button.primary {
+    white-space: nowrap !important; /* Chống rớt dòng chữ */
+    flex-shrink: 0 !important; /* Không cho nút bị co lại */
+}
+/* ========================================================
+   FIX HOÀN CHỈNH: THẺ BÁO CÁO & FORM CHỌN NGÀY
+   ======================================================== */
+
+/* 1. THẺ CARD */
+html body #module-reports .report-number {
+    position: relative !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    border: none !important;
+    padding: 24px !important;
+    min-height: 140px !important;
+    color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    transition: transform 0.25s ease !important;
+}
+html body #module-reports .report-number:hover {
+    transform: translateY(-4px) !important;
+}
+/* Màu nền */
+html body #module-reports .report-number.orange {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.3), transparent 70%), linear-gradient(135deg, #ffb35e 0%, #ff7a1f 55%, #f0560a 100%) !important;
+}
+html body #module-reports .report-number.green {
+    background: radial-gradient(200px 150px at 100% 0%, rgba(255, 255, 255, 0.24), transparent 70%), linear-gradient(135deg, #2cc56f 0%, #0f7a42 55%, #07502d 100%) !important;
+}
+
+/* Định vị lại phần đầu thẻ (chữ nhỏ và icon) */
+html body #module-reports .report-head {
+    position: relative !important;
+    z-index: 2 !important;
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+html body #module-reports .report-head small {
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    text-transform: uppercase !important;
+}
+/* Icon mờ to ở góc phải */
+html body #module-reports .report-icon {
+    position: absolute !important;
+    right: -10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    opacity: 0.15 !important;
+    color: #ffffff !important;
+    z-index: 1 !important;
+}
+html body #module-reports .report-icon svg {
+    width: 90px !important;
+    height: 90px !important;
+    stroke-width: 1.2 !important;
+}
+/* Số to và chữ nhỏ bên dưới */
+html body #module-reports .report-number b {
+    color: #ffffff !important;
+    font-family: "Montserrat", "Sora", sans-serif !important;
+    font-size: 38px !important;
+    font-weight: 800 !important;
+    margin: 8px 0 !important;
+    z-index: 2 !important;
+    position: relative !important;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+}
+html body #module-reports .report-number span {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    z-index: 2 !important;
+    position: relative !important;
+}
+
+/* 2. FORM CHỌN NGÀY & NÚT BÁO CÁO */
+html body #module-reports .empty-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 40px 20px !important;
+    background: #ffffff !important;
+    border-radius: 20px !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+html body #module-reports .empty-icon {
+    background: #f0fdf4 !important;
+    color: #2ba149 !important;
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 50% !important;
+    display: grid !important;
+    place-items: center !important;
+    margin-bottom: 16px !important;
+}
+
+html body #module-reports .date-range {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    margin-top: 24px !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+}
+
+html body #module-reports .date-range input {
+    height: 42px !important;
+    border-radius: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0 16px !important;
+    background: #f8fafc !important;
+    font-size: 14px !important;
+    color: #0f172a !important;
+}
+
+html body #module-reports .date-range button.primary {
+    height: 42px !important;
+    padding: 0 20px !important;
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+    cursor: pointer !important;
+}
+html body #module-reports .date-range button.primary:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+}
+/* ========================================================
+   FIX: ÉP FORM CHỌN NGÀY NẰM NGANG HÀNG (KHÔNG RỚT DÒNG)
+   ======================================================== */
+
+/* 1. Ép khung chứa nằm ngang */
+html body #module-reports .date-range {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important; /* Cấm rớt dòng */
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 16px !important;
+    margin: 20px auto 0 !important;
+    width: max-content !important; /* Ôm sát nội dung, không giãn full */
+    max-width: 100% !important;
+}
+
+/* 2. Thu hẹp ô chọn ngày lại */
+html body #module-reports .date-range input[type="date"] {
+    width: 180px !important; /* Cố định chiều rộng vừa đủ */
+    flex: 0 0 auto !important; /* Không cho phình to */
+    height: 44px !important;
+}
+
+/* 3. Giữ nút Tạo báo cáo không bị bóp méo */
+html body #module-reports .date-range button.primary {
+    flex: 0 0 auto !important;
+    white-space: nowrap !important;
+    height: 44px !important;
+}
+
+/* 4. Nếu xem trên điện thoại thì mới cho phép rớt dòng */
+@media (max-width: 768px) {
+    html body #module-reports .date-range {
+        flex-wrap: wrap !important;
+        width: 100% !important;
+    }
+    html body #module-reports .date-range input[type="date"] {
+        width: 100% !important;
+    }
+}
+/* ========================================================
+   FIX SIDEBAR: MỞ RỘNG & HIỆU ỨNG THU GỌN
+   ======================================================== */
+
+/* 1. Mở rộng Sidebar */
+html body .sidebar {
+    width: 285px !important;
+    flex-basis: 285px !important;
+    transition:
+        width 0.3s ease,
+        flex-basis 0.3s ease !important;
+}
+
+html body .main {
+    margin-left: 285px !important;
+    width: calc(100% - 285px) !important;
+    transition:
+        margin-left 0.3s ease,
+        width 0.3s ease !important;
+}
+
+/* Chống rớt dòng chữ trên menu */
+html body .sidebar .nav-item span:last-child {
+    white-space: nowrap !important;
+}
+
+/* 2. GIAO DIỆN KHI THU GỌN (COLLAPSED) */
+html body .sidebar.collapsed {
+    width: 85px !important;
+    flex-basis: 85px !important;
+}
+
+html body .main.sidebar-collapsed {
+    margin-left: 85px !important;
+    width: calc(100% - 85px) !important;
+}
+
+/* Ẩn chữ, chỉ hiện icon */
+html body .sidebar.collapsed .brand-text,
+html body .sidebar.collapsed .nav-label,
+html body .sidebar.collapsed .nav-item span:last-child,
+html body .sidebar.collapsed .sidebar-foot div {
+    display: none !important;
+}
+
+/* Căn giữa icon khi thu gọn */
+html body .sidebar.collapsed .nav-item {
+    justify-content: center !important;
+    padding: 12px 0 !important;
+}
+
+html body .sidebar.collapsed .nav-icon {
+    margin: 0 !important;
+}
+
+html body .sidebar.collapsed .brand {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+html body .sidebar.collapsed .sidebar-foot {
+    justify-content: center !important;
+    padding: 15px 0 !important;
+}
+
+/* Xoay nút mũi tên khi thu gọn */
+html body .sidebar.collapsed .collapse-btn {
+    transform: rotate(180deg) !important;
+}
+
+/* Fix lỗi khi màn hình nhỏ (Mobile) */
+@media (max-width: 720px) {
+    html body .sidebar {
+        width: 285px !important;
+        flex-basis: 285px !important;
+        transform: translateX(-100%);
+    }
+    html body .sidebar.open {
+        transform: none !important;
+    }
+    html body .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+    }
+}
+/* ========================================================
+   CSS THU GỌN SIDEBAR (ÉP BUỘC 100%)
+   ======================================================== */
+
+/* Trạng thái bình thường (Mở rộng) */
+html body aside#sidebar.sidebar {
+    width: 285px !important;
+    flex-basis: 285px !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+html body main.main {
+    margin-left: 285px !important;
+    width: calc(100% - 285px) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Trạng thái THU GỌN (Khi có class collapsed) */
+html body aside#sidebar.sidebar.collapsed {
+    width: 85px !important;
+    flex-basis: 85px !important;
+}
+
+html body main.main.sidebar-collapsed {
+    margin-left: 85px !important;
+    width: calc(100% - 85px) !important;
+}
+
+/* Ẩn các thành phần chữ khi thu gọn */
+html body aside#sidebar.sidebar.collapsed .brand-text,
+html body aside#sidebar.sidebar.collapsed .nav-label,
+html body aside#sidebar.sidebar.collapsed .nav-item span,
+html body aside#sidebar.sidebar.collapsed .sidebar-foot div {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Căn giữa Icon khi thu gọn */
+html body aside#sidebar.sidebar.collapsed .nav-item {
+    justify-content: center !important;
+    padding: 14px 0 !important;
+    margin: 4px 0 !important;
+}
+
+html body aside#sidebar.sidebar.collapsed .nav-icon {
+    margin: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 24px !important;
+}
+
+html body aside#sidebar.sidebar.collapsed .brand {
+    justify-content: center !important;
+    padding: 0 0 30px 0 !important;
+}
+
+html body aside#sidebar.sidebar.collapsed .sidebar-foot {
+    justify-content: center !important;
+    padding: 15px 0 !important;
+}
+
+/* Xoay nút mũi tên */
+html body aside#sidebar.sidebar.collapsed .collapse-btn {
+    transform: rotate(180deg) !important;
+}
+
+/* Nút bấm mũi tên to rõ, dễ click */
+html body .collapse-btn {
+    z-index: 999 !important;
+    cursor: pointer !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+}
+/* ========================================================
+   FIX NÚT "LỌC" TRANG LỊCH SỬ XÉT DUYỆT BÁC SĨ
+   ======================================================== */
+
+html body #doctor-history-filter {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+
+    height: 42px !important;
+    padding: 0 20px !important;
+    background: #ffffff !important;
+    border: 1.5px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+
+    /* Màu chữ đậm, rõ nét */
+    color: #0f172a !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+}
+
+/* Hiệu ứng Hover: Đổi sang màu xanh */
+html body #doctor-history-filter:hover {
+    background: #f0fdf4 !important;
+    border-color: #2ba149 !important;
+    color: #18914e !important;
+    box-shadow: 0 4px 10px -4px rgba(43, 161, 73, 0.3) !important;
+}
+
+/* Chèn Icon Phễu */
+html body #doctor-history-filter::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+}
+/* ========================================================
+   NÚT "LỌC" TRANG LỊCH SỬ XÉT DUYỆT - XANH ĐẬM
+   ======================================================== */
+
+html body #doctor-history-filter {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+
+    height: 42px !important;
+    padding: 0 20px !important;
+
+    /* Nền xanh đậm Gradient */
+    background: linear-gradient(135deg, #2ba149 0%, #23853c 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+
+    /* Chữ trắng */
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+    box-shadow: 0 4px 12px -4px rgba(43, 161, 73, 0.5) !important;
+}
+
+/* Hiệu ứng Hover: Tối lại một chút và nổi lên */
+html body #doctor-history-filter:hover {
+    background: linear-gradient(135deg, #23853c 0%, #1c6730 100%) !important;
+    transform: translateY(-1px) !important;
+    color: #e6f4ea !important;
+    box-shadow: 0 6px 16px -4px rgba(43, 161, 73, 0.7) !important;
+}
+
+/* Chèn Icon Phễu màu trắng */
+html body #doctor-history-filter::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: #ffffff !important; /* Icon màu trắng */
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>')
+        no-repeat center / contain !important;
+}
+/* ========================================================
+   NÂNG CẤP ICON NÚT HỒ SƠ (ĐĨA MỀM & Ổ KHÓA)
+   ======================================================== */
+
+/* Đảm bảo nút hiển thị dạng Flex để căn giữa icon và chữ */
+html body #module-profile #save-profile,
+html body #module-profile #change-password {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important; /* Khoảng cách giữa icon và chữ */
+}
+
+/* 1. Nút "Lưu thay đổi" - Icon Đĩa mềm */
+html body #module-profile #save-profile::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>')
+        no-repeat center / contain !important;
+}
+
+/* 2. Nút "Cập nhật mật khẩu" - Icon Ổ khóa */
+html body #module-profile #change-password::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    background-color: currentColor !important;
+    -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>')
+        no-repeat center / contain !important;
+    mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>')
+        no-repeat center / contain !important;
+}
+/* ========================================================
+   FIX TẬN GỐC: MENU NGÔN NGỮ BỊ CHÌM (PHÁ VỠ STACKING CONTEXT)
+   ======================================================== */
+
+/* 1. Gỡ bỏ overflow:hidden ở TẤT CẢ các thẻ cha chứa nút ngôn ngữ */
+html body .topbar,
+html body .topbar-leading,
+html body .topbar .top-actions,
+html body .topbar .hp-auth,
+html body .topbar .hp-tool {
+    overflow: visible !important;
+}
+
+/* 2. Đẩy cả thanh Topbar lên tầng cao nhất (đè lên mọi thứ) */
+html body .topbar {
+    z-index: 9990 !important;
+}
+
+/* 3. Đảm bảo Menu xổ xuống nằm trên cùng */
+html body .admin-lang-menu,
+html body .hp-lang-menu {
+    z-index: 99999 !important;
+    position: absolute !important;
+}
+
+/* 4. Hạ thấp phần nội dung chính xuống để không đè lên Topbar */
+html body .main,
+html body .content {
+    position: relative !important;
+    z-index: 1 !important;
+}
+/* ========================================================
+   FIX TẬN GỐC: MENU NGÔN NGỮ (POSITION FIXED)
+   ======================================================== */
+
+html body .admin-lang-menu {
+    position: fixed !important; /* Thoát khỏi mọi stacking context */
+    z-index: 9999999 !important; /* Đè lên tất cả */
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2) !important;
+    margin: 0 !important;
+}
+/* ========================================================
+   FIX MENU NGÔN NGỮ (ĐÃ TÁCH KHỎI TOPBAR)
+   ======================================================== */
+
+/* Đảm bảo menu luôn nổi lên trên cùng khi được gắn vào body */
+html body > .admin-lang-menu {
+    position: fixed !important;
+    z-index: 9999999 !important;
+    margin: 0 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Hiệu ứng hiển thị */
+html body > .admin-lang-menu.open {
+    display: flex !important;
+    flex-direction: column !important;
+}
+html body > .admin-lang-menu.hidden {
+    display: none !important;
+}
+/* ========================================================
+   CHỈNH TRANG MENU NGÔN NGỮ: NGẮN LẠI & CAO LÊN
+   ======================================================== */
+
+/* 1. Thu gọn chiều ngang của Menu */
+html body > .admin-lang-menu {
+    width: 160px !important; /* Ép chiều rộng vừa vặn */
+    min-width: 160px !important;
+    padding: 6px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+
+/* 2. Làm cho các mục (Tiếng Việt, English) cao lên và thoáng hơn */
+html body > .admin-lang-menu .admin-lang-item,
+html body > .admin-lang-menu .hp-lang-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 14px !important; /* Tăng padding trên dưới để cao lên */
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    color: #334155 !important;
+    cursor: pointer !important;
+    margin-bottom: 4px !important;
+}
+
+/* Xóa margin của item cuối cùng */
+html body > .admin-lang-menu .admin-lang-item:last-child,
+html body > .admin-lang-menu .hp-lang-item:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* 3. Hiệu ứng Hover */
+html body > .admin-lang-menu .admin-lang-item:hover,
+html body > .admin-lang-menu .hp-lang-item:hover {
+    background: #f0fdf4 !important; /* Xanh lá siêu nhạt */
+    color: #18914e !important;
+}
+
+/* 4. Căn chỉnh icon Check (Dấu tích) sang sát lề phải */
+html body > .admin-lang-menu .hp-lang-check {
+    margin-left: auto !important;
+    width: 16px !important;
+    height: 16px !important;
+    color: #2ba149 !important;
+}
+/* ========================================================
+   CHỈNH TRANG MENU NGÔN NGỮ: KHÔNG RỚT DÒNG
+   ======================================================== */
+
+/* 1. Tự động co giãn theo nội dung, không fix cứng 160px nữa */
+html body > .admin-lang-menu {
+    width: max-content !important;
+    min-width: 180px !important; /* Đảm bảo rộng tối thiểu */
+    padding: 6px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    border: 1px solid #e2e8f0 !important;
+    background: #ffffff !important;
+}
+
+/* 2. Ép chữ không được rớt dòng */
+html body > .admin-lang-menu .admin-lang-item,
+html body > .admin-lang-menu .hp-lang-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 14px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    color: #334155 !important;
+    cursor: pointer !important;
+    margin-bottom: 4px !important;
+    white-space: nowrap !important; /* Chống rớt dòng */
+}
+
+/* 3. Đảm bảo thẻ text bên trong cũng không bị wrap */
+html body > .admin-lang-menu .admin-lang-item span,
+html body > .admin-lang-menu .hp-lang-item span {
+    white-space: nowrap !important;
+}
+
+/* 4. Đẩy icon check sang sát lề phải */
+html body > .admin-lang-menu .hp-lang-check {
+    margin-left: auto !important;
+    padding-left: 12px !important; /* Tạo khoảng cách với chữ */
+    width: 16px !important;
+    height: 16px !important;
+    color: #2ba149 !important;
+}
+
+/* 5. Hiệu ứng Hover */
+html body > .admin-lang-menu .admin-lang-item:hover,
+html body > .admin-lang-menu .hp-lang-item:hover {
+    background: #f0fdf4 !important;
+    color: #18914e !important;
+}

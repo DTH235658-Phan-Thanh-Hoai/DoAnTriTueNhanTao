@@ -12,7 +12,7 @@ class SiteMediaError(ValueError):
 
 
 class SiteMediaService:
-    KINDS = frozenset({'logos', 'favicons', 'banners'})
+    KINDS = frozenset({'logos', 'favicons', 'banners', 'slides'})
     ACCEPTED = frozenset({'.jpg', '.jpeg', '.png', '.webp', '.ico'})
     MAX_BYTES = 5 * 1024 * 1024
     MAX_SIDE = 5000

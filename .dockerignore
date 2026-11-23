@@ -1,0 +1,14 @@
+.git
+.venv
+env
+venv
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.env
+instance/*.db
+test_images
+.system_generated
+.idea
+.vscode
