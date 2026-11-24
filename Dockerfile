@@ -15,7 +15,7 @@ ENV HOME=/home/user \
     PYTHONUNBUFFERED=1 \
     PYTHONUTF8=1 \
     SECRET_KEY=dermascan-online-secret-key-2024 \
-    PORT=7860
+    PORT=10000
 
 WORKDIR $HOME/app
 
@@ -32,8 +32,8 @@ COPY --chown=user . .
 # Tạo các thư mục lưu trữ dữ liệu cần thiết
 RUN mkdir -p instance uploads reports
 
-# Hugging Face Spaces mặc định mở cổng 7860 (Render/Koyeb dùng biến $PORT)
-EXPOSE 7860
+# Render lắng nghe cổng 10000 mặc định
+EXPOSE 10000
 
 # Khởi tạo database và khởi chạy server gunicorn
-CMD ["sh", "-c", "python -m flask --app skin_cancer.webapp.database_app db upgrade && python -m flask --app skin_cancer.webapp.database_app setup-initial --local-starter-accounts || true; exec gunicorn --bind 0.0.0.0:${PORT:-7860} --workers 1 --threads 4 --timeout 180 skin_cancer.webapp.app:app"]
+CMD ["sh", "-c", "python -m flask --app skin_cancer.webapp.database_app db upgrade && python -m flask --app skin_cancer.webapp.database_app setup-initial --local-starter-accounts || true; exec gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --threads 2 --timeout 180 skin_cancer.webapp.app:app"]

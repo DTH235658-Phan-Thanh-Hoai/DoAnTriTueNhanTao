@@ -323,20 +323,9 @@ class SkinCancerEfficientNet(nn.Module):
         return self.head(self.backbone(x))
 
 
-print(f"[BOOT] Device: {DEVICE}")
-print("[BOOT] Loading binary classifier...")
-model_bin = SkinCancerEfficientNet(num_classes=2, dropout=0.3).to(DEVICE)
-model_bin.load_state_dict(torch.load(
-    f'{BASE}/checkpoints/best_binary.pth', map_location=DEVICE))
-model_bin.eval()
-
-print("[BOOT] Loading multiclass classifier...")
-model_mc = SkinCancerEfficientNet(num_classes=8, dropout=0.4).to(DEVICE)
-model_mc.load_state_dict(torch.load(
-    f'{BASE}/checkpoints/best_multiclass.pth', map_location=DEVICE))
-model_mc.eval()
-print("[BOOT] Models ready.")
-
+# ============================================================
+# MODEL MANAGEMENT (LAZY LOADING FOR MEMORY SAFETY)
+# ============================================================
 preprocess = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
@@ -345,13 +334,47 @@ preprocess = transforms.Compose([
 
 # torch (mặc định) | onnx | onnx_int8
 MODEL_BACKEND = os.environ.get("MODEL_BACKEND", "torch")
-onnx_predictor = None
-if MODEL_BACKEND.startswith("onnx"):
-    onnx_predictor = OnnxPredictor(
-        BASE / "checkpoints",
-        suffix="_int8" if MODEL_BACKEND == "onnx_int8" else "",
-    )
+print(f"[BOOT] Device: {DEVICE}")
 print(f"[BOOT] Backend: {MODEL_BACKEND}")
+
+_model_bin = None
+_model_mc = None
+_onnx_predictor = None
+
+
+def get_onnx_predictor():
+    global _onnx_predictor
+    if _onnx_predictor is None and MODEL_BACKEND.startswith("onnx"):
+        print(f"[AI] Loading ONNX predictor ({MODEL_BACKEND})...")
+        _onnx_predictor = OnnxPredictor(
+            BASE / "checkpoints",
+            suffix="_int8" if MODEL_BACKEND == "onnx_int8" else "",
+        )
+    return _onnx_predictor
+
+
+def get_model_mc():
+    global _model_mc
+    if _model_mc is None:
+        print("[AI] Loading multiclass model (GradCAM / PyTorch inference)...")
+        _model_mc = SkinCancerEfficientNet(num_classes=8, dropout=0.4).to(DEVICE)
+        _model_mc.load_state_dict(
+            torch.load(f'{BASE}/checkpoints/best_multiclass.pth', map_location=DEVICE)
+        )
+        _model_mc.eval()
+    return _model_mc
+
+
+def get_model_bin():
+    global _model_bin
+    if _model_bin is None:
+        print("[AI] Loading binary classifier...")
+        _model_bin = SkinCancerEfficientNet(num_classes=2, dropout=0.3).to(DEVICE)
+        _model_bin.load_state_dict(
+            torch.load(f'{BASE}/checkpoints/best_binary.pth', map_location=DEVICE)
+        )
+        _model_bin.eval()
+    return _model_bin
 
 # ============================================================
 # FLASK
@@ -427,20 +450,20 @@ def _run_model(pil_img, context=None):
 
     start = time.perf_counter()
 
-    if onnx_predictor:
-        p_malig, probs_mc = onnx_predictor.predict(inp.cpu().numpy())
+    onnx_pred = get_onnx_predictor()
+    if onnx_pred:
+        p_malig, probs_mc = onnx_pred.predict(inp.cpu().numpy())
     else:
+        m_bin = get_model_bin()
+        m_mc = get_model_mc()
         with torch.no_grad():
-
-            logits_bin = model_bin(inp)
-
+            logits_bin = m_bin(inp)
             p_malig = torch.softmax(
                 logits_bin,
                 dim=1,
             )[0, 1].item()
 
-            logits_mc = model_mc(inp)
-
+            logits_mc = m_mc(inp)
             probs_mc = torch.softmax(
                 logits_mc,
                 dim=1,
@@ -475,10 +498,11 @@ def _run_model(pil_img, context=None):
         / 255.0
     )
 
+    cam_model = get_model_mc()
     with GradCAM(
-        model=model_mc,
+        model=cam_model,
         target_layers=[
-            model_mc.backbone.conv_head
+            cam_model.backbone.conv_head
         ],
     ) as cam:
 
