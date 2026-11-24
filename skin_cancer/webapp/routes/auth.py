@@ -139,6 +139,7 @@ def _admin_2fa_required(user):
 @login_manager.user_loader
 def load_user(user_id):
     if not isinstance(user_id, str):
+        current_app.logger.warning("[AUTH] load_user: user_id is not str: %s", type(user_id))
         return None
     parts = user_id.split('.')
     if (
@@ -151,6 +152,7 @@ def load_user(user_id):
         or len(parts[2]) != 64
         or any(char not in '0123456789abcdef' for char in parts[2])
     ):
+        current_app.logger.warning("[AUTH] load_user: Invalid token format: %s", user_id)
         return None
     try:
         numeric_id = int(parts[1])
@@ -159,9 +161,16 @@ def load_user(user_id):
     if numeric_id < 1 or numeric_id > 9223372036854775807:
         return None
     user = db.session.get(User, numeric_id)
-    if not user or str(user.id) != parts[1] or not user.is_active or user.deleted_at is not None:
+    if not user:
+        current_app.logger.warning("[AUTH] load_user: User ID %s not found in database", numeric_id)
         return None
-    return user if hmac.compare_digest(user.get_id(), user_id) else None
+    if not user.is_active or user.deleted_at is not None:
+        current_app.logger.warning("[AUTH] load_user: User %s is not active or deleted", user.email)
+        return None
+    if not hmac.compare_digest(user.get_id(), user_id):
+        current_app.logger.warning("[AUTH] load_user: HMAC signature mismatch for user %s (SECRET_KEY changed?)", user.email)
+        return None
+    return user
 
 
 @login_manager.unauthorized_handler

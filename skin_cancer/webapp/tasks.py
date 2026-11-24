@@ -36,6 +36,7 @@ def _run_analysis(analysis_id, case_image_id):
         gradcam_path = None
 
         try:
+            webapp.app.logger.info("[ANALYSIS #%s] Bắt đầu xử lý case_image=%s...", analysis_id, case_image_id)
             analysis.status = "PROCESSING"
             analysis.started_at = webapp.utcnow_naive()
             case_image.status = "PROCESSING"
@@ -43,7 +44,8 @@ def _run_analysis(analysis_id, case_image_id):
 
             try:
                 pil_img = Image.open(case_image.image_path).convert("RGB")
-            except (UnidentifiedImageError, OSError, ValueError):
+            except (UnidentifiedImageError, OSError, ValueError) as img_err:
+                webapp.app.logger.error("[ANALYSIS #%s] File ảnh không hợp lệ: %s", analysis_id, img_err)
                 raise ValueError("File ảnh không hợp lệ")
             pil_img = apply_focus_region(pil_img, case_image.focus_region)  # task 1
 
@@ -59,7 +61,9 @@ def _run_analysis(analysis_id, case_image_id):
                     else None
                 ),
             }
+            webapp.app.logger.info("[ANALYSIS #%s] Bắt đầu chạy suy luận AI...", analysis_id)
             data, cam_vis, inference_time_ms = webapp.run_ai_inference(pil_img, context=context)
+            webapp.app.logger.info("[ANALYSIS #%s] Suy luận hoàn tất sau %.1f ms! Đang lưu kết quả...", analysis_id, inference_time_ms)
 
             # Lưu ảnh Grad-CAM
             gradcam_dir = (webapp.PROJECT_ROOT / "instance" / "gradcam").resolve()
@@ -96,16 +100,16 @@ def _run_analysis(analysis_id, case_image_id):
 
             # Lưu vào cache để dù không có Redis/Celery web vẫn đọc được ngay
             save_cached(f"analysis-result:{analysis.id}", data)
-
-            return data  # Celery lưu vào Redis nếu đang dùng Celery
+            webapp.app.logger.info("[ANALYSIS #%s] Thành công! Đã lưu kết quả vào database & cache.", analysis_id)
+            return data
 
         except Exception as exc:
-            mark_analysis_failed(analysis_id, case_image_id, exc)
+            import traceback
+            tb = traceback.format_exc()
+            webapp.app.logger.error("[ANALYSIS #%s] THẤT BẠI: %s\n%s", analysis_id, exc, tb)
+            mark_analysis_failed(analysis_id, case_image_id, f"{exc}\n{tb}")
             if gradcam_path:
                 gradcam_path.unlink(missing_ok=True)
-            webapp.app.logger.exception(
-                "AI analysis failed for case image %s", case_image_id
-            )
             return None
 
 

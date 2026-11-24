@@ -12,8 +12,22 @@ def require_roles(*roles):
         @wraps(fn)
         def wrapped(*args, **kwargs):
             if not current_user.is_authenticated or not current_user.is_active:
+                from flask import current_app, request
+                current_app.logger.warning(
+                    "[ACCESS 401] Từ chối truy cập %s %s: is_authenticated=%s, is_active=%s",
+                    request.method, request.path,
+                    getattr(current_user, 'is_authenticated', False),
+                    getattr(current_user, 'is_active', False)
+                )
                 abort(401)
             if roles and current_user.role not in roles:
+                from flask import current_app, request
+                current_app.logger.warning(
+                    "[ACCESS 403] Quyền không đủ trên %s %s: user_role=%s, required_roles=%s",
+                    request.method, request.path,
+                    getattr(current_user, 'role', None),
+                    roles
+                )
                 abort(403)
             return fn(*args, **kwargs)
         return wrapped

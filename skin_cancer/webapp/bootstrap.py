@@ -8,6 +8,9 @@ from .extensions import db, login_manager, csrf, limiter
 
 
 def register_database_api(app):
+    from werkzeug.middleware.proxy_fix import ProxyFix
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
     login_manager.init_app(app)
     csrf.init_app(app)
     limiter.init_app(app)
@@ -42,31 +45,67 @@ def register_database_api(app):
     app.register_blueprint(analysis_status_bp)
 
     @app.errorhandler(CSRFError)
-    def csrf_error(_error):
-        return jsonify(success=False, message='CSRF token thiếu hoặc hết hạn', error='CSRF token thiếu hoặc hết hạn'), 400
+    def csrf_error(error):
+        app.logger.warning("CSRF error on %s %s: %s", request.method, request.path, getattr(error, 'description', error))
+        return jsonify(
+            success=False,
+            code=400,
+            message=f"CSRF token thiếu hoặc hết hạn ({getattr(error, 'description', error)})",
+            error=str(getattr(error, 'description', error)),
+            path=request.path,
+        ), 400
 
     @app.errorhandler(RequestEntityTooLarge)
     def request_too_large(_error):
-        return jsonify(success=False, message='Dung lượng request upload vượt giới hạn',
-                       error='Dung lượng request upload vượt giới hạn'), 413
+        app.logger.warning("Request too large on %s %s", request.method, request.path)
+        return jsonify(
+            success=False,
+            code=413,
+            message="Dung lượng request upload vượt giới hạn",
+            error="Dung lượng request upload vượt giới hạn",
+            path=request.path,
+        ), 413
 
     @app.errorhandler(HTTPException)
     def http_error(error):
         orig = getattr(error, 'original_exception', None)
-        if error.code == 500 or orig is not None:
-            app.logger.exception('HTTP Exception %s: %s', error.code, orig or error.description)
-        return jsonify(success=False, message=error.description, error=error.description), error.code
+        app.logger.warning("HTTP %s on %s %s: %s (orig: %s)", error.code, request.method, request.path, error.description, orig)
+        return jsonify(
+            success=False,
+            code=error.code,
+            message=error.description,
+            error=error.description,
+            path=request.path,
+        ), error.code
 
     @app.errorhandler(Exception)
     def unhandled_error(error):
-        app.logger.exception('Unhandled Exception: %s', error)
-        return jsonify(success=False, message='Đã xảy ra lỗi trên máy chủ. Vui lòng thử lại sau.', error=str(error)), 500
+        import traceback
+        tb = traceback.format_exc()
+        app.logger.exception("Unhandled Exception on %s %s: %s\n%s", request.method, request.path, error, tb)
+        return jsonify(
+            success=False,
+            code=500,
+            message=f"Lỗi máy chủ (500): {str(error)}",
+            error=str(error),
+            traceback=tb.splitlines(),
+            path=request.path,
+        ), 500
 
     @app.errorhandler(SQLAlchemyError)
-    def database_error(_error):
+    def database_error(error):
+        import traceback
+        tb = traceback.format_exc()
         db.session.rollback()
-        app.logger.exception('Database operation failed')
-        return jsonify(success=False, message='Không thể xử lý dữ liệu'), 500
+        app.logger.exception("Database error on %s %s: %s\n%s", request.method, request.path, error, tb)
+        return jsonify(
+            success=False,
+            code=500,
+            message=f"Lỗi cơ sở dữ liệu: {str(error)}",
+            error=str(error),
+            traceback=tb.splitlines(),
+            path=request.path,
+        ), 500
 
     @app.after_request
     def private_api_cache(response):

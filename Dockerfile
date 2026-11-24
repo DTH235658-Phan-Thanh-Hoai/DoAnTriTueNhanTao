@@ -42,4 +42,4 @@ RUN mkdir -p instance uploads reports
 EXPOSE 10000
 
 # Khởi tạo database và khởi chạy server gunicorn
-CMD ["sh", "-c", "python -m flask --app skin_cancer.webapp.database_app db upgrade && python -m flask --app skin_cancer.webapp.database_app setup-initial --local-starter-accounts || true; exec gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --threads 2 --timeout 180 skin_cancer.webapp.app:app"]
+CMD ["sh", "-c", "python -m flask --app skin_cancer.webapp.database_app db upgrade && python -m flask --app skin_cancer.webapp.database_app setup-initial --local-starter-accounts || true; exec gunicorn --bind 0.0.0.0:${PORT:-10000} --workers 1 --threads 2 --timeout 180 --access-logfile - --error-logfile - --log-level debug --capture-output skin_cancer.webapp.app:app"]
