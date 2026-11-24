@@ -45,6 +45,35 @@ def analysis_status(analysis_id):
         if task_res is not None:
             return jsonify(status="COMPLETED", result=task_res)
 
+        # Fallback an toàn: nếu database đã hoàn thành nhưng cache chưa có
+        if analysis.results:
+            ar = analysis.results[0]
+            p_malig = float(ar.binary_probability or 0.0)
+            pred_class = ar.predicted_class or "UNKNOWN"
+            pred_conf = float(ar.predicted_probability or 0.0)
+            probs = ar.class_probabilities or {}
+
+            task_res = {
+                "success": True,
+                "analysis_id": analysis.id,
+                "case_image_id": analysis.case_image_id,
+                "case_id": analysis.case_id,
+                "binary": {
+                    "prob_malignant": p_malig,
+                    "prediction": int(p_malig > 0.5),
+                    "label_vi": "NGHI NGỜ ÁC TÍNH" if p_malig > 0.5 else "LÀNH TÍNH",
+                    "confidence_pct": round(max(p_malig, 1 - p_malig) * 100, 1),
+                },
+                "multiclass": {
+                    "pred_class": pred_class,
+                    "pred_conf": pred_conf,
+                    "probs": probs,
+                },
+                "gradcam_url": f"/api/case-images/{analysis.case_image_id}/gradcam" if analysis.gradcam_path else None,
+                "meta": {"from_db": True},
+            }
+            return jsonify(status="COMPLETED", result=task_res)
+
         return jsonify(status="PROCESSING")
 
     # 2. Trạng thái lỗi
