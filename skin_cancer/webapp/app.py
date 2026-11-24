@@ -462,8 +462,9 @@ def _run_model(pil_img, context=None):
     start = time.perf_counter()
 
     onnx_pred = get_onnx_predictor()
+    onnx_cam = None
     if onnx_pred:
-        p_malig, probs_mc = onnx_pred.predict(inp.cpu().numpy())
+        p_malig, probs_mc, onnx_cam = onnx_pred.predict_with_cam(inp.cpu().numpy())
     else:
         m_bin = get_model_bin()
         m_mc = get_model_mc()
@@ -509,22 +510,26 @@ def _run_model(pil_img, context=None):
             / 255.0
         )
 
-        cam_model = get_model_mc()
-        with GradCAM(
-            model=cam_model,
-            target_layers=[
-                cam_model.backbone.conv_head
-            ],
-        ) as cam:
-
-            gray = cam(
-                input_tensor=inp,
-                targets=[
-                    ClassifierOutputTarget(
-                        pred_idx
-                    )
+        if onnx_cam is not None:
+            gray = onnx_cam
+        else:
+            cam_model = get_model_mc()
+            inp_cam = inp.clone().detach().requires_grad_(True)
+            with GradCAM(
+                model=cam_model,
+                target_layers=[
+                    cam_model.backbone.conv_head
                 ],
-            )[0]
+            ) as cam:
+
+                gray = cam(
+                    input_tensor=inp_cam,
+                    targets=[
+                        ClassifierOutputTarget(
+                            pred_idx
+                        )
+                    ],
+                )[0]
 
         cam_vis = show_cam_on_image(
             rgb_img.astype(

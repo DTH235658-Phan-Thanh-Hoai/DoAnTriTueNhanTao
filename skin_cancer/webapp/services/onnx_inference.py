@@ -43,6 +43,15 @@ class OnnxPredictor:
         self.multiclass = ort.InferenceSession(
             str(ckpt_dir / f"multiclass{suffix}.onnx"), providers=providers
         )
+        weights_path = ckpt_dir / "head_weights.npz"
+        if weights_path.is_file():
+            data = np.load(weights_path)
+            self.W1 = data["W1"]
+            self.b1 = data["b1"]
+            self.W2 = data["W2"]
+            self.b2 = data["b2"]
+        else:
+            self.W1 = self.b1 = self.W2 = self.b2 = None
 
     def predict(self, x):
         """x: numpy float32 (1, 3, 224, 224).
@@ -52,3 +61,30 @@ class OnnxPredictor:
         p_malig = float(softmax(bin_logits)[0, 1])
         probs_mc = softmax(mc_logits)[0]
         return p_malig, probs_mc
+
+    def predict_with_cam(self, x):
+        """Chạy dự đoán đồng thời sinh Grad-CAM analytic trực tiếp từ ONNX feature map,
+        hoàn toàn không cần nạp PyTorch hay tốn RAM.
+        Trả về: (p_malig, probs_mc, cam_heatmap)"""
+        bin_logits = self.binary.run(None, {"input": x})[0]
+        mc_out = self.multiclass.run(None, {"input": x})
+        mc_logits = mc_out[0]
+
+        p_malig = float(softmax(bin_logits)[0, 1])
+        probs_mc = softmax(mc_logits)[0]
+        pred_idx = int(probs_mc.argmax())
+
+        cam_224 = None
+        if len(mc_out) > 1 and self.W1 is not None:
+            feat_map = mc_out[1]  # shape: (1, 1280, 7, 7)
+            gap = feat_map[0].mean(axis=(1, 2))
+            z1 = self.W1 @ gap + self.b1
+            grad_z1 = self.W2[pred_idx] * (z1 > 0)
+            w = self.W1.T @ grad_z1
+            cam = np.maximum(0, np.tensordot(w, feat_map[0], axes=(0, 0)))
+            if cam.max() > 0:
+                cam = cam / cam.max()
+            cam_img = Image.fromarray((cam * 255).astype(np.uint8)).resize((224, 224), Image.BILINEAR)
+            cam_224 = np.array(cam_img, dtype=np.float32) / 255.0
+
+        return p_malig, probs_mc, cam_224
