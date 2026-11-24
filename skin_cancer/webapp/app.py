@@ -36,7 +36,8 @@ import torch.nn as nn
 import timm
 import numpy as np
 from PIL import Image, UnidentifiedImageError
-from flask import Flask, current_app, render_template, request, jsonify, redirect, session
+import gc
+from flask import Flask, current_app, render_template, request, jsonify, redirect, session, send_from_directory
 from flask_login import current_user, logout_user
 from flask_cors import CORS
 from torchvision import transforms
@@ -60,6 +61,8 @@ from skin_cancer.webapp.tasks import analyze_task, _run_analysis
 # ============================================================
 BASE = PROJECT_ROOT / 'skin_cancer'
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
+if DEVICE == 'cpu':
+    torch.set_num_threads(1)
 
 CLASSES = ['MEL', 'NV', 'BCC', 'AK', 'BKL', 'DF', 'VASC', 'SCC']
 MALIGNANT = ['MEL', 'BCC', 'SCC', 'AK']
@@ -332,8 +335,8 @@ preprocess = transforms.Compose([
     transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
 ])
 
-# torch (mặc định) | onnx | onnx_int8
-MODEL_BACKEND = os.environ.get("MODEL_BACKEND", "torch")
+# onnx_int8 (mặc định tối ưu RAM) | onnx | torch
+MODEL_BACKEND = os.environ.get("MODEL_BACKEND", "onnx_int8")
 print(f"[BOOT] Device: {DEVICE}")
 print(f"[BOOT] Backend: {MODEL_BACKEND}")
 
@@ -357,11 +360,15 @@ def get_model_mc():
     global _model_mc
     if _model_mc is None:
         print("[AI] Loading multiclass model (GradCAM / PyTorch inference)...")
+        if DEVICE == 'cpu':
+            torch.set_num_threads(1)
         _model_mc = SkinCancerEfficientNet(num_classes=8, dropout=0.4).to(DEVICE)
         _model_mc.load_state_dict(
             torch.load(f'{BASE}/checkpoints/best_multiclass.pth', map_location=DEVICE)
         )
         _model_mc.eval()
+        for p in _model_mc.parameters():
+            p.requires_grad = False
     return _model_mc
 
 
@@ -369,11 +376,15 @@ def get_model_bin():
     global _model_bin
     if _model_bin is None:
         print("[AI] Loading binary classifier...")
+        if DEVICE == 'cpu':
+            torch.set_num_threads(1)
         _model_bin = SkinCancerEfficientNet(num_classes=2, dropout=0.3).to(DEVICE)
         _model_bin.load_state_dict(
             torch.load(f'{BASE}/checkpoints/best_binary.pth', map_location=DEVICE)
         )
         _model_bin.eval()
+        for p in _model_bin.parameters():
+            p.requires_grad = False
     return _model_bin
 
 # ============================================================
@@ -488,50 +499,52 @@ def _run_model(pil_img, context=None):
     # ==========================================
     # GRAD-CAM
     # ==========================================
-
-    rgb_img = (
-        np.array(
-            pil_img.resize(
-                (224, 224)
-            )
-        )
-        / 255.0
-    )
-
-    cam_model = get_model_mc()
-    with GradCAM(
-        model=cam_model,
-        target_layers=[
-            cam_model.backbone.conv_head
-        ],
-    ) as cam:
-
-        gray = cam(
-            input_tensor=inp,
-            targets=[
-                ClassifierOutputTarget(
-                    pred_idx
+    try:
+        rgb_img = (
+            np.array(
+                pil_img.resize(
+                    (224, 224)
                 )
+            )
+            / 255.0
+        )
+
+        cam_model = get_model_mc()
+        with GradCAM(
+            model=cam_model,
+            target_layers=[
+                cam_model.backbone.conv_head
             ],
-        )[0]
+        ) as cam:
 
-    cam_vis = show_cam_on_image(
-        rgb_img.astype(
-            np.float32
-        ),
-        gray,
-        use_rgb=True,
-    )
+            gray = cam(
+                input_tensor=inp,
+                targets=[
+                    ClassifierOutputTarget(
+                        pred_idx
+                    )
+                ],
+            )[0]
 
-    # Một số version pytorch-grad-cam
-    # trả uint8 0-255.
-    if cam_vis.dtype != np.uint8:
+        cam_vis = show_cam_on_image(
+            rgb_img.astype(
+                np.float32
+            ),
+            gray,
+            use_rgb=True,
+        )
 
-        cam_vis = np.clip(
-            cam_vis * 255,
-            0,
-            255,
-        ).astype(np.uint8)
+        if cam_vis.dtype != np.uint8:
+            cam_vis = np.clip(
+                cam_vis * 255,
+                0,
+                255,
+            ).astype(np.uint8)
+    except Exception as cam_err:
+        app.logger.warning("GradCAM generation fallback: %s", cam_err)
+        cam_vis = np.array(pil_img.resize((224, 224)).convert("RGB"), dtype=np.uint8)
+    finally:
+        gc.collect()
 
     inference_time_ms = (
         time.perf_counter()
@@ -668,6 +681,11 @@ def app_logout():
     resp.delete_cookie(app.config.get('SESSION_COOKIE_NAME', 'session'), path='/')
     resp.delete_cookie(app.config.get('REMEMBER_COOKIE_NAME', 'remember_token'), path='/')
     return resp
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(app.static_folder, 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/health')

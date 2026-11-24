@@ -157,6 +157,12 @@ class SiteSettingsService:
             candidate = (root / raw).resolve()
             if candidate.is_relative_to(root) and candidate.is_file():
                 return candidate
+        for fallback_rel in ("skin_cancer/webapp/assets/dermascan_logo.png", "skin_cancer/webapp/asset/logo.png"):
+            for root_value in roots:
+                root = root_value.resolve()
+                fallback_candidate = (root / fallback_rel).resolve()
+                if fallback_candidate.is_relative_to(root) and fallback_candidate.is_file():
+                    return fallback_candidate
         raise SiteSettingsValidationError('File asset không tồn tại hoặc không hợp lệ.')
 
     def _effective_values(self, setting):

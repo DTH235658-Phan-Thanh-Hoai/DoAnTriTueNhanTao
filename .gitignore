@@ -32,6 +32,7 @@ __pycache__/
 *.log
 *.tmp
 temp/
+instance/*.db
 instance/*.db-journal
 instance/*.db-wal
 instance/site_media/

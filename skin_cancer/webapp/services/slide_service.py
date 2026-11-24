@@ -117,9 +117,14 @@ class SlideService:
                 if candidate.is_relative_to(root) and candidate.is_file():
                     path = candidate
                     break
-        if path is None or not any(path.is_relative_to(root) for root in allowed_roots):
-            raise SlideImageError('Đường dẫn ảnh slide không an toàn.')
-        if path.suffix.lower() not in self.IMAGE_SUFFIXES or not path.is_file():
+        if path is None or not any(path.is_relative_to(root) for root in allowed_roots) or not path.is_file():
+            for fallback_name in ('skin_cancer/webapp/assets/demoslide1.png', 'skin_cancer/webapp/assets/dermascan_logo.png', 'skin_cancer/webapp/asset/logo.png'):
+                for root in allowed_roots:
+                    candidate = (root / fallback_name).resolve()
+                    if candidate.is_relative_to(root) and candidate.is_file():
+                        return candidate
+            raise SlideImageError('File ảnh slide không tồn tại hoặc không hợp lệ.')
+        if path.suffix.lower() not in self.IMAGE_SUFFIXES:
             raise SlideImageError('File ảnh slide không tồn tại hoặc không hợp lệ.')
         return path
 
